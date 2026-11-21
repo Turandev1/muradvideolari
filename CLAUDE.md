@@ -8,9 +8,20 @@ Bu workspace Muradın sosial media kanalları üçün video istehsalı üçünd�
 | Rol | Kimdir | Nə edir |
 |---|---|---|
 | **Sahib (owner)** | Bu komputerin sahibi | Render-ə icazə verir (safe word ilə), qaydaları dəyişir |
-| **Murad** | Kanal sahibi, telefondan Claude Remote Control ilə qoşulur | Mövzu seçir, ssenarini təsdiqləyir/düzəldir, kadrlara baxır, videoları özü yükləyir |
+| **Murad** | Kanal sahibi, telefondan Claude Remote Control ilə qoşulur | Mövzu seçir, ssenarini təsdiqləyir/düzəldir, kadrlara baxır, **cloud sessiyada render edə bilər**, videoları özü yükləyir |
 
-## RENDER QAYDASI — safe word (ən vacib qayda)
+## RENDER QAYDASI (ən vacib qayda)
+
+Render qaydası **harada işlədiyindən** asılıdır. Əvvəlcə yoxla: `echo $CLAUDE_CODE_REMOTE` → `true` isə bu **cloud sessiyasıdır**, boşdursa **lokal komputer**.
+
+### A. Cloud sessiyası (claude.ai/code, GitHub repo) — Murad və sahib render edə bilər
+- Cloud-da render **sərbəstdir**: Murad və ya sahib açıq şəkildə "render et" / "videonu çıxar" desə, safe word tələb olunmur.
+- Claude yenə də **öz təşəbbüsü ilə render etmir** — yalnız istək olanda.
+- Render-dən əvvəl `check` təmiz olmalıdır. Hazır MP4 istifadəçiyə fayl kimi göndərilir (Claude tətbiqində yüklənir); MP4 repo-ya commit olunmur.
+- Cloud-da `notify-send` yoxdur — bildiriş göndərmə.
+
+### B. Lokal komputer — render-i yalnız sahib idarə edir (safe word)
+Lokal komputerdə konflikt olmasın deyə (eyni anda bir neçə render, komputer yükü) render-i yalnız komputerin sahibi edir.
 
 **Safe word:** `mentesdiqleyiremlocalrenderi`
 
@@ -56,6 +67,11 @@ REMOTE.md          ← sahib və Murad üçün remote iş bələdçisi
 channels/<kanal>/  ← hər kanalın öz CLAUDE.md-si, asset-ləri, epizodları
 ```
 
-## Cloud render (Claude cloud sessiyası)
+## Cloud iş mühiti (Claude cloud sessiyası)
 
-Eyni safe word qaydası keçərlidir. Cloud üçün layihə GitHub repo-da olmalıdır (sahib push edir). Render faylı repo-ya commit olunmur.
+- Layihə GitHub repo-dadır; komputer sönülü olsa da cloud sessiyada işləmək olur.
+- Hər yeni cloud sessiyada əvvəlcə alətləri qur: `bash scripts/cloud-setup.sh` (idempotent: HyperFrames, Kokoro TTS + model, fontlar, GSAP → `.tools/`).
+- HyperFrames əmrlərini `scripts/hf <əmr>` ilə işlət — env-ləri (`HYPERFRAMES_PYTHON`, `HYPERFRAMES_CACHE_DIR`) repo yoluna görə özü qurur, lokal və cloud-da eyni işləyir.
+- Cloud-da workspace yolu fərqlidir (`/home/user/<repo>`) — "workspace xaricində iş görmə" qaydası repo qovluğuna aiddir.
+- Cloud-da Parakeet (huggingface) bloklana bilər — söz vaxtları üçün `channels/story-kids/tools/word_times.py` (səs enerjisinə görə) istifadə et.
+- Render qaydası: yuxarıda **RENDER QAYDASI → A**. Render faylı repo-ya commit olunmur.

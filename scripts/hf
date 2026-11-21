@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# HyperFrames wrapper: repo-nun lokal alətlərini və env-lərini qurur (lokal və cloud-da eyni).
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+export HYPERFRAMES_PYTHON="$ROOT/.tools/venv/bin/python"
+export HYPERFRAMES_CACHE_DIR="$ROOT/.tools/hf-cache"
+export HYPERFRAMES_SKIP_SKILLS=1
+exec "$ROOT/.tools/node_modules/.bin/hyperframes" "$@"

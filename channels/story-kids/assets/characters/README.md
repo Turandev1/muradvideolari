@@ -21,4 +21,7 @@ Hər qəhrəman üçün qovluq: `characters/<ad>/`
 ## Siyahı
 | Ad | Rol | Status |
 |---|---|---|
-| _(sahib/Murad tərəfindən əlavə olunacaq)_ | | |
+| Pip | əsas qəhrəman (qurbağa) | v1 |
+| Twinkle | sehrli dost (düşmüş ulduz) | v1 |
+
+Bütün obrazların kodu: `characters.js` (`SK.defs()`, `SK.pip()`, `SK.twinkle()`). Epizodun `video/assets/`-inə kopyala. SVG faylları: `node export-svg.cjs`.

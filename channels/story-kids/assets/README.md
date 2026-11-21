@@ -18,4 +18,7 @@
 ## Kataloq
 | Asset | Növ | Qeyd |
 |---|---|---|
-| _(boş)_ | | |
+| `characters/pip/` | obraz | Pip v1 |
+| `characters/twinkle/` | obraz | Twinkle v1 |
+| `../tools/synth_audio.py` | musiqi + SFX generatoru | musiqi qutusu laylası, starfall, sparkle, plop, whoosh, chime, dusk ambience |
+| Lilita One, Baloo 2 | font (OFL) | npm `@fontsource/*`, `scripts/cloud-setup.sh` qurur |

@@ -4,4 +4,4 @@ Hər epizod: `EP###-kebab-slug/` (`_template`-dən kopyalanır).
 
 | EP | Başlıq | Status | Render |
 |---|---|---|---|
-| _(hələ yoxdur)_ | | | |
+| EP000 | The Star Who Fell (15 s sample) | ready-to-render | — |
