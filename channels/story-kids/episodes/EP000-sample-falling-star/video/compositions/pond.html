@@ -1,0 +1,631 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; background: #2b1f66; }
+    #pond-cam { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    #pond-world { position: absolute; left: 0; top: 0; width: 1080px; height: 4300px; }
+    .layer { position: absolute; left: 0; top: 0; display: block; }
+    .actor { position: absolute; left: 0; top: 0; overflow: visible; }
+    .actor svg { overflow: visible; display: block; }
+    #pond-vignette {
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 75% 60% at 50% 48%, rgba(0,0,0,0) 55%, rgba(20,8,40,0.42) 100%);
+    }
+    #pond-endq {
+      position: absolute; left: 0; top: 300px; width: 1080px; text-align: center;
+      font-family: "Nunito", sans-serif; font-weight: 900; color: #fff;
+      -webkit-text-stroke: 12px #1d1238; paint-order: stroke fill;
+      text-shadow: 0 8px 0 rgba(29,18,56,0.45);
+    }
+    #pond-endq .q1, #pond-endq .q2 { display: block; line-height: 1.05; }
+    #pond-endq .q1 { font-size: 104px; }
+    #pond-endq .q2 { font-size: 118px; }
+    #pond-endq .you { color: #ffd66b; display: inline-block; }
+  </style>
+
+  <div id="root" data-composition-id="pond" data-width="1080" data-height="1920">
+    <div id="pond-cam" data-layout-allow-overflow>
+      <div id="pond-world" data-layout-allow-overflow>
+
+        <!-- 1. Sky gradient -->
+        <svg id="pond-sky" class="layer" width="1080" height="1700" viewBox="0 0 1080 1700">
+          <defs>
+            <linearGradient id="g-sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#2b1f66" />
+              <stop offset="0.42" stop-color="#6a3fa0" />
+              <stop offset="0.72" stop-color="#d9709f" />
+              <stop offset="0.88" stop-color="#ffb38a" />
+              <stop offset="1" stop-color="#ffdca3" />
+            </linearGradient>
+          </defs>
+          <rect width="1080" height="1700" fill="url(#g-sky)" />
+        </svg>
+
+        <!-- 2. Moon + twinkling stars (parallax, slower than the world) -->
+        <svg id="pond-skyfar" class="layer" width="1080" height="1500" viewBox="0 0 1080 1500">
+          <defs>
+            <radialGradient id="g-moonhalo">
+              <stop offset="0" stop-color="#fff6d0" stop-opacity="0.55" />
+              <stop offset="1" stop-color="#fff6d0" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+          <circle cx="250" cy="430" r="230" fill="url(#g-moonhalo)" />
+          <circle cx="250" cy="430" r="86" fill="#fff3c4" stroke="#e8c879" stroke-width="6" />
+          <circle cx="222" cy="408" r="16" fill="#f3e0a6" />
+          <circle cx="276" cy="456" r="11" fill="#f3e0a6" />
+          <circle cx="262" cy="398" r="7" fill="#f3e0a6" />
+          <g id="pond-twinkles"></g>
+        </svg>
+
+        <!-- 3. Landscape: hills, willows, pond, underwater, sand -->
+        <svg id="pond-land" class="layer" width="1080" height="4300" viewBox="0 0 1080 4300">
+          <defs>
+            <linearGradient id="g-farwater" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#f7b9c6" />
+              <stop offset="0.45" stop-color="#a8c9e0" />
+              <stop offset="1" stop-color="#4fb2c6" />
+            </linearGradient>
+            <linearGradient id="g-under" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#46bccb" />
+              <stop offset="0.3" stop-color="#2d93b4" />
+              <stop offset="0.62" stop-color="#2377a6" />
+              <stop offset="1" stop-color="#1e5f93" />
+            </linearGradient>
+            <linearGradient id="g-sand" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#f6d796" />
+              <stop offset="1" stop-color="#d9a766" />
+            </linearGradient>
+            <linearGradient id="g-ray" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#ffffff" stop-opacity="0.32" />
+              <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+            </linearGradient>
+            <radialGradient id="g-sandglow">
+              <stop offset="0" stop-color="#fff1a8" stop-opacity="0.85" />
+              <stop offset="1" stop-color="#fff1a8" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+
+          <!-- far hills -->
+          <path d="M0 1470 C150 1380 300 1400 420 1452 C560 1392 720 1362 860 1432 C950 1402 1030 1410 1080 1440 L1080 1570 L0 1570 Z" fill="#8a66b8" />
+          <path d="M0 1522 C200 1462 380 1492 540 1532 C700 1482 900 1472 1080 1516 L1080 1580 L0 1580 Z" fill="#5a86a8" />
+
+          <!-- willow left -->
+          <g stroke="#1f3b33" stroke-width="5" stroke-linejoin="round">
+            <path d="M118 1545 C112 1480 108 1430 124 1380 L146 1380 C140 1430 144 1490 150 1545 Z" fill="#6b4636" />
+            <ellipse cx="135" cy="1340" rx="128" ry="86" fill="#3f8f6e" />
+            <ellipse cx="70" cy="1370" rx="70" ry="54" fill="#47a07a" />
+            <ellipse cx="200" cy="1372" rx="72" ry="52" fill="#47a07a" />
+          </g>
+          <g stroke="#2f7a5c" stroke-width="9" stroke-linecap="round" fill="none">
+            <path d="M30 1380 C24 1430 30 1470 26 1510" /><path d="M62 1400 C56 1450 62 1490 58 1530" />
+            <path d="M96 1404 C92 1450 98 1488 94 1520" /><path d="M176 1404 C182 1450 176 1490 182 1528" />
+            <path d="M212 1400 C218 1440 212 1482 218 1514" /><path d="M244 1384 C250 1426 244 1460 250 1496" />
+          </g>
+          <!-- willow right -->
+          <g stroke="#1f3b33" stroke-width="5" stroke-linejoin="round">
+            <path d="M940 1548 C934 1490 930 1440 946 1400 L966 1400 C960 1440 964 1496 970 1548 Z" fill="#6b4636" />
+            <ellipse cx="955" cy="1365" rx="118" ry="78" fill="#3f8f6e" />
+            <ellipse cx="1020" cy="1392" rx="66" ry="50" fill="#47a07a" />
+            <ellipse cx="890" cy="1394" rx="62" ry="48" fill="#47a07a" />
+          </g>
+          <g stroke="#2f7a5c" stroke-width="9" stroke-linecap="round" fill="none">
+            <path d="M850 1404 C844 1446 850 1484 846 1520" /><path d="M884 1420 C880 1462 886 1500 882 1532" />
+            <path d="M1030 1420 C1036 1460 1030 1496 1036 1530" /><path d="M1064 1404 C1070 1442 1064 1478 1070 1512" />
+          </g>
+
+          <!-- far water with moon reflection -->
+          <rect x="0" y="1560" width="1080" height="350" fill="url(#g-farwater)" />
+          <g id="pond-moonref" fill="#fff6d0">
+            <ellipse cx="250" cy="1600" rx="90" ry="7" opacity="0.8" />
+            <ellipse cx="250" cy="1640" rx="70" ry="6" opacity="0.65" />
+            <ellipse cx="250" cy="1684" rx="104" ry="7" opacity="0.5" />
+            <ellipse cx="250" cy="1736" rx="60" ry="6" opacity="0.45" />
+            <ellipse cx="250" cy="1790" rx="84" ry="6" opacity="0.35" />
+            <ellipse cx="250" cy="1846" rx="46" ry="5" opacity="0.3" />
+          </g>
+          <g stroke="#ffffff" stroke-opacity="0.45" stroke-width="5" stroke-linecap="round">
+            <path d="M520 1640 H600" /><path d="M700 1700 H760" /><path d="M430 1760 H520" /><path d="M820 1800 H900" /><path d="M600 1850 H690" />
+          </g>
+
+          <!-- underwater -->
+          <rect x="0" y="1905" width="1080" height="2395" fill="url(#g-under)" />
+          <g id="pond-rays">
+            <path d="M120 1905 L260 1905 L520 3300 L260 3300 Z" fill="url(#g-ray)" />
+            <path d="M430 1905 L520 1905 L700 3300 L540 3300 Z" fill="url(#g-ray)" />
+            <path d="M700 1905 L820 1905 L1020 3300 L820 3300 Z" fill="url(#g-ray)" />
+            <path d="M930 1905 L1000 1905 L1080 2700 L1040 2700 Z" fill="url(#g-ray)" />
+          </g>
+          <g id="pond-motes" fill="#e9fbff"></g>
+
+          <!-- big rock + sand floor -->
+          <path d="M40 3330 C30 3200 110 3140 210 3160 C300 3170 340 3250 330 3330 Z" fill="#6f8fb0" stroke="#2c3e5c" stroke-width="6" />
+          <path d="M90 3200 C120 3180 170 3176 200 3190" stroke="#9fb9d4" stroke-width="8" fill="none" stroke-linecap="round" />
+          <path d="M0 3330 C200 3280 400 3312 560 3292 C760 3270 900 3322 1080 3292 L1080 4300 L0 4300 Z" fill="url(#g-sand)" stroke="#b8864e" stroke-width="6" />
+          <ellipse cx="640" cy="3300" rx="300" ry="90" fill="url(#g-sandglow)" id="pond-sandglow" />
+          <g stroke="#7a5534" stroke-width="4">
+            <ellipse cx="120" cy="3372" rx="26" ry="14" fill="#f49ac1" />
+            <ellipse cx="300" cy="3392" rx="20" ry="12" fill="#8fd3f4" />
+            <ellipse cx="470" cy="3380" rx="24" ry="13" fill="#b9a2f0" />
+            <ellipse cx="830" cy="3392" rx="22" ry="12" fill="#ffd27a" />
+            <ellipse cx="980" cy="3372" rx="28" ry="15" fill="#9be3b0" />
+            <ellipse cx="720" cy="3430" rx="18" ry="10" fill="#f7a27b" />
+          </g>
+          <!-- shells -->
+          <g stroke="#7a3d5c" stroke-width="4" stroke-linejoin="round">
+            <path d="M210 3360 C214 3320 262 3318 268 3360 Z" fill="#ffb0cf" />
+            <path d="M239 3360 L239 3328 M224 3358 L230 3330 M254 3358 L249 3330" fill="none" />
+            <path d="M880 3352 C884 3312 936 3310 942 3352 Z" fill="#c7a6ff" />
+            <path d="M911 3352 L911 3320 M896 3350 L902 3322 M926 3350 L921 3322" fill="none" />
+          </g>
+          <!-- seagrass -->
+          <g id="pond-grassL" stroke="#1e5a3a" stroke-width="5" stroke-linejoin="round">
+            <path d="M60 3330 C40 3200 90 3100 60 2960 C100 3080 110 3200 96 3330 Z" fill="#3faa6a" />
+            <path d="M110 3330 C100 3180 150 3080 140 2900 C170 3040 166 3200 146 3330 Z" fill="#4dbb76" />
+            <path d="M170 3330 C170 3220 210 3140 200 3030 C230 3140 226 3240 204 3330 Z" fill="#3faa6a" />
+          </g>
+          <g id="pond-grassR" stroke="#1e5a3a" stroke-width="5" stroke-linejoin="round">
+            <path d="M880 3330 C866 3210 910 3120 896 3000 C930 3110 936 3220 916 3330 Z" fill="#4dbb76" />
+            <path d="M940 3330 C930 3180 980 3080 966 2920 C1000 3060 1000 3200 978 3330 Z" fill="#3faa6a" />
+            <path d="M1000 3330 C996 3220 1040 3140 1030 3040 C1060 3140 1060 3240 1036 3330 Z" fill="#4dbb76" />
+          </g>
+        </svg>
+
+        <!-- fireflies over the pond -->
+        <svg id="pond-fireflies" class="layer" width="1080" height="1950" viewBox="0 0 1080 1950">
+          <defs>
+            <radialGradient id="g-fly">
+              <stop offset="0" stop-color="#fff9b0" stop-opacity="1" />
+              <stop offset="0.35" stop-color="#ffe066" stop-opacity="0.6" />
+              <stop offset="1" stop-color="#ffe066" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+          <g id="pond-flies"></g>
+        </svg>
+
+        <!-- fish -->
+        <div id="pond-fish1" class="actor">
+          <svg width="120" height="70" viewBox="0 0 120 70">
+            <path d="M88 35 L118 12 L114 35 L118 58 Z" fill="#ff9f5a" stroke="#6b2f12" stroke-width="4" stroke-linejoin="round" />
+            <ellipse cx="52" cy="35" rx="44" ry="26" fill="#ffb86b" stroke="#6b2f12" stroke-width="4" />
+            <circle cx="28" cy="30" r="7" fill="#fff" stroke="#3a1a08" stroke-width="2" /><circle cx="26" cy="30" r="3.5" fill="#1a0d05" />
+          </svg>
+        </div>
+        <div id="pond-fish2" class="actor">
+          <svg width="96" height="56" viewBox="0 0 120 70">
+            <path d="M88 35 L118 12 L114 35 L118 58 Z" fill="#8ad0ff" stroke="#163a5c" stroke-width="4" stroke-linejoin="round" />
+            <ellipse cx="52" cy="35" rx="44" ry="26" fill="#a9e0ff" stroke="#163a5c" stroke-width="4" />
+            <circle cx="28" cy="30" r="7" fill="#fff" stroke="#0c2238" stroke-width="2" /><circle cx="26" cy="30" r="3.5" fill="#06111c" />
+          </svg>
+        </div>
+
+        <!-- falling-star trail (fixed angle, follows the star) -->
+        <div id="pond-trail" class="actor">
+          <svg width="260" height="260" viewBox="0 0 260 260">
+            <defs>
+              <linearGradient id="g-trail" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0" stop-color="#fff3a8" stop-opacity="0.95" />
+                <stop offset="0.4" stop-color="#ffc24a" stop-opacity="0.55" />
+                <stop offset="1" stop-color="#ff8fc0" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <g transform="rotate(6 130 130)">
+              <path d="M90 130 C96 -100 112 -340 130 -560 C148 -340 164 -100 170 130 Z" fill="url(#g-trail)" />
+              <circle cx="104" cy="-60" r="6" fill="#fff6c0" /><circle cx="158" cy="-150" r="5" fill="#fff6c0" />
+              <circle cx="118" cy="-260" r="4" fill="#ffe08a" /><circle cx="146" cy="-380" r="3" fill="#ffe08a" />
+            </g>
+          </svg>
+        </div>
+
+        <!-- Lumi, the star -->
+        <div id="pond-star" class="actor">
+          <svg width="260" height="260" viewBox="0 0 260 260">
+            <defs>
+              <radialGradient id="g-halo">
+                <stop offset="0" stop-color="#fff3a0" stop-opacity="0.9" />
+                <stop offset="0.35" stop-color="#ffd66b" stop-opacity="0.45" />
+                <stop offset="1" stop-color="#ffd66b" stop-opacity="0" />
+              </radialGradient>
+              <radialGradient id="g-starfill" cx="0.45" cy="0.38" r="0.7">
+                <stop offset="0" stop-color="#fff7c2" />
+                <stop offset="0.55" stop-color="#ffd24a" />
+                <stop offset="1" stop-color="#ffab2e" />
+              </radialGradient>
+            </defs>
+            <circle id="pond-halo" cx="130" cy="135" r="250" fill="url(#g-halo)" />
+            <g id="pond-starbody">
+              <path d="M130 22 L160 98 L240 102 L178 152 L200 230 L130 186 L60 230 L82 152 L20 102 L100 98 Z" fill="#c9711f" stroke="#c9711f" stroke-width="34" stroke-linejoin="round" />
+              <path d="M130 22 L160 98 L240 102 L178 152 L200 230 L130 186 L60 230 L82 152 L20 102 L100 98 Z" fill="url(#g-starfill)" stroke="#ffcf45" stroke-width="20" stroke-linejoin="round" />
+              <path d="M110 70 C116 56 124 48 130 44" stroke="#fffbe0" stroke-width="10" stroke-linecap="round" fill="none" />
+              <ellipse cx="88" cy="160" rx="16" ry="10" fill="#ff8fa3" opacity="0.75" />
+              <ellipse cx="172" cy="160" rx="16" ry="10" fill="#ff8fa3" opacity="0.75" />
+              <g id="pond-star-closed" stroke="#6b3410" stroke-width="7" stroke-linecap="round" fill="none">
+                <path d="M92 138 Q104 148 116 138" /><path d="M144 138 Q156 148 168 138" />
+              </g>
+              <g id="pond-star-open">
+                <g id="pond-star-eyeL">
+                  <ellipse cx="104" cy="134" rx="16" ry="20" fill="#fff" stroke="#6b3410" stroke-width="5" />
+                  <circle cx="108" cy="138" r="10" fill="#3a1a08" /><circle cx="104" cy="132" r="4.5" fill="#fff" />
+                </g>
+                <g id="pond-star-eyeR">
+                  <ellipse cx="156" cy="134" rx="16" ry="20" fill="#fff" stroke="#6b3410" stroke-width="5" />
+                  <circle cx="152" cy="138" r="10" fill="#3a1a08" /><circle cx="148" cy="132" r="4.5" fill="#fff" />
+                </g>
+              </g>
+              <path id="pond-star-smile" d="M114 166 Q130 180 146 166" stroke="#6b3410" stroke-width="6" stroke-linecap="round" fill="none" />
+              <ellipse id="pond-star-o" cx="130" cy="172" rx="9" ry="11" fill="#7a2a22" stroke="#6b3410" stroke-width="4" />
+            </g>
+          </svg>
+        </div>
+
+        <!-- lily pad -->
+        <div id="pond-pad" class="actor">
+          <svg width="360" height="110" viewBox="0 0 360 110">
+            <path d="M180 30 C70 30 18 46 18 62 C18 82 90 96 180 96 C270 96 342 82 342 62 C342 50 310 38 250 33 L196 62 Z" fill="#5fb84f" stroke="#1f4a22" stroke-width="6" stroke-linejoin="round" />
+            <path d="M60 64 C110 72 150 72 190 66 M240 70 C270 68 300 64 320 60" stroke="#3e8f39" stroke-width="5" fill="none" stroke-linecap="round" />
+            <g stroke="#8a2b5a" stroke-width="4" stroke-linejoin="round">
+              <path d="M300 50 C292 26 302 10 312 4 C322 10 330 26 322 50 Z" fill="#ff9fcd" />
+              <path d="M300 52 C280 40 276 24 280 14 C294 16 306 30 310 50 Z" fill="#ffc0de" />
+              <path d="M322 52 C342 40 346 24 342 14 C328 16 316 30 312 50 Z" fill="#ffc0de" />
+            </g>
+          </svg>
+        </div>
+
+        <!-- Nori, the frog -->
+        <div id="pond-nori" class="actor">
+          <div id="pond-nori-body" class="actor">
+            <svg width="300" height="300" viewBox="0 0 300 300">
+              <g stroke="#2b1a10" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
+                <g id="pond-nori-legL">
+                  <ellipse cx="82" cy="248" rx="54" ry="38" fill="#5fb340" />
+                  <ellipse cx="58" cy="284" rx="42" ry="12" fill="#86d266" />
+                </g>
+                <g id="pond-nori-legR">
+                  <ellipse cx="218" cy="248" rx="54" ry="38" fill="#5fb340" />
+                  <ellipse cx="242" cy="284" rx="42" ry="12" fill="#86d266" />
+                </g>
+                <ellipse cx="150" cy="215" rx="94" ry="76" fill="#6cc04a" />
+                <ellipse cx="150" cy="238" rx="58" ry="46" fill="#e2f5ab" stroke-width="5" />
+                <g id="pond-nori-armL"><path d="M104 222 C92 244 92 264 102 282" fill="none" /><ellipse cx="104" cy="284" rx="16" ry="9" fill="#86d266" /></g>
+                <g id="pond-nori-armR"><path d="M196 222 C208 244 208 264 198 282" fill="none" /><ellipse cx="196" cy="284" rx="16" ry="9" fill="#86d266" /></g>
+                <g id="pond-nori-head">
+                  <circle cx="95" cy="92" r="50" fill="#74c955" />
+                  <circle cx="205" cy="92" r="50" fill="#74c955" />
+                  <ellipse cx="150" cy="142" rx="116" ry="76" fill="#74c955" />
+                  <g stroke="none" fill="#5aa83f"><circle cx="120" cy="190" r="7" /><circle cx="182" cy="196" r="9" /><circle cx="66" cy="132" r="6" /></g>
+                  <g id="pond-nori-eyeL">
+                    <circle cx="95" cy="88" r="40" fill="#fff" stroke-width="6" />
+                    <g id="pond-nori-irisL" stroke="none">
+                      <circle cx="100" cy="94" r="22" fill="#6b3d1c" /><circle cx="100" cy="94" r="13" fill="#1a0d05" />
+                      <circle cx="92" cy="84" r="7" fill="#fff" /><circle cx="108" cy="102" r="3" fill="#fff" />
+                    </g>
+                    <ellipse id="pond-nori-lidL" cx="95" cy="88" rx="42" ry="42" fill="#74c955" stroke-width="6" />
+                  </g>
+                  <g id="pond-nori-eyeR">
+                    <circle cx="205" cy="88" r="40" fill="#fff" stroke-width="6" />
+                    <g id="pond-nori-irisR" stroke="none">
+                      <circle cx="200" cy="94" r="22" fill="#6b3d1c" /><circle cx="200" cy="94" r="13" fill="#1a0d05" />
+                      <circle cx="192" cy="84" r="7" fill="#fff" /><circle cx="208" cy="102" r="3" fill="#fff" />
+                    </g>
+                    <ellipse id="pond-nori-lidR" cx="205" cy="88" rx="42" ry="42" fill="#74c955" stroke-width="6" />
+                  </g>
+                  <ellipse cx="66" cy="160" rx="18" ry="11" fill="#ff8fa3" stroke="none" opacity="0.8" />
+                  <ellipse cx="234" cy="160" rx="18" ry="11" fill="#ff8fa3" stroke="none" opacity="0.8" />
+                  <path id="pond-nori-smile" d="M108 162 Q150 198 192 162" fill="none" stroke-width="7" />
+                  <g id="pond-nori-o"><ellipse cx="150" cy="176" rx="16" ry="18" fill="#8a2b3b" stroke-width="6" /><ellipse cx="150" cy="186" rx="9" ry="6" fill="#ff8fa3" stroke="none" /></g>
+                  <!-- flower crown -->
+                  <g stroke="#8a2b5a" stroke-width="4">
+                    <circle cx="150" cy="44" r="12" fill="#ff8fc0" /><circle cx="134" cy="56" r="12" fill="#ff8fc0" />
+                    <circle cx="166" cy="56" r="12" fill="#ff8fc0" /><circle cx="140" cy="74" r="12" fill="#ff8fc0" />
+                    <circle cx="160" cy="74" r="12" fill="#ff8fc0" /><circle cx="150" cy="61" r="9" fill="#ffd66b" />
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <!-- bubbles from Nori -->
+        <svg id="pond-bubbles" class="layer" width="1080" height="4300" viewBox="0 0 1080 4300">
+          <g fill="#e9fbff" fill-opacity="0.25" stroke="#ffffff" stroke-width="4" stroke-opacity="0.85">
+            <circle id="pond-b0" cx="610" cy="2050" r="14" /><circle id="pond-b1" cx="566" cy="2240" r="10" />
+            <circle id="pond-b2" cx="520" cy="2450" r="16" /><circle id="pond-b3" cx="476" cy="2650" r="11" />
+            <circle id="pond-b4" cx="440" cy="2850" r="14" /><circle id="pond-b5" cx="410" cy="2990" r="9" />
+            <circle id="pond-b6" cx="430" cy="2950" r="12" /><circle id="pond-b7" cx="400" cy="2930" r="8" />
+            <circle id="pond-b8" cx="690" cy="3060" r="10" /><circle id="pond-b9" cx="600" cy="3040" r="7" />
+          </g>
+        </svg>
+
+        <!-- water in front: tints whatever is below the surface -->
+        <svg id="pond-front" class="layer" width="1080" height="4300" viewBox="0 0 1080 4300">
+          <rect x="0" y="1908" width="1080" height="2392" fill="#2aa6c0" opacity="0.2" />
+        </svg>
+
+        <!-- moving surface line -->
+        <svg id="pond-wave" class="layer" width="2160" height="60" viewBox="0 0 2160 60">
+          <path id="pond-wavepath" fill="none" stroke="#d4f8ff" stroke-width="9" stroke-linecap="round" />
+          <path id="pond-wavepath2" fill="none" stroke="#ffffff" stroke-opacity="0.5" stroke-width="4" stroke-linecap="round" />
+        </svg>
+
+        <!-- reeds (front) -->
+        <svg id="pond-reeds" class="layer" width="1080" height="2100" viewBox="0 0 1080 2100">
+          <g stroke="#234a26" stroke-width="5" stroke-linejoin="round">
+            <path d="M20 2000 C24 1860 40 1760 70 1650 C66 1770 58 1880 52 2000 Z" fill="#4f9a4a" />
+            <path d="M70 2000 C80 1880 110 1790 150 1720 C130 1820 112 1900 104 2000 Z" fill="#5fae55" />
+            <path d="M-10 2000 C0 1900 -4 1820 10 1740 C24 1840 26 1920 24 2000 Z" fill="#5fae55" />
+            <rect x="92" y="1660" width="22" height="70" rx="11" fill="#8a5a3a" />
+            <path d="M103 1730 L100 2000" fill="none" />
+            <path d="M1050 2000 C1046 1870 1030 1770 1004 1670 C1012 1780 1018 1890 1022 2000 Z" fill="#4f9a4a" />
+            <path d="M1010 2000 C996 1890 970 1810 930 1740 C952 1840 966 1910 974 2000 Z" fill="#5fae55" />
+            <rect x="962" y="1680" width="22" height="70" rx="11" fill="#8a5a3a" />
+            <path d="M973 1750 L978 2000" fill="none" />
+          </g>
+        </svg>
+
+        <!-- splashes, ripples, sand puff -->
+        <svg id="pond-fx" class="layer" width="1080" height="4300" viewBox="0 0 1080 4300">
+          <g id="pond-rip1" fill="none" stroke="#ffffff" stroke-width="6">
+            <ellipse id="pond-rip1a" cx="720" cy="1908" rx="80" ry="14" /><ellipse id="pond-rip1b" cx="720" cy="1908" rx="80" ry="14" />
+          </g>
+          <g id="pond-splash1" fill="#d9f9ff" stroke="#2b6f8a" stroke-width="4" stroke-linejoin="round">
+            <path d="M720 1906 C700 1860 690 1830 680 1790 C700 1820 716 1850 728 1906 Z" />
+            <path d="M720 1906 C736 1850 750 1820 770 1786 C764 1826 748 1860 734 1906 Z" />
+            <path d="M700 1906 C676 1878 652 1866 630 1850 C660 1858 690 1874 712 1906 Z" />
+            <path d="M740 1906 C764 1876 788 1866 810 1852 C786 1870 762 1884 748 1906 Z" />
+            <circle cx="670" cy="1760" r="9" /><circle cx="782" cy="1754" r="8" /><circle cx="720" cy="1736" r="10" />
+            <ellipse cx="720" cy="1906" rx="70" ry="12" fill="#ffffff" />
+          </g>
+          <g id="pond-rip2" fill="none" stroke="#ffffff" stroke-width="6">
+            <ellipse id="pond-rip2a" cx="650" cy="1908" rx="90" ry="15" /><ellipse id="pond-rip2b" cx="650" cy="1908" rx="90" ry="15" />
+          </g>
+          <g id="pond-splash2" fill="#d9f9ff" stroke="#2b6f8a" stroke-width="4" stroke-linejoin="round">
+            <path d="M650 1906 C628 1850 616 1814 606 1770 C628 1806 646 1842 660 1906 Z" />
+            <path d="M650 1906 C668 1846 684 1810 706 1772 C698 1816 680 1854 664 1906 Z" />
+            <path d="M628 1906 C600 1874 574 1860 548 1842 C584 1852 616 1870 640 1906 Z" />
+            <path d="M672 1906 C700 1872 726 1860 752 1844 C724 1864 698 1880 682 1906 Z" />
+            <circle cx="594" cy="1740" r="10" /><circle cx="712" cy="1730" r="9" /><circle cx="650" cy="1708" r="12" /><circle cx="560" cy="1800" r="7" />
+            <ellipse cx="650" cy="1906" rx="84" ry="14" fill="#ffffff" />
+          </g>
+          <g id="pond-puff" fill="#fff4d6" fill-opacity="0.75">
+            <circle id="pond-p0" cx="560" cy="3300" r="22" /><circle id="pond-p1" cx="720" cy="3300" r="20" />
+            <circle id="pond-p2" cx="600" cy="3280" r="16" /><circle id="pond-p3" cx="690" cy="3278" r="15" />
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div id="pond-vignette"></div>
+
+    <div id="pond-endq" class="clip" data-start="13.1" data-duration="1.9" data-layout-allow-overflow>
+      <span class="q1" id="pond-q1">What would <span class="you" id="pond-you">YOU</span></span>
+      <span class="q2" id="pond-q2">wish for?</span>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const $ = (s) => document.querySelector(s);
+      // Seeded PRNG: every render draws the same particles.
+      let seed = 20261121;
+      const rnd = () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+      const NS = "http://www.w3.org/2000/svg";
+      const mk = (tag, attrs, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+
+      // Surface wave: periodic every 180 px so a 540 px slide loops visually.
+      let d = "M0 30", d2 = "M0 26";
+      for (let x = 0; x < 2160; x += 90) { const up = (x / 90) % 2 === 0 ? 18 : 42; d += ` Q${x + 45} ${up} ${x + 90} 30`; d2 += ` Q${x + 45} ${up - 4} ${x + 90} 26`; }
+      $("#pond-wavepath").setAttribute("d", d);
+      $("#pond-wavepath2").setAttribute("d", d2);
+
+      // Sky twinkles
+      const tw = $("#pond-twinkles"), twinkles = [];
+      for (let i = 0; i < 34; i++) {
+        const x = 30 + rnd() * 1020, y = 40 + rnd() * 1150, s = 4 + rnd() * 9;
+        const g = mk("path", { d: `M${x} ${y - s * 2} Q${x} ${y} ${x + s * 2} ${y} Q${x} ${y} ${x} ${y + s * 2} Q${x} ${y} ${x - s * 2} ${y} Q${x} ${y} ${x} ${y - s * 2} Z`, fill: i % 4 ? "#fff6d8" : "#ffd6f0" }, tw);
+        twinkles.push(g);
+      }
+      // Fireflies
+      const fl = $("#pond-flies"), flies = [];
+      for (let i = 0; i < 11; i++) {
+        const g = mk("g", {}, fl);
+        const x = 60 + rnd() * 960, y = 1430 + rnd() * 430;
+        mk("circle", { cx: x, cy: y, r: 22, fill: "url(#g-fly)" }, g);
+        mk("circle", { cx: x, cy: y, r: 4.5, fill: "#fffbe0" }, g);
+        flies.push(g);
+      }
+      // Underwater motes
+      const mo = $("#pond-motes"), motes = [];
+      for (let i = 0; i < 26; i++) motes.push(mk("circle", { cx: rnd() * 1080, cy: 1980 + rnd() * 1300, r: 2 + rnd() * 4, opacity: 0.25 + rnd() * 0.4 }, mo));
+
+      const tl = gsap.timeline({ paused: true });
+      const E = 15;
+
+      // ---------- initial states ----------
+      gsap.set("#pond-world", { y: 0 });
+      gsap.set("#pond-skyfar", { y: 0 });
+      gsap.set("#pond-cam", { scale: 1, transformOrigin: "560px 950px" });
+      gsap.set("#pond-star", { x: 880 - 130, y: 150 - 130, rotation: 0, scale: 1, transformOrigin: "130px 130px" });
+      gsap.set("#pond-trail", { x: 880 - 130, y: 150 - 130, opacity: 1 });
+      gsap.set("#pond-halo", { scale: 0.75, opacity: 0.9, svgOrigin: "130 135" });
+      gsap.set("#pond-star-open", { scaleY: 0, svgOrigin: "130 134" });
+      gsap.set("#pond-star-closed", { opacity: 1 });
+      gsap.set("#pond-star-o", { scale: 0, svgOrigin: "130 172" });
+      gsap.set("#pond-star-smile", { opacity: 1 });
+      gsap.set("#pond-pad", { x: 430 - 180, y: 1905 - 66 });
+      gsap.set("#pond-nori", { x: 430 - 150, y: 1800 - 190, rotation: 0, transformOrigin: "150px 190px" });
+      gsap.set("#pond-nori-body", { scaleX: 1, scaleY: 1, transformOrigin: "150px 290px" });
+      gsap.set(["#pond-nori-lidL", "#pond-nori-lidR"], { scaleY: 0, transformOrigin: "50% 0%" });
+      gsap.set(["#pond-nori-eyeL", "#pond-nori-eyeR"], { scale: 1, transformOrigin: "50% 60%" });
+      gsap.set(["#pond-nori-irisL", "#pond-nori-irisR"], { x: 0, y: 0 });
+      gsap.set("#pond-nori-o", { scale: 0, svgOrigin: "150 176" });
+      gsap.set("#pond-nori-smile", { opacity: 1 });
+      gsap.set(["#pond-splash1", "#pond-splash2"], { scale: 0, opacity: 1, transformOrigin: "50% 100%" });
+      gsap.set(["#pond-rip1a", "#pond-rip1b", "#pond-rip2a", "#pond-rip2b"], { scale: 0.2, opacity: 0, transformOrigin: "50% 50%" });
+      gsap.set("#pond-puff circle", { scale: 0, opacity: 1, transformOrigin: "50% 50%" });
+      gsap.set("#pond-bubbles circle", { opacity: 0, y: 0 });
+      gsap.set("#pond-fish1", { x: -140, y: 2560 });
+      gsap.set("#pond-fish2", { x: 1180, y: 2880, scaleX: -1 });
+      gsap.set("#pond-wave", { x: 0, y: 1878 });
+      gsap.set("#pond-sandglow", { opacity: 0.25 });
+
+      // ---------- ambient life (all finite) ----------
+      tl.fromTo("#pond-wave", { x: 0 }, { x: -540, duration: E, ease: "none" }, 0);
+      twinkles.forEach((g, i) => {
+        tl.fromTo(g, { opacity: 0.35 }, { opacity: 1, duration: 0.5 + (i % 5) * 0.17, ease: "sine.inOut", yoyo: true, repeat: 9 }, (i % 7) * 0.13);
+      });
+      flies.forEach((g, i) => {
+        const dx = (i % 2 ? 1 : -1) * (18 + (i % 4) * 9), dy = -14 - (i % 3) * 10;
+        tl.fromTo(g, { x: 0, y: 0 }, { x: dx, y: dy, duration: 1.3 + (i % 4) * 0.3, ease: "sine.inOut", yoyo: true, repeat: 5 }, 0);
+        tl.fromTo(g, { opacity: 0.45 }, { opacity: 1, duration: 0.35 + (i % 3) * 0.15, ease: "sine.inOut", yoyo: true, repeat: 13 }, (i % 5) * 0.1);
+      });
+      motes.forEach((m, i) => tl.fromTo(m, { y: 0 }, { y: -60 - (i % 5) * 20, duration: E, ease: "none" }, 0));
+      tl.fromTo("#pond-rays", { opacity: 0.7 }, { opacity: 1, duration: 1.6, ease: "sine.inOut", yoyo: true, repeat: 8 }, 0);
+      tl.fromTo("#pond-moonref", { scaleX: 0.92, svgOrigin: "250 1700" }, { scaleX: 1.08, duration: 1.1, ease: "sine.inOut", yoyo: true, repeat: 6 }, 0);
+      tl.fromTo("#pond-grassL", { skewX: -3, transformOrigin: "50% 100%" }, { skewX: 4, duration: 1.7, ease: "sine.inOut", yoyo: true, repeat: 8 }, 0);
+      tl.fromTo("#pond-grassR", { skewX: 3, transformOrigin: "50% 100%" }, { skewX: -4, duration: 1.9, ease: "sine.inOut", yoyo: true, repeat: 7 }, 0);
+      tl.fromTo("#pond-pad", { rotation: -1.2, transformOrigin: "50% 60%" }, { rotation: 1.2, duration: 1.4, ease: "sine.inOut", yoyo: true, repeat: 9 }, 0);
+      tl.fromTo("#pond-fish1", { x: -140 }, { x: 1200, duration: 7.5, ease: "none", immediateRender: false }, 7.3);
+      tl.fromTo("#pond-fish1", { y: 2560 }, { y: 2520, duration: 1.2, ease: "sine.inOut", yoyo: true, repeat: 5, immediateRender: false }, 7.3);
+      tl.fromTo("#pond-fish2", { x: 1180 }, { x: -140, duration: 8, ease: "none", immediateRender: false }, 7.6);
+
+      // ---------- camera: one continuous move ----------
+      // 0–3.0 s: follow the falling star from the sky down to the pond.
+      tl.to("#pond-world", { y: -900, duration: 3.0, ease: "power1.inOut" }, 0);
+      tl.to("#pond-skyfar", { y: 420, duration: 3.0, ease: "power1.inOut" }, 0);
+      // 3.0–6.9 s: slow push-in on Nori and the glow.
+      tl.to("#pond-cam", { scale: 1.16, duration: 3.9, ease: "sine.inOut" }, 3.0);
+      // 7.2–9.7 s: pull back and dive through the surface.
+      tl.to("#pond-cam", { scale: 1, duration: 0.7, ease: "power2.inOut" }, 7.2);
+      tl.to("#pond-world", { y: -2300, duration: 2.2, ease: "power2.inOut" }, 7.5);
+      tl.to("#pond-skyfar", { y: 1050, duration: 2.2, ease: "power2.inOut" }, 7.5);
+      // 9.8–15 s: final push-in on Lumi and Nori.
+      tl.set("#pond-cam", { transformOrigin: "540px 860px" }, 9.75);
+      tl.to("#pond-cam", { scale: 1.26, duration: 5.2, ease: "sine.inOut" }, 9.8);
+
+      // ---------- the falling star ----------
+      tl.to(["#pond-star", "#pond-trail"], { x: 720 - 130, duration: 2.9, ease: "sine.out" }, 0);
+      tl.to(["#pond-star", "#pond-trail"], { y: 1885 - 130, duration: 2.9, ease: "power1.in" }, 0);
+      tl.to("#pond-star", { rotation: -200, duration: 2.9, ease: "none" }, 0);
+      tl.fromTo("#pond-halo", { scale: 0.75 }, { scale: 0.95, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: 8 }, 0);
+      tl.to("#pond-trail", { opacity: 0, duration: 0.25, ease: "power1.in" }, 2.8);
+      // splash (picture first, plop lands one frame after)
+      tl.fromTo("#pond-splash1", { scale: 0 }, { scale: 1, duration: 0.2, ease: "back.out(2.2)", immediateRender: false }, 2.9);
+      tl.to("#pond-splash1", { opacity: 0, scaleY: 0.5, duration: 0.45, ease: "power2.in" }, 3.15);
+      tl.fromTo("#pond-rip1a", { scale: 0.2, opacity: 1 }, { scale: 2.4, opacity: 0, duration: 1.4, ease: "power2.out", immediateRender: false }, 2.95);
+      tl.fromTo("#pond-rip1b", { scale: 0.2, opacity: 1 }, { scale: 2.0, opacity: 0, duration: 1.4, ease: "power2.out", immediateRender: false }, 3.3);
+      // sinking glow
+      tl.to("#pond-star", { scale: 0.68, duration: 0.4, ease: "power2.out" }, 2.9);
+      tl.to("#pond-star", { y: 1990 - 130, duration: 0.5, ease: "power2.out" }, 2.9);
+      tl.to("#pond-star", { y: 2040 - 130, x: 790 - 130, rotation: -250, duration: 3.9, ease: "sine.inOut" }, 3.4);
+      tl.to("#pond-halo", { scale: 1.35, opacity: 1, duration: 0.45, ease: "sine.inOut", yoyo: true, repeat: 1 }, 4.85); // "tonight"
+      tl.to("#pond-star", { y: 3200 - 130, x: 640 - 130, rotation: -360, duration: 1.9, ease: "power1.inOut" }, 7.35);
+      tl.to("#pond-star", { scale: 1, duration: 0.6, ease: "power1.out" }, 8.7);
+      // landing on the sand
+      tl.to("#pond-starbody", { scaleY: 0.86, scaleX: 1.1, svgOrigin: "130 230", duration: 0.12, ease: "power2.out" }, 9.25);
+      tl.to("#pond-starbody", { scaleY: 1, scaleX: 1, duration: 0.4, ease: "back.out(3)" }, 9.37);
+      tl.to("#pond-puff circle", { scale: 1.4, x: (i) => [-70, 70, -40, 40][i], y: -20, duration: 0.4, ease: "power2.out", stagger: 0.02 }, 9.25);
+      tl.to("#pond-puff circle", { opacity: 0, y: -50, duration: 0.45, ease: "power1.in", stagger: 0.02 }, 9.5);
+      tl.to("#pond-sandglow", { opacity: 1, duration: 0.6, ease: "sine.out" }, 9.25);
+      // waking up: "the star opened its eyes"
+      tl.to("#pond-starbody", { scaleY: 0.93, scaleX: 1.04, svgOrigin: "130 230", duration: 0.18, ease: "power2.in" }, 10.2);
+      tl.to("#pond-starbody", { scaleY: 1.07, scaleX: 0.97, duration: 0.2, ease: "power2.out" }, 10.38);
+      tl.to("#pond-starbody", { scaleY: 1, scaleX: 1, duration: 0.35, ease: "sine.out" }, 10.58);
+      tl.to("#pond-star-closed", { opacity: 0, duration: 0.06 }, 10.42);
+      tl.fromTo("#pond-star-open", { scaleY: 0 }, { scaleY: 1, duration: 0.22, ease: "back.out(2.5)", immediateRender: false }, 10.42);
+      tl.to("#pond-halo", { scale: 1.5, opacity: 1, duration: 0.5, ease: "power2.out" }, 10.4);
+      tl.to("#pond-halo", { scale: 1.15, duration: 0.8, ease: "sine.inOut", yoyo: true, repeat: 3 }, 10.9);
+      tl.to(["#pond-star-eyeL", "#pond-star-eyeR"], { x: -6, y: -2, duration: 0.3, ease: "sine.inOut" }, 11.0); // looks at Nori
+      // "Shh…" — leans toward camera, round mouth
+      tl.to("#pond-star", { scale: 1.12, rotation: -368, duration: 0.45, ease: "back.out(1.6)" }, 11.6);
+      tl.to("#pond-star-smile", { opacity: 0, duration: 0.05 }, 11.72);
+      tl.to("#pond-star-o", { scale: 1, duration: 0.14, ease: "back.out(2)" }, 11.72);
+      tl.to("#pond-star-o", { scaleX: 1.4, scaleY: 0.55, duration: 0.3, ease: "sine.inOut" }, 11.95);
+      // "Can you keep a secret?" — talking mouth, then a wink
+      [[12.66, 0.9], [12.84, 0.5], [13.0, 1.0], [13.24, 0.45], [13.36, 1.0], [13.62, 0.7]].forEach(([t, s]) => {
+        tl.to("#pond-star-o", { scaleX: 0.9, scaleY: s, duration: 0.09, ease: "sine.out" }, t);
+      });
+      tl.to("#pond-star-o", { scale: 0, duration: 0.12, ease: "power2.in" }, 13.86);
+      tl.to("#pond-star-smile", { opacity: 1, duration: 0.05 }, 13.92);
+      tl.to("#pond-star-eyeR", { scaleY: 0.12, svgOrigin: "156 136", duration: 0.1, ease: "power2.in" }, 13.5);
+      tl.to("#pond-star-eyeR", { scaleY: 1, duration: 0.16, ease: "back.out(2)" }, 13.86);
+      tl.to("#pond-star", { rotation: -362, scale: 1.08, duration: 1.0, ease: "sine.inOut" }, 13.95);
+
+      // ---------- Nori ----------
+      // idle breath on the pad (body scale from the feet)
+      tl.fromTo("#pond-nori-body", { scaleY: 1 }, { scaleY: 1.035, scaleX: 0.985, duration: 0.6, ease: "sine.inOut", yoyo: true, repeat: 9 }, 0);
+      const blink = (t) => {
+        tl.to(["#pond-nori-lidL", "#pond-nori-lidR"], { scaleY: 1, duration: 0.07, ease: "power2.in" }, t);
+        tl.to(["#pond-nori-lidL", "#pond-nori-lidR"], { scaleY: 0, duration: 0.1, ease: "power2.out" }, t + 0.1);
+      };
+      [2.2, 3.9, 10.95, 14.2].forEach(blink);
+      // reacts to the splash: little start
+      tl.to("#pond-nori-head", { y: -8, duration: 0.12, ease: "power2.out", svgOrigin: "150 220" }, 3.0);
+      tl.to("#pond-nori-head", { y: 0, duration: 0.3, ease: "sine.inOut" }, 3.14);
+      // "tonight" — eyes go to the glow (lead), head follows
+      tl.to(["#pond-nori-irisL", "#pond-nori-irisR"], { x: 9, y: 8, duration: 0.22, ease: "power2.out" }, 5.0);
+      tl.to("#pond-nori-head", { rotation: 6, duration: 0.45, ease: "sine.inOut", svgOrigin: "150 220" }, 5.12);
+      // "watching" — eyes widen, mouth pops open
+      tl.to(["#pond-nori-eyeL", "#pond-nori-eyeR"], { scale: 1.16, duration: 0.18, ease: "back.out(3)" }, 6.05);
+      tl.to("#pond-nori-smile", { opacity: 0, duration: 0.05 }, 6.08);
+      tl.to("#pond-nori-o", { scale: 1, duration: 0.16, ease: "back.out(2)" }, 6.08);
+      // "She dived" — anticipation squash, stretch, arc into the water
+      tl.to("#pond-nori-body", { scaleY: 0.8, scaleX: 1.12, duration: 0.22, ease: "power2.in" }, 6.85);
+      tl.to("#pond-nori-o", { scale: 0, duration: 0.1 }, 6.9);
+      tl.to("#pond-nori-smile", { opacity: 1, duration: 0.05 }, 6.95);
+      tl.to("#pond-nori-body", { scaleY: 1.16, scaleX: 0.9, duration: 0.14, ease: "power2.out" }, 7.07);
+      tl.to("#pond-nori-body", { scaleY: 1, scaleX: 1, duration: 0.35, ease: "sine.out" }, 7.25);
+      tl.to(["#pond-nori-eyeL", "#pond-nori-eyeR"], { scale: 1, duration: 0.3 }, 7.1);
+      tl.to(["#pond-nori-irisL", "#pond-nori-irisR"], { x: 0, y: 10, duration: 0.2 }, 7.1);
+      tl.to("#pond-nori-head", { rotation: 0, duration: 0.3 }, 7.1);
+      tl.to("#pond-nori", { x: 540 - 150, duration: 0.26, ease: "sine.out" }, 7.08);
+      tl.to("#pond-nori", { y: 1650 - 190, duration: 0.26, ease: "power2.out" }, 7.08);
+      tl.to("#pond-nori", { x: 650 - 150, duration: 0.28, ease: "sine.in" }, 7.34);
+      tl.to("#pond-nori", { y: 1975 - 190, duration: 0.28, ease: "power2.in" }, 7.34);
+      tl.to("#pond-nori", { rotation: 150, duration: 0.54, ease: "power1.in" }, 7.08);
+      tl.to("#pond-pad", { y: 1905 - 66 + 10, duration: 0.12, ease: "power2.out" }, 7.08);
+      tl.to("#pond-pad", { y: 1905 - 66, duration: 0.5, ease: "back.out(2)" }, 7.2);
+      // dive splash
+      tl.fromTo("#pond-splash2", { scale: 0 }, { scale: 1, duration: 0.2, ease: "back.out(2.2)", immediateRender: false }, 7.58);
+      tl.to("#pond-splash2", { opacity: 0, scaleY: 0.5, duration: 0.45, ease: "power2.in" }, 7.85);
+      tl.fromTo("#pond-rip2a", { scale: 0.2, opacity: 1 }, { scale: 2.4, opacity: 0, duration: 1.3, ease: "power2.out", immediateRender: false }, 7.62);
+      tl.fromTo("#pond-rip2b", { scale: 0.2, opacity: 1 }, { scale: 2.0, opacity: 0, duration: 1.3, ease: "power2.out", immediateRender: false }, 7.95);
+      // swim down: down-right entry, curve down-left, end upright beside Lumi
+      const path = [[7.62, 650, 1975, 150], [7.95, 600, 2140, 175], [8.35, 540, 2400, 205], [8.75, 480, 2650, 230], [9.15, 430, 2870, 262], [9.55, 390, 3020, 320], [9.95, 370, 3060, 360]];
+      for (let i = 1; i < path.length; i++) {
+        const [t0] = path[i - 1], [t1, x, y, r] = path[i];
+        tl.to("#pond-nori", { x: x - 150, y: y - 190, rotation: r, duration: t1 - t0, ease: i === path.length - 1 ? "sine.out" : "none" }, t0);
+      }
+      // kicking legs + paddling arms while swimming
+      tl.fromTo("#pond-nori-legL", { rotation: -14, svgOrigin: "110 230" }, { rotation: 16, duration: 0.2, ease: "sine.inOut", yoyo: true, repeat: 9, immediateRender: false }, 7.7);
+      tl.fromTo("#pond-nori-legR", { rotation: 14, svgOrigin: "190 230" }, { rotation: -16, duration: 0.2, ease: "sine.inOut", yoyo: true, repeat: 9, immediateRender: false }, 7.8);
+      tl.fromTo("#pond-nori-armL", { rotation: 20, svgOrigin: "104 222" }, { rotation: -10, duration: 0.24, ease: "sine.inOut", yoyo: true, repeat: 7, immediateRender: false }, 7.75);
+      tl.fromTo("#pond-nori-armR", { rotation: -20, svgOrigin: "196 222" }, { rotation: 10, duration: 0.24, ease: "sine.inOut", yoyo: true, repeat: 7, immediateRender: false }, 7.85);
+      tl.to(["#pond-nori-legL", "#pond-nori-legR", "#pond-nori-armL", "#pond-nori-armR"], { rotation: 0, duration: 0.3, ease: "sine.out" }, 9.85);
+      // hovering beside Lumi
+      tl.fromTo("#pond-nori", { y: 3060 - 190 }, { y: 3060 - 190 - 14, duration: 0.9, ease: "sine.inOut", yoyo: true, repeat: 5, immediateRender: false }, 9.97);
+      tl.to(["#pond-nori-irisL", "#pond-nori-irisR"], { x: 12, y: 8, duration: 0.25, ease: "sine.out" }, 9.95);
+      // eyes open → surprise; "Shh" → wide eyes; end → big smile
+      tl.to(["#pond-nori-eyeL", "#pond-nori-eyeR"], { scale: 1.14, duration: 0.18, ease: "back.out(3)" }, 10.55);
+      tl.to("#pond-nori-smile", { opacity: 0, duration: 0.05 }, 10.55);
+      tl.to("#pond-nori-o", { scale: 0.8, duration: 0.15, ease: "back.out(2)" }, 10.55);
+      tl.to("#pond-nori-o", { scale: 0, duration: 0.12 }, 12.2);
+      tl.to("#pond-nori-smile", { opacity: 1, duration: 0.05 }, 12.25);
+      tl.to("#pond-nori-body", { scaleY: 1.05, scaleX: 0.97, duration: 0.25, ease: "sine.inOut", yoyo: true, repeat: 1 }, 13.95);
+      tl.to(["#pond-nori-eyeL", "#pond-nori-eyeR"], { scale: 1, duration: 0.3 }, 13.9);
+
+      // bubbles rising behind her
+      const bt = [7.75, 8.05, 8.45, 8.85, 9.2, 9.6, 10.6, 11.5, 12.3, 13.2];
+      bt.forEach((t, i) => {
+        tl.fromTo(`#pond-b${i}`, { opacity: 0, y: 0 }, { opacity: 1, duration: 0.15, ease: "none", immediateRender: false }, t);
+        tl.to(`#pond-b${i}`, { y: -300 - (i % 3) * 60, x: (i % 2 ? 18 : -14), duration: 1.6, ease: "sine.in" }, t);
+        tl.to(`#pond-b${i}`, { opacity: 0, duration: 0.3, ease: "none" }, t + 1.3);
+      });
+
+      // ---------- end question ----------
+      tl.fromTo("#pond-q1", { y: 40, scale: 0.7, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.3, ease: "back.out(2.2)", immediateRender: false }, 13.12);
+      tl.fromTo("#pond-q2", { y: 40, scale: 0.7, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 0.3, ease: "back.out(2.2)", immediateRender: false }, 13.26);
+      tl.fromTo("#pond-you", { scale: 1, rotation: 0 }, { scale: 1.18, rotation: -5, duration: 0.25, ease: "back.out(3)", immediateRender: false }, 13.6);
+      tl.to("#pond-you", { scale: 1.08, rotation: -3, duration: 0.5, ease: "sine.inOut" }, 13.85);
+
+      window.__timelines["pond"] = tl;
+    })();
+  </script>
+</template>

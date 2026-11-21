@@ -21,4 +21,5 @@ Hər qəhrəman üçün qovluq: `characters/<ad>/`
 ## Siyahı
 | Ad | Rol | Status |
 |---|---|---|
-| _(sahib/Murad tərəfindən əlavə olunacaq)_ | | |
+| Nori | əsas qəhrəman (qurbağa) | v1 — EP000 |
+| Lumi | sirli obraz (ulduz) | v1 — EP000 |

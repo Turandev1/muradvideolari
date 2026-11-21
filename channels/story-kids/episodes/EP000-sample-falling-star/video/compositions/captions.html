@@ -1,0 +1,76 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    .cap {
+      position: absolute; left: 0; top: 1100px; width: 1080px; text-align: center;
+      font-family: "Nunito", sans-serif; font-weight: 900; font-size: 96px; line-height: 1.1;
+      color: #ffffff; -webkit-text-stroke: 13px #1d1238; paint-order: stroke fill;
+      text-shadow: 0 7px 0 rgba(29, 18, 56, 0.5); opacity: 0; overflow: visible;
+    }
+    .cap .in { display: inline-block; }
+    .cap b { color: #ffd66b; font-weight: 900; }
+    .cap.say { color: #fff1b8; font-style: italic; }
+    .cap.say b { color: #ffc94a; }
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1080" data-height="1920">
+    <div id="cap-g0" class="cap "><span class="in">Every night,</span></div>
+    <div id="cap-g1" class="cap "><span class="in">one <b>star</b></span></div>
+    <div id="cap-g2" class="cap "><span class="in">falls into</span></div>
+    <div id="cap-g3" class="cap "><span class="in">Willow Pond.</span></div>
+    <div id="cap-g4" class="cap "><span class="in">Nobody</span></div>
+    <div id="cap-g5" class="cap "><span class="in">ever finds it.</span></div>
+    <div id="cap-g6" class="cap "><span class="in">But tonight,</span></div>
+    <div id="cap-g7" class="cap "><span class="in"><b>Nori</b></span></div>
+    <div id="cap-g8" class="cap "><span class="in">was watching.</span></div>
+    <div id="cap-g9" class="cap "><span class="in">She dived</span></div>
+    <div id="cap-g10" class="cap "><span class="in">down,</span></div>
+    <div id="cap-g11" class="cap "><span class="in">down,</span></div>
+    <div id="cap-g12" class="cap "><span class="in">into the</span></div>
+    <div id="cap-g13" class="cap "><span class="in"><b>glowing</b> water…</span></div>
+    <div id="cap-g14" class="cap "><span class="in">And the <b>star</b></span></div>
+    <div id="cap-g15" class="cap "><span class="in">opened</span></div>
+    <div id="cap-g16" class="cap "><span class="in">its eyes.</span></div>
+    <div id="cap-g17" class="cap say"><span class="in">“Shh…”</span></div>
+    <div id="cap-g18" class="cap say"><span class="in">Can you</span></div>
+    <div id="cap-g19" class="cap say"><span class="in">keep a</span></div>
+    <div id="cap-g20" class="cap say"><span class="in"><b>secret?</b></span></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const times = [
+        [0.25, 0.97],
+        [0.97, 1.53],
+        [1.53, 2.05],
+        [2.09, 3.0],
+        [3.25, 3.81],
+        [3.81, 4.77],
+        [4.77, 5.38],
+        [5.41, 5.95],
+        [5.97, 6.75],
+        [6.85, 7.57],
+        [7.57, 7.87],
+        [7.89, 8.21],
+        [8.21, 8.53],
+        [8.53, 9.55],
+        [9.65, 10.37],
+        [10.37, 10.77],
+        [10.77, 11.6],
+        [11.75, 12.62],
+        [12.71, 13.03],
+        [13.03, 13.35],
+        [13.35, 14.0]
+      ];
+      times.forEach(([s, e], i) => {
+        const g = "#cap-g" + i, inner = g + " .in";
+        gsap.set(g, { opacity: 0, visibility: "visible" });
+        tl.set(g, { opacity: 1 }, s - 0.02);
+        tl.fromTo(inner, { scale: 0.62, y: 18, rotation: i % 2 ? 2.5 : -2.5 },
+          { scale: 1, y: 0, rotation: 0, duration: 0.2, ease: "back.out(3)" }, s - 0.02);
+        tl.to(g, { opacity: 0, duration: 0.08, ease: "power2.in" }, e - 0.08);
+        tl.set(g, { opacity: 0, visibility: "hidden" }, e);
+      });
+      window.__timelines["captions"] = tl;
+    })();
+  </script>
+</template>
