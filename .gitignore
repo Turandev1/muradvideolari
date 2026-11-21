@@ -21,7 +21,6 @@ channels/*/episodes/*/video/out*.mp4
 # Any video file anywhere
 
 *.mov
-*.webm
 *.mkv
 *.avi
 *.m4v

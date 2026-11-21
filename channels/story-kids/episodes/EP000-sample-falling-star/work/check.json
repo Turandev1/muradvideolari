@@ -1,0 +1,402 @@
+{
+  "ok": true,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 2,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "overlapping_gsap_tweens",
+        "severity": "warning",
+        "message": "GSAP tweens overlap on \"#pond-puff circle\" for y between 9.50s and 9.65s.",
+        "selector": "#pond-puff circle",
+        "dataAttributes": {},
+        "sourceFile": "/home/dev/Videos/muradworkspace/channels/story-kids/episodes/EP000-sample-falling-star/video/compositions/pond.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Shorten the earlier tween, move the later tween, or add `overwrite: \"auto\"`."
+      },
+      {
+        "code": "composition_file_too_large",
+        "severity": "warning",
+        "message": "This HTML composition file has 610 lines. Smaller sub-compositions are easier to read, iterate on, and diff.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "/home/dev/Videos/muradworkspace/channels/story-kids/episodes/EP000-sample-falling-star/video/compositions/pond.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Split this sub-composition further into smaller .html files, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently."
+      }
+    ],
+    "filesScanned": 3
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 2,
+    "infoCount": 0,
+    "findings": [
+      {
+        "selector": "#captions",
+        "dataAttributes": {
+          "data-composition-file": "compositions/captions.html",
+          "data-composition-id": "captions",
+          "data-start": "0",
+          "data-track-index": "2",
+          "data-track-kind": "captions",
+          "data-width": "1080",
+          "data-height": "1920",
+          "data-hf-authored-duration": "15"
+        },
+        "sourceFile": "compositions/captions.html",
+        "bbox": {
+          "x": 260.53,
+          "y": 1147,
+          "width": 558.94,
+          "height": 131
+        },
+        "time": 0.833,
+        "rect": {
+          "left": 260.53,
+          "top": 1147,
+          "right": 819.47,
+          "bottom": 1278,
+          "width": 558.94,
+          "height": 131
+        },
+        "code": "outside_safe_zone",
+        "severity": "warning",
+        "text": "Every night,",
+        "message": "<div> \"Every night,\" is outside the safe area: TikTok (right and bottom edges), Instagram Reels (bottom edge), YouTube Shorts (bottom edge).",
+        "fixHint": "Move the text inside the safe area, or mark text meant to sit there with data-layout-allow-safe-zone.",
+        "firstSeen": 0.833,
+        "lastSeen": 10.833,
+        "occurrences": 4,
+        "heldMs": 0,
+        "times": [
+          0.833,
+          5.833,
+          7.5,
+          10.833
+        ]
+      },
+      {
+        "selector": "#pond-q1",
+        "dataAttributes": {},
+        "sourceFile": "compositions/pond.html",
+        "bbox": {
+          "x": 96.78,
+          "y": 217.49,
+          "width": 903.41,
+          "height": 172.89
+        },
+        "time": 14.167,
+        "rect": {
+          "left": 96.78,
+          "top": 217.49,
+          "right": 1000.19,
+          "bottom": 390.38,
+          "width": 903.41,
+          "height": 172.89
+        },
+        "code": "outside_safe_zone",
+        "severity": "warning",
+        "text": "What would YOU",
+        "message": "<span> \"What would YOU\" is outside the safe area: TikTok (left and top and right edges), Instagram Reels (top edge), YouTube Shorts (top and right edges).",
+        "fixHint": "Move the text inside the safe area, or mark text meant to sit there with data-layout-allow-safe-zone.",
+        "firstSeen": 14.167,
+        "lastSeen": 14.167,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          14.167
+        ]
+      }
+    ],
+    "duration": 15,
+    "samples": [
+      0.833,
+      2.5,
+      4.167,
+      5.833,
+      7.5,
+      9.167,
+      10.833,
+      12.5,
+      14.167
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 2,
+    "truncated": false,
+    "faceCheck": {
+      "ran": true,
+      "candidates": 0,
+      "faces": 0
+    }
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 1,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.89:1; WCAG AA requires 3:1.",
+        "text": "YOU",
+        "fg": "rgb(255,214,107)",
+        "bg": "rgb(55,136,165)",
+        "ratio": 2.89,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(63,53,26)",
+        "large": true,
+        "selector": "#pond-you",
+        "dataAttributes": {},
+        "sourceFile": "compositions/pond.html",
+        "bbox": {
+          "x": 742.8199462890625,
+          "y": 236.3221893310547,
+          "width": 256.266357421875,
+          "height": 136.54310607910156
+        },
+        "time": 14.167,
+        "times": [
+          14.167
+        ]
+      }
+    ],
+    "enabled": true,
+    "samples": [
+      0.833,
+      4.167,
+      7.5,
+      10.833,
+      14.167
+    ],
+    "checked": 6,
+    "passed": 5
+  },
+  "craft": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 2,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "line_unread",
+        "severity": "warning",
+        "message": "The film's last line \"What would YOU\" (3 words) is on screen 1.90 s (±0.01 s), under the 2.00 s a closing line needs: hold it about 0.5 s + 0.3 s a word and at least 2 s before the film ends; see references/motion.md.",
+        "text": "What would YOU",
+        "selector": "#pond-q1",
+        "dataAttributes": {},
+        "sourceFile": "compositions/pond.html",
+        "bbox": {
+          "x": 96.78,
+          "y": 233,
+          "width": 886.44,
+          "height": 142
+        },
+        "time": 13.102,
+        "words": 3,
+        "seconds": 1.902,
+        "floorSeconds": 2,
+        "measured": [
+          {
+            "time": 12.75,
+            "opacity": null,
+            "heightPx": null
+          },
+          {
+            "time": 12.875,
+            "opacity": null,
+            "heightPx": null
+          },
+          {
+            "time": 13,
+            "opacity": null,
+            "heightPx": null
+          },
+          {
+            "time": 13.125,
+            "opacity": 1,
+            "heightPx": 142
+          },
+          {
+            "time": 13.25,
+            "opacity": 1,
+            "heightPx": 145
+          },
+          {
+            "time": 13.375,
+            "opacity": 1,
+            "heightPx": 144
+          },
+          {
+            "time": 13.5,
+            "opacity": 1,
+            "heightPx": 142
+          },
+          {
+            "time": 14.5,
+            "opacity": 1,
+            "heightPx": 166
+          },
+          {
+            "time": 14.625,
+            "opacity": 1,
+            "heightPx": 166
+          },
+          {
+            "time": 14.75,
+            "opacity": 1,
+            "heightPx": 166
+          },
+          {
+            "time": 14.875,
+            "opacity": 1,
+            "heightPx": 166
+          }
+        ]
+      },
+      {
+        "code": "line_unread",
+        "severity": "warning",
+        "message": "The film's last line \"wish for?\" (2 words) is on screen 1.90 s (±0.01 s), under the 2.00 s a closing line needs: hold it about 0.5 s + 0.3 s a word and at least 2 s before the film ends; see references/motion.md.",
+        "text": "wish for?",
+        "selector": "#pond-q2",
+        "dataAttributes": {},
+        "sourceFile": "compositions/pond.html",
+        "bbox": {
+          "x": 277.92,
+          "y": 340.19,
+          "width": 524.1599999999999,
+          "height": 161
+        },
+        "time": 13.102,
+        "words": 2,
+        "seconds": 1.902,
+        "floorSeconds": 2,
+        "measured": [
+          {
+            "time": 12.75,
+            "opacity": null,
+            "heightPx": null
+          },
+          {
+            "time": 12.875,
+            "opacity": null,
+            "heightPx": null
+          },
+          {
+            "time": 13,
+            "opacity": null,
+            "heightPx": null
+          },
+          {
+            "time": 13.125,
+            "opacity": 1,
+            "heightPx": 161
+          },
+          {
+            "time": 13.25,
+            "opacity": 1,
+            "heightPx": 161
+          },
+          {
+            "time": 13.375,
+            "opacity": 1,
+            "heightPx": 164
+          },
+          {
+            "time": 13.5,
+            "opacity": 1,
+            "heightPx": 164
+          },
+          {
+            "time": 14.5,
+            "opacity": 1,
+            "heightPx": 161
+          },
+          {
+            "time": 14.625,
+            "opacity": 1,
+            "heightPx": 161
+          },
+          {
+            "time": 14.75,
+            "opacity": 1,
+            "heightPx": 161
+          },
+          {
+            "time": 14.875,
+            "opacity": 1,
+            "heightPx": 161
+          }
+        ]
+      }
+    ],
+    "enabled": true,
+    "step": 0.125,
+    "samples": 120
+  },
+  "audio": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  },
+  "cached": {
+    "at": "2026-11-21T17:10:30.877Z"
+  },
+  "_meta": {
+    "version": "0.9.77",
+    "latestVersion": "0.9.77",
+    "updateAvailable": false,
+    "checkedAt": "2026-11-21T16:59:46.188Z",
+    "skillsOutdated": 6,
+    "skillsMissing": 0
+  }
+}
