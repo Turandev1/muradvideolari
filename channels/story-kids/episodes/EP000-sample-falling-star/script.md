@@ -2,7 +2,7 @@
 episode: EP000
 slug: sample-falling-star
 title: The Star in Willow Pond (15s sample)
-status: building        # sample — üslub nümunəsi, 15 s (kanal standartı 60–90 s)
+status: rendered  # sample — 15 s
 topic_from_murad: "(sahib: 15 saniyəlik keyfiyyət nümunəsi, referans üslubunda)"
 target_duration_s: 15
 characters: [nori, lumi]
