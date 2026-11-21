@@ -2,7 +2,7 @@
 episode: EP000
 slug: sample
 title: The Star Who Fell
-status: ready-to-render   # 15 s keyfiyyət nümunəsi (sample), seriyanın pilotu
+status: rendered       # 15 s keyfiyyət nümunəsi (sample), seriyanın pilotu
 topic_from_murad: "15 saniyəlik sample, referans üslubunda"
 target_duration_s: 15
 characters: [pip, twinkle]
