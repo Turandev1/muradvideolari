@@ -1,18 +1,60 @@
-# Renders and heavy media
+# ── Video folders and heavy media ──────────────────────────────
+# Final renders
 channels/*/renders/*
 !channels/*/renders/.gitkeep
-*.mp4
+
+# Reference videos (only notes are tracked)
+channels/*/style/references/*
+!channels/*/style/references/README.md
+!channels/*/style/references/links.md
+
+# Generated voice samples (regenerable with Kokoro)
+channels/*/style/voice-samples/
+
+# Episode build outputs (HyperFrames)
+channels/*/episodes/*/video/renders/
+channels/*/episodes/*/video/snapshots/
+channels/*/episodes/*/video/frames/
+channels/*/episodes/*/video/.hyperframes/
+channels/*/episodes/*/video/out*.mp4
+
+# Any video file anywhere
+
 *.mov
 *.webm
 *.mkv
-channels/*/style/references/_frames/
+*.avi
+*.m4v
+*.flv
 
-# Tooling
+# Archive of old versions
+_archive/
+
+# ── Tooling ────────────────────────────────────────────────────
+.tools/
 node_modules/
 .hyperframes/
+.venv/
+__pycache__/
+*.pyc
+
+# Claude local files
 .claude/logs/
 .claude/settings.local.json
-.DS_Store
 
-# Local tool envs
-.tools/
+# Logs and temp
+*.log
+*.tmp
+render.log
+
+# Secrets
+.env
+.env.*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
