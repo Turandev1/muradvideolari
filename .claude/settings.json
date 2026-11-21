@@ -1,0 +1,6 @@
+{
+  "env": {
+    "HYPERFRAMES_PYTHON": "/home/dev/Videos/muradworkspace/.tools/venv/bin/python",
+    "HYPERFRAMES_CACHE_DIR": "/home/dev/Videos/muradworkspace/.tools/hf-cache"
+  }
+}

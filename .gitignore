@@ -1,0 +1,18 @@
+# Renders and heavy media
+channels/*/renders/*
+!channels/*/renders/.gitkeep
+*.mp4
+*.mov
+*.webm
+*.mkv
+channels/*/style/references/_frames/
+
+# Tooling
+node_modules/
+.hyperframes/
+.claude/logs/
+.claude/settings.local.json
+.DS_Store
+
+# Local tool envs
+.tools/
