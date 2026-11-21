@@ -12,7 +12,7 @@ Bu workspace Muradın sosial media kanalları üçün video istehsalı üçünd�
 
 ## RENDER QAYDASI — safe word (ən vacib qayda)
 
-**Safe word:** `mentesdiqleyiremlocalrenderi`
+**Safe word:** `tesdiqledimgetdirun`
 
 0. **Bu qayda lokal komputer üçündür.** Cloud sessiyasında (`CLAUDE_CODE_REMOTE=true`) aşağıdakı "Cloud render" bölməsinə bax.
 1. Claude **heç vaxt öz təşəbbüsü ilə render etmir.** Default iş: yalnız **ssenari və video kodunu yazmaq**, preview və PNG snapshot göstərmək.
