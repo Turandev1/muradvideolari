@@ -26,6 +26,7 @@ Hər biri: başlıq + 1 cümlə logline + hook cümləsi. Murad birini seçir (v
 - Hər sətir: vaxt, narrator mətni, ekran mətni (az), vizual/animasiya təsviri (kodla qurula bilən!), SFX/musiqi.
 - Vizual təsvirlər **kodla həyata keçirilə bilən** olsun (SVG obraz, parallax fon, zərrəcik, glow, kamera zoom/pan, Three.js obyekt). Fotoreal və ya mürəkkəb insan hərəkəti yazma.
 - Sabit qəhrəmanları kartoçkalarına uyğun istifadə et. Yeni obraz lazımdırsa — `NEW CHARACTER:` kimi qeyd et.
+- **Narration/dialoqda yalnız tam sözlər.** Gülüş, ah, nəfəs, "shh", "hmm", "eek" kimi emosiya/səs-sözləri mətnə yazma — Kokoro onları düzgün vermir (root `CLAUDE.md` → Alətlər). Lazımdırsa `SFX:` sütununa yaz (məs. `SFX: giggle`); inandırıcı SFX mümkün deyilsə — çıxar, emosiyanı animasiya ilə göstər.
 - Uşaq təhlükəsizliyi qaydalarını yoxla (kanal CLAUDE.md).
 - Söz sayı və təxmini müddəti sonda yaz. Frontmatter: `status: script-draft`.
 

@@ -29,6 +29,10 @@ Bu workspace Muradın sosial media kanalları üçün video istehsalı üçünd�
 
 - Video: **HyperFrames** (HTML → video, lokal render). Skill-lər: `hyperframes`, `hyperframes-cli`, `hyperframes-registry`, `media-use`.
 - Səs (TTS): `npx hyperframes tts` (**Kokoro**, lokal). Transkripsiya / söz vaxtları: `npx hyperframes transcribe -e parakeet` (lokal).
+- **Kokoro yalnız tam sözlər və cümlələr üçündür.** Emosiya səsləri və tam söz olmayan hissələr (gülüş, ah çəkmə, nəfəs, qışqırıq, ağlama, hıçqırıq, əsnəmə, "shh", "hmm", "psst", "brr", "eek", "wow-ww" kimi uzadılmış səslər) **Kokoro ilə səsləndirilmir** — Kokoro onları ya hərf-hərf oxuyur, ya da lazımi effekti vermir. Sıra ilə:
+  1. **Səs effekti:** pulsuz/CC0 SFX (HyperFrames bundled, Openverse CC0) və ya lokal yaradılmış səs (ffmpeg sintez, MusicGen/lokal model). Lisenziyanı `CREDITS.md`-yə yaz.
+  2. **Mümkün deyilsə** (inandırıcı effekt alınmırsa) — o hissəni **ssenaridən çıxar**: emosiyanı animasiya (üz ifadəsi, hərəkət) və ya tam sözlərlə ver.
+  - Ssenaridə belə hissələri narration mətninə yazma — `SFX:` sütununda qeyd et (məs. `SFX: Lumi giggles`).
 - Cloud mühit: `scripts/setup-cloud.sh` (SessionStart hook avtomatik işlədir, lokalda heç nə etmir).
 - Lokal mühit (qurulub, git-ə düşmür): Python venv `.tools/venv` (kokoro-onnx), HyperFrames cache `.tools/hf-cache` (Parakeet modeli). `.claude/settings.json` → `HYPERFRAMES_PYTHON` və `HYPERFRAMES_CACHE_DIR` bunlara yönəlir. `~/.cache` qrup-yazılan olduğu üçün HyperFrames onu rədd edir — cache-i dəyişmə. Shell-də əl ilə işlədəndə bu iki env-i export et.
 - Musiqi/SFX: yalnız CC0 / açıq lisenziyalı mənbələr (Openverse, HyperFrames bundled, lokal MusicGen). MusicGen: `.tools/musicgen-venv/bin/python -I scripts/musicgen.py "<prompt>" <san> <out.wav> [seed]` (`HF_HOME=.tools/hf-home`, CPU-da 16 s ≈ 3 dəq). Lisenziyanı `CREDITS.md`-yə yaz.
