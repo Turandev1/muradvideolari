@@ -13,7 +13,7 @@
 | Platformalar | YouTube Shorts, TikTok, Instagram Reels |
 | Janr | Sirli (mysterious), fantastik, sehrli macəralar |
 | Vizual | Fantastik üslub; **əsasən 2D** obraz və elementlər, bəzən 3D (Three.js) |
-| Altyazı | Yoxdur (default). Ekranda yalnız qısa açar sözlər/başlıq ola bilər |
+| Altyazı | **Tək-tək söz** (referans üslubu): ağ, qalın Lilita One, tünd kontur, ekranın ~64%-ində — bax `style/STYLE.md` |
 | Səs | Kokoro TTS (lokal), uşaq-dostu narrator + obrazlara fərqli səslər |
 | Musiqi / SFX | Var — CC0 / açıq lisenziya, sirli-sehrli atmosfer |
 
@@ -56,7 +56,7 @@ idea → script-draft → script-approved → building → ready-to-render → r
 1. **Murad mövzu verir** → `story-episode` skill-i: epizod qovluğu + ssenari + səhnə bölgüsü. Muradə göstər.
 2. **Murad təsdiqləyir** (və ya düzəliş istəyir) → status `script-approved`. Təsdiqsiz video koduna keçmə.
 3. **Video kodu** → `story-build` skill-i: TTS, musiqi/SFX, HyperFrames kompozisiyası, preview + kadr snapshot-ları. Status `ready-to-render`.
-4. **Render** → `story-render` skill-i, **yalnız mesajda sahibin safe word-u olanda** (root `CLAUDE.md` → "RENDER QAYDASI"). Yoxdursa — render etmə, Muradə "render-i sahib edir" de.
+4. **Render** → `story-render` skill-i. **Cloud sessiyada** Murad və ya sahib istəyəndə render edilir. **Lokal komputerdə** yalnız mesajda sahibin safe word-u olanda (root `CLAUDE.md` → "RENDER QAYDASI"); yoxdursa — render etmə, Muradə "lokal render-i sahib edir" de.
 5. **Yükləmə məlumatı** → `upload.md` (title, description, hashtag-lar). Murad əl ilə yükləyir → status `published`.
 
 ## Qovluqlar

@@ -21,5 +21,9 @@ Hər qəhrəman üçün qovluq: `characters/<ad>/`
 ## Siyahı
 | Ad | Rol | Status |
 |---|---|---|
-| Nori | əsas qəhrəman (qurbağa) | v1 — EP000 |
-| Lumi | sirli obraz (ulduz) | v1 — EP000 |
+| Pip | əsas qəhrəman (qurbağa) | v1 |
+| Twinkle | sehrli dost (düşmüş ulduz) | v1 |
+
+Bütün obrazların kodu: `characters.js` (`SK.defs()`, `SK.pip()`, `SK.twinkle()`). Epizodun `video/assets/`-inə kopyala. SVG faylları: `node export-svg.cjs`.
+| Nori | qurbağa (lokal EP000-sample-falling-star) | v1 — kod `pond.html`-dədir, hələ `characters.js`-ə köçürülməyib |
+| Lumi | ulduz (lokal EP000-sample-falling-star) | v1 — kod `pond.html`-dədir |

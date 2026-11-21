@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-160 -160 320 320" width="800" height="800"><defs>
+    <radialGradient id="pipSkin" cx="38%" cy="28%" r="80%">
+      <stop offset="0" stop-color="#C2F07A"/><stop offset=".5" stop-color="#7CC24F"/><stop offset="1" stop-color="#4A9334"/>
+    </radialGradient>
+    <linearGradient id="pipSkinDark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6DB443"/><stop offset="1" stop-color="#3D7C2B"/>
+    </linearGradient>
+    <radialGradient id="pipBelly" cx="50%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#F8FDDC"/><stop offset="1" stop-color="#D3EC95"/>
+    </radialGradient>
+    <radialGradient id="pipIris" cx="40%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#C08A48"/><stop offset="1" stop-color="#5A3A1E"/>
+    </radialGradient>
+    <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#FFF6C8" stop-opacity=".95"/><stop offset=".35" stop-color="#FFE07A" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#FFD66B" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="starFill" cx="42%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#FFFBE6"/><stop offset=".45" stop-color="#FFE586"/><stop offset="1" stop-color="#FFB940"/>
+    </radialGradient></defs>
+    <g class="tw-root">
+      <circle class="tw-glow" r="150" fill="url(#starGlow)"/>
+      <g class="tw-body">
+        <path d="M0.0 -70.0L21.2 -29.1L66.6 -21.6L34.2 11.1L41.1 56.6L0.0 36.0L-41.1 56.6L-34.2 11.1L-66.6 -21.6L-21.2 -29.1Z" fill="url(#starFill)" stroke="#F4A938" stroke-width="16" stroke-linejoin="round"/>
+        <path d="M0.0 -70.0L21.2 -29.1L66.6 -21.6L34.2 11.1L41.1 56.6L0.0 36.0L-41.1 56.6L-34.2 11.1L-66.6 -21.6L-21.2 -29.1Z" fill="url(#starFill)"/>
+        <path d="M-30 -18 Q-22 -40 -8 -48" stroke="#FFFFFF" stroke-width="7" fill="none" stroke-linecap="round" opacity=".8"/>
+        <ellipse cx="-30" cy="12" rx="10" ry="6" fill="#FF9AA8" opacity=".8"/>
+        <ellipse cx="30" cy="12" rx="10" ry="6" fill="#FF9AA8" opacity=".8"/>
+        <g class="tw-eyes-open" opacity="1">
+          <g class="tw-eyeball">
+            <ellipse cx="-17" cy="-4" rx="7.5" ry="10.5" fill="#3A2410"/>
+            <ellipse cx="17" cy="-4" rx="7.5" ry="10.5" fill="#3A2410"/>
+            <circle cx="-19" cy="-8" r="3.2" fill="#FFF"/><circle cx="15" cy="-8" r="3.2" fill="#FFF"/>
+          </g>
+        </g>
+        <g class="tw-eyes-closed" opacity="0">
+          <path d="M-25 -3 Q-17 4 -9 -3" stroke="#3A2410" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+          <path d="M9 -3 Q17 4 25 -3" stroke="#3A2410" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+        </g>
+        <ellipse class="tw-mouth" cx="0" cy="17" rx="8" ry="5.5" fill="#8A3A2A"/>
+      </g>
+    </g></svg>

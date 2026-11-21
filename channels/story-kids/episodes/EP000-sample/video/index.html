@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>EP000 — The Star Who Fell (sample)</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <script src="assets/characters.js"></script>
+    <style>
+      @font-face { font-family: "Lilita One"; src: url("assets/fonts/lilita-one-latin-400-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Baloo 2"; font-weight: 800; src: url("assets/fonts/baloo-2-latin-800-normal.woff2") format("woff2"); }
+      :root {
+        --night: #1d1a4f;
+        --gold: #ffd66b;
+        --ink: #1a0f2e;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--night); }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: var(--night); }
+      .clip { position: absolute; inset: 0; }
+      .layer { position: absolute; left: 0; top: 0; }
+      #world { position: absolute; left: -160px; top: 0; width: 1400px; height: 4300px; will-change: transform; }
+      #fg { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+      #closeup svg { position: absolute; inset: 0; }
+      #vignette {
+        background: radial-gradient(ellipse 75% 60% at 50% 45%, rgba(0,0,0,0) 55%, rgba(10,6,30,.55) 100%);
+        pointer-events: none;
+      }
+      #flash {
+        background: radial-gradient(circle at 50% 50%, #fffbe8 0%, #ffe9a8 35%, rgba(255,214,107,.0) 75%), #fff4cf;
+        opacity: 0; mix-blend-mode: screen;
+      }
+      .cap {
+        position: absolute; left: 0; right: 0; top: 1225px; bottom: auto; text-align: center;
+        font-family: "Lilita One", "Baloo 2", sans-serif; font-size: 104px; line-height: 1;
+        color: #fff; letter-spacing: 1px; text-transform: uppercase;
+        -webkit-text-stroke: 14px #1a0f2e; paint-order: stroke fill;
+        text-shadow: 0 8px 0 rgba(26,15,46,.55);
+      }
+      .cap.star { color: #ffe27a; }
+      .cap.hi { top: 560px; }
+      #end { opacity: 0; }
+      #end .t1 {
+        position: absolute; left: 0; right: 0; top: 700px; text-align: center;
+        font-family: "Lilita One", sans-serif; font-size: 160px; line-height: 1; color: var(--gold);
+        -webkit-text-stroke: 18px #2a1450; paint-order: stroke fill;
+        text-shadow: 0 12px 0 rgba(42,20,80,.6);
+      }
+      #end .t2 {
+        position: absolute; left: 0; right: 0; top: 900px; text-align: center;
+        font-family: "Baloo 2", sans-serif; font-weight: 800; font-size: 54px; color: #fff;
+        -webkit-text-stroke: 10px #2a1450; paint-order: stroke fill;
+      }
+      #endband {
+        position: absolute; left: 0; right: 0; top: 600px; height: 520px;
+        background: radial-gradient(ellipse 70% 50% at 50% 50%, rgba(20,10,50,.55), rgba(20,10,50,0) 70%);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="15" data-width="1080" data-height="1920">
+      <!-- shared gradients -->
+      <svg width="0" height="0" style="position:absolute"><defs id="defs"></defs></svg>
+
+      <!-- WORLD: one tall painted dusk world (sky → hills → pond). The camera tilts through it. -->
+      <div id="worldclip" class="clip" data-start="0" data-duration="15" data-track-index="0">
+        <svg id="world" viewBox="0 0 1400 4300" width="1400" height="4300">
+          <defs>
+            <linearGradient id="sky" x1="0" y1="0" x2="0" y2="2300" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#16144a"/><stop offset=".32" stop-color="#2f2a74"/>
+              <stop offset=".58" stop-color="#6c4a9c"/><stop offset=".78" stop-color="#cf6f9f"/>
+              <stop offset=".91" stop-color="#ff9e7c"/><stop offset="1" stop-color="#ffc58c"/>
+            </linearGradient>
+            <linearGradient id="water" x1="0" y1="2280" x2="0" y2="4300" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#f3a08f"/><stop offset=".07" stop-color="#b56fa6"/>
+              <stop offset=".25" stop-color="#5d4c98"/><stop offset=".6" stop-color="#2e3474"/><stop offset="1" stop-color="#171d4a"/>
+            </linearGradient>
+            <radialGradient id="moonGlow"><stop offset="0" stop-color="#fff3c4" stop-opacity=".55"/><stop offset=".4" stop-color="#ffd9a0" stop-opacity=".18"/><stop offset="1" stop-color="#ffd9a0" stop-opacity="0"/></radialGradient>
+            <radialGradient id="moonFill" cx="40%" cy="35%"><stop offset="0" stop-color="#fffdf0"/><stop offset=".7" stop-color="#ffefb8"/><stop offset="1" stop-color="#ffdc8c"/></radialGradient>
+            <linearGradient id="cloud" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc2d6"/><stop offset=".6" stop-color="#c58ac4"/><stop offset="1" stop-color="#8a62ad"/></linearGradient>
+            <linearGradient id="hillFar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a5fa8"/><stop offset="1" stop-color="#6a4c96"/></linearGradient>
+            <linearGradient id="hillMid" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#55408a"/><stop offset="1" stop-color="#3d3278"/></linearGradient>
+            <linearGradient id="hillNear" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2f6e"/><stop offset="1" stop-color="#2a2458"/></linearGradient>
+            <linearGradient id="pad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6cc06a"/><stop offset="1" stop-color="#2f7d4a"/></linearGradient>
+            <linearGradient id="padFar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a8f8a"/><stop offset="1" stop-color="#3f6a78"/></linearGradient>
+            <radialGradient id="ffGlow"><stop offset="0" stop-color="#fff6a8" stop-opacity=".9"/><stop offset=".4" stop-color="#d9ff8a" stop-opacity=".35"/><stop offset="1" stop-color="#d9ff8a" stop-opacity="0"/></radialGradient>
+            <radialGradient id="winGlow"><stop offset="0" stop-color="#ffd66b" stop-opacity=".7"/><stop offset="1" stop-color="#ffd66b" stop-opacity="0"/></radialGradient>
+            <linearGradient id="tail" x1="0" y1="0" x2="0" y2="-780" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#fff6c8" stop-opacity=".95"/><stop offset=".3" stop-color="#ffd66b" stop-opacity=".5"/><stop offset="1" stop-color="#ff9ec4" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="trail" x1="0" y1="3060" x2="0" y2="1900" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#fff2a8"/><stop offset="1" stop-color="#ffd66b"/>
+            </linearGradient>
+            <clipPath id="trailClip"><rect id="trailClipRect" x="0" y="3100" width="1400" height="0"/></clipPath>
+          </defs>
+
+          <rect width="1400" height="2320" fill="url(#sky)"/>
+          <g id="stars"></g>
+          <g id="moon">
+            <circle cx="1060" cy="520" r="430" fill="url(#moonGlow)"/>
+            <circle cx="1060" cy="520" r="132" fill="url(#moonFill)"/>
+            <circle cx="1015" cy="480" r="22" fill="#f4dc98" opacity=".5"/>
+            <circle cx="1100" cy="560" r="30" fill="#f4dc98" opacity=".45"/>
+            <circle cx="1080" cy="455" r="11" fill="#f4dc98" opacity=".5"/>
+          </g>
+          <g id="clouds"></g>
+          <g id="const"></g>
+
+          <!-- horizon -->
+          <g id="hills">
+            <path d="M0 2190 C180 2120 330 2150 470 2180 C620 2110 820 2090 980 2160 C1120 2120 1280 2130 1400 2170 L1400 2320 L0 2320Z" fill="url(#hillFar)"/>
+            <path d="M0 2250 C140 2200 260 2210 400 2250 C560 2210 700 2225 820 2255 C960 2200 1120 2190 1400 2240 L1400 2320 L0 2320Z" fill="url(#hillMid)"/>
+            <!-- cottage with a warm window on the far hill -->
+            <g transform="translate(985 2118)">
+              <circle cx="0" cy="10" r="70" fill="url(#winGlow)"/>
+              <path d="M-26 34 L-26 4 L0 -18 L26 4 L26 34Z" fill="#2c2160"/>
+              <path d="M-32 6 L0 -24 L32 6" stroke="#231a50" stroke-width="7" fill="none" stroke-linejoin="round"/>
+              <rect x="-8" y="8" width="14" height="14" rx="2" fill="#ffd66b"/>
+              <rect x="10" y="-18" width="8" height="14" fill="#231a50"/>
+            </g>
+            <path d="M0 2290 C200 2265 420 2275 600 2292 C800 2270 1050 2268 1400 2288 L1400 2330 L0 2330Z" fill="url(#hillNear)"/>
+            <g id="willows"></g>
+          </g>
+
+          <rect y="2300" width="1400" height="2000" fill="url(#water)"/>
+          <g id="moonRefl"></g>
+          <g id="streaks"></g>
+          <g id="pads"></g>
+          <g id="reeds"></g>
+          <g id="ripples"></g>
+          <path id="trailPath" clip-path="url(#trailClip)" d="M700 3050 C600 2760 860 2560 760 2330 C690 2160 900 2060 830 1905"
+                stroke="url(#trail)" stroke-width="9" stroke-linecap="round" stroke-dasharray="1 26" fill="none" opacity=".95"/>
+          <g id="pipW" transform="translate(480 2800) scale(1.1)"></g>
+          <g id="fall"><g transform="scale(0.6)">
+            <g id="fallTail">
+              <path d="M-34 -6 Q40 -380 150 -780 Q20 -390 34 -6Z" fill="url(#tail)"/>
+              <circle cx="40" cy="-230" r="6" fill="#fff6c8"/><circle cx="85" cy="-420" r="5" fill="#ffe27a" opacity=".8"/>
+              <circle cx="20" cy="-470" r="4" fill="#fff" opacity=".7"/><circle cx="118" cy="-610" r="4" fill="#ffd66b" opacity=".6"/>
+            </g>
+            <g id="fallStar"></g>
+          </g></g>
+          <g id="flies"></g>
+        </svg>
+      </div>
+
+      <!-- foreground parallax (only during the pond shot) -->
+      <div id="fgclip" class="clip" data-start="3.2" data-duration="3.8" data-track-index="1">
+        <svg id="fg" viewBox="0 0 1080 1920"></svg>
+      </div>
+
+      <!-- CLOSE-UP: Pip holds Twinkle -->
+      <div id="closeup" class="clip" data-start="6.95" data-duration="3.6" data-track-index="2">
+        <svg viewBox="0 0 1080 1920" width="1080" height="1920">
+          <defs>
+            <linearGradient id="cuBg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#211c58"/><stop offset=".42" stop-color="#6a4a9c"/>
+              <stop offset=".56" stop-color="#e2879f"/><stop offset=".64" stop-color="#9a68ad"/><stop offset="1" stop-color="#1d2554"/>
+            </linearGradient>
+            <radialGradient id="bokehG"><stop offset="0" stop-color="#ffe7a8" stop-opacity=".55"/><stop offset=".7" stop-color="#ffe7a8" stop-opacity=".18"/><stop offset="1" stop-color="#ffe7a8" stop-opacity="0"/></radialGradient>
+            <radialGradient id="bokehP"><stop offset="0" stop-color="#ff9ec4" stop-opacity=".5"/><stop offset=".7" stop-color="#ff9ec4" stop-opacity=".15"/><stop offset="1" stop-color="#ff9ec4" stop-opacity="0"/></radialGradient>
+            <linearGradient id="cuPad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#74c86e"/><stop offset="1" stop-color="#2b7046"/></linearGradient>
+          </defs>
+          <rect width="1080" height="1920" fill="url(#cuBg)"/>
+          <g id="bokeh"></g>
+          <g id="cuScene">
+            <path d="M-120 1240 C-60 1130 300 1100 540 1110 C800 1100 1140 1130 1200 1240 C1180 1360 820 1400 540 1400 C260 1400 -100 1360 -120 1240Z" fill="url(#cuPad)" stroke="#1d5532" stroke-width="6"/>
+            <path d="M540 1250 L120 1200 M540 1250 L300 1140 M540 1250 L780 1140 M540 1250 L960 1200" stroke="#2c7a45" stroke-width="5" opacity=".6"/>
+            <g id="pipC" transform="translate(-60 110) scale(3)"></g>
+            <g id="twC" transform="translate(540 985) scale(1.9)"></g>
+            <g id="sparkC"></g>
+          </g>
+        </svg>
+      </div>
+
+      <div id="vignette" class="clip" data-start="0" data-duration="15" data-track-index="3"></div>
+
+      <div id="end" class="clip" data-start="12.4" data-duration="2.6" data-track-index="4">
+        <div id="endband"></div>
+        <div class="t1">PART 2?</div>
+        <div class="t2">The sky is waiting...</div>
+      </div>
+
+      <div id="caps" class="clip" data-start="0" data-duration="15" data-track-index="5"></div>
+      <div id="flash" class="clip" data-start="0" data-duration="15" data-track-index="6"></div>
+
+      <!-- AUDIO -->
+      <audio id="a1-lullaby-musicbox" src="assets/music/lullaby-musicbox.wav" data-start="0" data-duration="15" data-volume="0.15" data-fade-in="0.4" data-fade-out="1.0" data-track-index="10"></audio>
+      <audio id="a2-dusk-ambience" src="assets/sfx/dusk-ambience.wav" data-start="0" data-duration="15" data-volume="0.5" data-track-index="11"></audio>
+      <audio id="a3-l1" src="assets/vo/l1.wav" data-start="0.5" data-duration="2.56" data-volume="1" data-track-index="12"></audio>
+      <audio id="a4-l2" src="assets/vo/l2.wav" data-start="3.9" data-duration="2.5" data-volume="1" data-track-index="12"></audio>
+      <audio id="a5-l3" src="assets/vo/l3.wav" data-start="7.3" data-duration="2.59" data-volume="1" data-track-index="12"></audio>
+      <audio id="a6-l4" src="assets/vo/l4.wav" data-start="11.0" data-duration="1.41" data-volume="1" data-track-index="12"></audio>
+      <audio id="a7-starfall" src="assets/sfx/starfall.wav" data-start="0.15" data-duration="2.6" data-volume="0.35" data-track-index="13"></audio>
+      <audio id="a8-whoosh" src="assets/sfx/whoosh.wav" data-start="2.85" data-duration="1.1" data-volume="0.3" data-track-index="14"></audio>
+      <audio id="a9-sparkle" src="assets/sfx/sparkle.wav" data-start="4.7" data-duration="1.8" data-volume="0.45" data-track-index="15"></audio>
+      <audio id="a10-plop" src="assets/sfx/plop.wav" data-start="4.76" data-duration="0.35" data-volume="0.6" data-track-index="16"></audio>
+      <audio id="a11-whoosh" src="assets/sfx/whoosh.wav" data-start="6.5" data-duration="1.1" data-volume="0.25" data-track-index="14"></audio>
+      <audio id="a12-sparkle" src="assets/sfx/sparkle.wav" data-start="7.2" data-duration="1.8" data-volume="0.3" data-track-index="15"></audio>
+      <audio id="a13-whoosh" src="assets/sfx/whoosh.wav" data-start="10.0" data-duration="1.1" data-volume="0.25" data-track-index="14"></audio>
+      <audio id="a14-chime" src="assets/sfx/chime.wav" data-start="12.45" data-duration="2.55" data-volume="0.5" data-track-index="17"></audio>
+    </div>
+
+    <script>
+      // ---------- deterministic helpers ----------
+      function rng(seed) { return function () { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+      const R = rng(20261121);
+      const NS = "http://www.w3.org/2000/svg";
+      const $ = (s) => document.querySelector(s);
+      const add = (sel, html) => $(sel).insertAdjacentHTML("beforeend", html);
+
+      // ---------- build the painted world ----------
+      $("#defs").innerHTML = SK.defs();
+      $("#pipW").innerHTML = SK.pip();
+      $("#pipC").innerHTML = SK.pip();
+      $("#fallStar").innerHTML = SK.twinkle();
+      $("#twC").innerHTML = SK.twinkle();
+
+      // twinkling stars (denser at the top of the sky)
+      for (let i = 0; i < 120; i++) {
+        const x = R() * 1400, y = Math.pow(R(), 1.4) * 2000, r = 1.6 + R() * 3.4;
+        const big = R() < 0.14;
+        add("#stars", big
+          ? `<path class="twk" d="M${x} ${y - 14} Q${x + 2} ${y - 2} ${x + 14} ${y} Q${x + 2} ${y + 2} ${x} ${y + 14} Q${x - 2} ${y + 2} ${x - 14} ${y} Q${x - 2} ${y - 2} ${x} ${y - 14}Z" fill="#fff8dc"/>`
+          : `<circle class="twk" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" fill="#fff8e6" opacity="${(0.5 + R() * 0.5).toFixed(2)}"/>`);
+      }
+      // soft sunset clouds
+      function cloud(cx, cy, s, o) {
+        let h = `<g class="cl" opacity="${o}" transform="translate(${cx} ${cy}) scale(${s})">`;
+        [[-150, 20, 70], [-70, -20, 95], [30, -35, 110], [130, -5, 85], [210, 25, 60], [40, 30, 90], [-60, 35, 75]]
+          .forEach(([x, y, r]) => (h += `<circle cx="${x}" cy="${y}" r="${r}" fill="url(#cloud)"/>`));
+        return h + `<rect x="-220" y="30" width="480" height="80" fill="none"/></g>`;
+      }
+      add("#clouds", cloud(250, 980, 1.1, 0.75) + cloud(1180, 1320, 0.9, 0.7) + cloud(560, 1640, 1.3, 0.85) + cloud(1300, 1880, 1.2, 0.9) + cloud(120, 1960, 1.0, 0.9));
+
+      // the constellation with one empty place (Twinkle's home)
+      const C = [[440, 1760], [575, 1690], [705, 1745], [860, 1680], [990, 1780], [830, 1905]];
+      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 2]].forEach(([a, b]) =>
+        add("#const", `<line x1="${C[a][0]}" y1="${C[a][1]}" x2="${C[b][0]}" y2="${C[b][1]}" stroke="#fff2c4" stroke-width="3" stroke-dasharray="${b === 5 || a === 5 ? "6 12" : "0"}" opacity=".35"/>`));
+      C.slice(0, 5).forEach(([x, y], i) =>
+        add("#const", `<g class="cstar" transform="translate(${x} ${y})"><circle r="26" fill="url(#ffGlow)"/><path d="${SK.starPath(13, 6)}" fill="#fff6c8"/></g>`));
+      add("#const", `<g id="gap" transform="translate(${C[5][0]} ${C[5][1]})"><circle r="24" fill="none" stroke="#ffd66b" stroke-width="4" stroke-dasharray="7 9" opacity=".8"/></g>`);
+
+      // willow silhouettes at both edges of the pond
+      function willow(x, y, s, flip) {
+        let h = `<g transform="translate(${x} ${y}) scale(${flip ? -s : s} ${s})">`;
+        h += `<path d="M-10 0 C-14 -80 -6 -160 -30 -240 L-6 -244 C10 -170 14 -90 14 0Z" fill="#221d4c"/>`;
+        h += `<ellipse cx="-40" cy="-260" rx="150" ry="70" fill="#2a2458"/>`;
+        for (let i = 0; i < 16; i++) {
+          const bx = -180 + i * 22, len = 120 + ((i * 37) % 90);
+          h += `<path class="wb" d="M${bx} -265 Q${bx + 8} ${-265 + len / 2} ${bx - 4} ${-265 + len}" stroke="#2a2458" stroke-width="14" fill="none" stroke-linecap="round"/>`;
+        }
+        return h + "</g>";
+      }
+      add("#willows", willow(190, 2330, 1.25, false) + willow(1250, 2335, 1.15, true));
+
+      // moon reflection + shimmer streaks
+      for (let i = 0; i < 14; i++) {
+        const y = 2330 + i * 40, w = 150 - i * 7 + (i % 2) * 30;
+        add("#moonRefl", `<ellipse class="mr" cx="${1060 + ((i * 13) % 26) - 13}" cy="${y}" rx="${w}" ry="7" fill="#fff0b8" opacity="${(0.55 - i * 0.03).toFixed(2)}"/>`);
+      }
+      for (let i = 0; i < 26; i++) {
+        const y = 2350 + R() * 1550, x = R() * 1400, w = 30 + R() * 90;
+        add("#streaks", `<ellipse class="st" cx="${x}" cy="${y}" rx="${w}" ry="3" fill="#ffd9e6" opacity="${(0.12 + R() * 0.15).toFixed(2)}"/>`);
+      }
+
+      // lily pads in perspective (far → near)
+      function pad(cx, cy, rx, ry, a, near) {
+        const p1 = [cx + rx * Math.cos(a), cy + ry * Math.sin(a)], p2 = [cx + rx * Math.cos(a + 0.5), cy + ry * Math.sin(a + 0.5)];
+        let h = `<g class="pd"><ellipse cx="${cx}" cy="${cy + ry * 0.18}" rx="${rx}" ry="${ry}" fill="#121845" opacity=".35"/>`;
+        h += `<path d="M${cx} ${cy} L${p2[0].toFixed(1)} ${p2[1].toFixed(1)} A${rx} ${ry} 0 1 1 ${p1[0].toFixed(1)} ${p1[1].toFixed(1)}Z" fill="url(#${near ? "pad" : "padFar"})" stroke="${near ? "#1d5532" : "#2f5560"}" stroke-width="${near ? 4 : 2}"/>`;
+        if (near) for (let k = 0; k < 5; k++) {
+          const b = a + 0.9 + k * 1.1;
+          h += `<path d="M${cx} ${cy} L${(cx + rx * 0.8 * Math.cos(b)).toFixed(1)} ${(cy + ry * 0.8 * Math.sin(b)).toFixed(1)}" stroke="#2c7a45" stroke-width="3" opacity=".6"/>`;
+        }
+        return h + "</g>";
+      }
+      function lotus(x, y, s) {
+        let h = `<g class="lt" transform="translate(${x} ${y}) scale(${s})">`;
+        [-50, -25, 0, 25, 50].forEach((r) => (h += `<ellipse cx="0" cy="-26" rx="13" ry="30" transform="rotate(${r} 0 0)" fill="#ff9ec4" stroke="#d1578a" stroke-width="3"/>`));
+        h += `<ellipse cx="0" cy="-8" rx="20" ry="9" fill="#ffd66b"/>`;
+        return h + "</g>";
+      }
+      let pads = "";
+      [[260, 2420, 70, 14], [520, 2470, 60, 12], [1150, 2440, 80, 15], [880, 2560, 95, 20], [180, 2650, 120, 26],
+       [1240, 2760, 150, 34], [330, 3020, 190, 44], [1150, 3260, 230, 56], [140, 3560, 280, 70], [1080, 3720, 300, 76], [420, 3980, 340, 86], [1250, 4150, 320, 80]]
+        .forEach(([x, y, rx, ry], i) => (pads += pad(x, y, rx, ry, -1.2 + i * 0.7, y > 2700)));
+      pads += pad(700, 3195, 300, 82, -1.9, true); // Pip's pad
+      pads += lotus(330, 2990, 1.1) + lotus(1215, 2740, 0.8) + lotus(1180, 3230, 1.3) + lotus(880, 2545, 0.6);
+      add("#pads", pads);
+
+      // cattails & reeds at the pond edges
+      function reed(x, y, h, lean, cat) {
+        let s = `<g class="rd"><path d="M${x} ${y} Q${x + lean * 0.4} ${y - h * 0.5} ${x + lean} ${y - h}" stroke="#2a3b52" stroke-width="8" fill="none" stroke-linecap="round"/>`;
+        if (cat) s += `<ellipse cx="${x + lean * 0.92}" cy="${y - h * 0.82}" rx="11" ry="34" transform="rotate(${lean * 0.12} ${x + lean * 0.92} ${y - h * 0.82})" fill="#6b3f2a"/>`;
+        return s + "</g>";
+      }
+      let reeds = "";
+      for (let i = 0; i < 9; i++) reeds += reed(20 + i * 22, 2470 + (i % 3) * 18, 200 + ((i * 53) % 120), 18 - i * 5, i % 3 === 0);
+      for (let i = 0; i < 9; i++) reeds += reed(1220 + i * 20, 2480 + (i % 3) * 16, 210 + ((i * 41) % 110), -10 + i * 4, i % 3 === 1);
+      add("#reeds", reeds);
+
+      // ripples under Pip
+      for (let i = 0; i < 3; i++) add("#ripples", `<ellipse class="rp rp${i}" cx="700" cy="3200" rx="300" ry="82" fill="none" stroke="#ffeec2" stroke-width="5" opacity="0"/>`);
+
+      // fireflies
+      const FF = [];
+      for (let i = 0; i < 12; i++) {
+        const x = 120 + R() * 1160, y = 2350 + R() * 1100;
+        FF.push([x, y]);
+        add("#flies", `<g class="ff ff${i}" transform="translate(${x.toFixed(0)} ${y.toFixed(0)})"><circle r="26" fill="url(#ffGlow)"/><circle r="5" fill="#fffbd0"/></g>`);
+      }
+
+      // foreground (big dark leaves + reeds close to camera)
+      $("#fg").innerHTML = `
+        <defs><linearGradient id="fgLeaf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f6a4a"/><stop offset="1" stop-color="#173a36"/></linearGradient></defs>
+        <g id="fgL"><path d="M-80 1760 C-20 1600 260 1580 360 1700 C420 1790 330 1900 120 1930 C-40 1950 -120 1860 -80 1760Z" fill="url(#fgLeaf)"/>
+          <path d="M140 1760 L-40 1700 M140 1760 L60 1640 M140 1760 L300 1690" stroke="#123029" stroke-width="6" opacity=".7"/>
+          <path d="M60 1920 Q40 1500 90 1180" stroke="#1a2b3e" stroke-width="16" fill="none" stroke-linecap="round"/>
+          <ellipse cx="88" cy="1250" rx="18" ry="58" fill="#4e2e22"/></g>
+        <g id="fgR"><path d="M1160 1800 C1110 1660 880 1650 800 1750 C750 1830 830 1930 1010 1950 C1150 1960 1200 1890 1160 1800Z" fill="url(#fgLeaf)"/>
+          <path d="M1020 1880 Q1050 1450 990 1120" stroke="#1a2b3e" stroke-width="14" fill="none" stroke-linecap="round"/>
+          <path d="M1060 1900 Q1080 1560 1050 1300" stroke="#1a2b3e" stroke-width="10" fill="none" stroke-linecap="round"/>
+          ${lotus(900, 1730, 1.6)}</g>`;
+
+      // close-up bokeh + sparkles
+      for (let i = 0; i < 16; i++) {
+        const x = R() * 1080, y = 120 + R() * 1000, r = 30 + R() * 110;
+        add("#bokeh", `<circle class="bk" cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${r.toFixed(0)}" fill="url(#${i % 3 ? "bokehG" : "bokehP"})"/>`);
+      }
+      const SP = [[330, 820], [760, 860], [280, 1080], [820, 1090], [430, 720], [670, 700], [560, 640]];
+      SP.forEach(([x, y], i) =>
+        add("#sparkC", `<path class="sp sp${i}" transform="translate(${x} ${y})" d="M0 -26 Q3 -3 26 0 Q3 3 0 26 Q-3 3 -26 0 Q-3 -3 0 -26Z" fill="#fff6c8" opacity="0"/>`));
+
+      // captions — one word at a time, like the reference
+      const WORDS = [
+        ["Every", 0.53], ["night,", 0.9], ["one", 1.22], ["star", 1.42], ["falls", 1.67], ["from", 2.03], ["the", 2.33], ["sky.", 2.59, 3.2],
+        ["Tonight,", 3.92], ["it", 4.42], ["landed", 4.6], ["in", 5.1], ["Pip's", 5.27], ["tiny", 5.46], ["hands.", 5.85, 6.5],
+        ["I'm", 7.46, null, 1], ["lost...", 7.69, null, 1], ["Please,", 8.17, null, 1], ["help", 8.65, null, 1], ["me", 8.81, null, 1], ["get", 8.94, null, 1], ["home!", 9.11, 9.85, 1],
+        ["Will", 11.07, null, 0, 1], ["Pip", 11.28, null, 0, 1], ["find", 11.47, null, 0, 1], ["the", 11.78, null, 0, 1], ["way?", 11.95, 12.4, 0, 1],
+      ];
+      WORDS.forEach(([w, s, e, star, hi], i) => { const end = e != null ? e : WORDS[i + 1][1];
+        add("#caps", `<div class="cap clip${star ? " star" : ""}${hi ? " hi" : ""}" id="w${i}" data-start="${s}" data-duration="${(end - s).toFixed(2)}" data-track-index="${20 + (i % 2)}">${w}</div>`); });
+
+      // ---------- timeline ----------
+      const tl = gsap.timeline({ paused: true });
+      const W = "#world";
+
+      // ambient life (runs the whole film)
+      gsap.utils.toArray(".twk").forEach((el, i) => tl.to(el, { opacity: 0.15, duration: 0.6 + (i % 7) * 0.17, yoyo: true, repeat: 12, ease: "sine.inOut" }, (i % 9) * 0.21));
+      gsap.utils.toArray(".cl").forEach((el, i) => tl.to(el, { x: i % 2 ? -40 : 40, duration: 15, ease: "none" }, 0));
+      gsap.utils.toArray(".mr").forEach((el, i) => tl.to(el, { x: i % 2 ? 16 : -16, duration: 0.9 + (i % 4) * 0.2, yoyo: true, repeat: 10, ease: "sine.inOut" }, 0));
+      gsap.utils.toArray(".st").forEach((el, i) => tl.to(el, { x: i % 2 ? 30 : -30, opacity: 0.05, duration: 1.4 + (i % 5) * 0.3, yoyo: true, repeat: 6, ease: "sine.inOut" }, 0));
+      gsap.utils.toArray(".wb").forEach((el, i) => tl.to(el, { rotation: i % 2 ? 2 : -2, transformOrigin: "50% 0%", duration: 2 + (i % 3) * 0.4, yoyo: true, repeat: 4, ease: "sine.inOut" }, 0));
+      gsap.utils.toArray(".rd").forEach((el, i) => tl.to(el, { rotation: i % 2 ? 1.6 : -1.6, transformOrigin: "50% 100%", duration: 1.8 + (i % 4) * 0.3, yoyo: true, repeat: 5, ease: "sine.inOut" }, 0));
+      FF.forEach((p, i) => {
+        tl.to(`.ff${i}`, { x: `+=${i % 2 ? 60 : -60}`, y: `-=${40 + (i % 3) * 30}`, duration: 2.4 + (i % 4) * 0.5, yoyo: true, repeat: 4, ease: "sine.inOut" }, 0);
+        tl.to(`.ff${i}`, { opacity: 0.2, duration: 0.5 + (i % 3) * 0.2, yoyo: true, repeat: 14, ease: "sine.inOut" }, (i % 5) * 0.3);
+      });
+      tl.to(".cstar", { scale: 1.25, transformOrigin: "50% 50%", duration: 0.9, yoyo: true, repeat: 15, ease: "sine.inOut", stagger: 0.25 }, 0);
+
+      // Pip idle: breathing + blinks
+      tl.to("#pipW .pip-root, #pipC .pip-root", { scaleY: 1.018, transformOrigin: "50% 95%", duration: 1.1, yoyo: true, repeat: 13, ease: "sine.inOut" }, 0);
+      [3.4, 6.1, 9.5, 13.2].forEach((t) => tl.to("#pipW .pip-eyeball, #pipC .pip-eyeball", { scaleY: 0.08, transformOrigin: "50% 50%", duration: 0.07, yoyo: true, repeat: 1 }, t));
+
+      // ── SCENE A (0–2.9): the dusk sky, a star falls ──
+      tl.fromTo(W, { y: 0, scale: 1.04, transformOrigin: "700px 0px" }, { y: -40, scale: 1, duration: 2.9, ease: "sine.inOut" }, 0);
+      tl.fromTo("#fall", { x: 1180, y: 40 }, { x: 905, y: 1440, duration: 2.7, ease: "sine.in" }, 0.15);
+      tl.to("#fall", { x: 738, y: 2840, duration: 1.35, ease: "none" }, 2.85);
+      tl.to("#fall", { x: 700, y: 3098, duration: 0.55, ease: "power2.out" }, 4.2);
+      tl.to("#fallStar .tw-body", { rotation: 360, transformOrigin: "50% 50%", duration: 4.6, ease: "power1.out" }, 0.15);
+
+      // ── tilt down through the horizon (2.9–4.5) with parallax ──
+      tl.to(W, { y: -2150, duration: 1.6, ease: "power2.inOut" }, 2.9);
+      tl.to("#moon", { y: 520, duration: 1.6, ease: "power2.inOut" }, 2.9);
+      tl.to("#clouds", { y: 260, duration: 1.6, ease: "power2.inOut" }, 2.9);
+      tl.fromTo("#fg", { y: 700 }, { y: 0, duration: 1.4, ease: "power2.out" }, 3.2);
+
+      // ── SCENE B (4.5–6.95): Pip catches the star ──
+      tl.to("#pipW .pip-iris", { y: -12, duration: 0.4, ease: "sine.out" }, 3.6);
+      tl.to("#pipW .pip-iris", { y: 9, duration: 0.35, ease: "sine.inOut" }, 4.45);
+      tl.set("#pipW .pip-mouth-smile", { opacity: 0 }, 4.75);
+      tl.set("#pipW .pip-mouth-wow", { opacity: 1 }, 4.75);
+      tl.to("#pipW .pip-root", { y: -22, duration: 0.18, ease: "power2.out", yoyo: true, repeat: 1 }, 4.78);
+      tl.to("#fallTail", { opacity: 0, duration: 0.35 }, 4.45);
+      tl.fromTo("#fallStar .tw-glow", { scale: 1 }, { scale: 1.9, transformOrigin: "50% 50%", duration: 0.25, ease: "power2.out", yoyo: true, repeat: 1 }, 4.75);
+      tl.to("#fallStar .tw-glow", { scale: 1.15, transformOrigin: "50% 50%", duration: 0.8, yoyo: true, repeat: 11, ease: "sine.inOut" }, 5.3);
+      [0, 1, 2].forEach((i) => tl.fromTo(`.rp${i}`, { attr: { rx: 300, ry: 82 }, opacity: 0.7 }, { attr: { rx: 560, ry: 150 }, opacity: 0, duration: 1.4, ease: "power1.out" }, 4.8 + i * 0.32));
+      tl.set("#pipW .pip-mouth-wow", { opacity: 0 }, 5.7);
+      tl.set("#pipW .pip-mouth-smile", { opacity: 1 }, 5.7);
+      tl.fromTo(W, { scale: 1 }, { scale: 1.06, y: -2330, duration: 2.45, ease: "sine.inOut", immediateRender: false }, 4.5);
+      tl.to("#fg", { y: -60, x: 0, scale: 1.04, transformOrigin: "50% 100%", duration: 2.45, ease: "sine.inOut" }, 4.6);
+
+      // flash → close-up
+      tl.to("#flash", { opacity: 1, duration: 0.22, ease: "power2.in" }, 6.73);
+      tl.to("#flash", { opacity: 0, duration: 0.45, ease: "power2.out" }, 6.95);
+
+      // ── SCENE C (6.95–10.55): close-up, Twinkle speaks ──
+      tl.fromTo("#cuScene", { scale: 1, transformOrigin: "540px 980px" }, { scale: 1.09, duration: 3.6, ease: "sine.inOut" }, 6.95);
+      gsap.utils.toArray(".bk").forEach((el, i) => tl.fromTo(el, { y: 0, opacity: 0.5 }, { y: -40 - (i % 4) * 25, opacity: 1, duration: 3.6, ease: "sine.inOut" }, 6.95));
+      tl.set("#pipC .pip-iris", { y: 11, x: 0 }, 6.95);
+      tl.set("#twC .tw-eyes-open", { opacity: 0 }, 6.95);
+      tl.set("#twC .tw-mouth", { scaleY: 0.4, transformOrigin: "50% 30%" }, 6.95);
+      tl.set("#twC .tw-eyes-closed", { opacity: 0 }, 7.25);
+      tl.set("#twC .tw-eyes-open", { opacity: 1 }, 7.25);
+      tl.fromTo("#twC .tw-eyeball", { scaleY: 0.1 }, { scaleY: 1, transformOrigin: "50% 50%", duration: 0.18, ease: "back.out(2)" }, 7.25);
+      tl.to("#twC .tw-eyeball", { scaleY: 0.08, transformOrigin: "50% 50%", duration: 0.07, yoyo: true, repeat: 1 }, 8.4);
+      tl.fromTo("#twC .tw-root", { y: 0 }, { y: -18, duration: 0.9, yoyo: true, repeat: 3, ease: "sine.inOut" }, 6.95);
+      tl.to("#twC .tw-glow", { scale: 1.2, transformOrigin: "50% 50%", duration: 0.7, yoyo: true, repeat: 4, ease: "sine.inOut" }, 6.95);
+      // lip-sync to the words of line 3
+      [[7.46, 0.2], [7.69, 0.4], [8.17, 0.4], [8.65, 0.15], [8.81, 0.12], [8.94, 0.14], [9.11, 0.42]].forEach(([t, d]) => {
+        tl.to("#twC .tw-mouth", { scaleY: 1.6, scaleX: 1.15, transformOrigin: "50% 30%", duration: 0.07 }, t);
+        tl.to("#twC .tw-mouth", { scaleY: 0.5, scaleX: 1, transformOrigin: "50% 30%", duration: 0.09 }, t + d);
+      });
+      tl.to("#pipC .pip-iris", { y: -4, x: 4, duration: 0.3 }, 9.3);
+      SP.forEach((_, i) => tl.fromTo(`.sp${i}`, { opacity: 0, scale: 0.2, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1.1, rotation: 45, duration: 0.45, yoyo: true, repeat: 3, ease: "sine.inOut" }, 7.05 + i * 0.28));
+
+      // flash → wide
+      tl.to("#flash", { opacity: 0.9, duration: 0.2, ease: "power2.in" }, 10.35);
+      tl.to("#flash", { opacity: 0, duration: 0.5, ease: "power2.out" }, 10.55);
+
+      // ── SCENE D (10.55–15): wide, the empty place in the sky ──
+      tl.set(W, { scale: 0.8, y: -1180, transformOrigin: "700px 0px" }, 10.55);
+      tl.set("#moon", { y: 300 }, 10.55);
+      tl.set("#clouds", { y: 120 }, 10.55);
+      tl.set("#fallTail", { opacity: 0 }, 10.55);
+      tl.to(W, { scale: 0.83, y: -1250, duration: 4.45, ease: "sine.inOut" }, 10.55);
+      tl.set("#pipW .pip-iris", { y: -13, x: 3 }, 10.55);
+      tl.fromTo("#gap", { scale: 1, transformOrigin: "50% 50%" }, { scale: 1.6, duration: 0.5, yoyo: true, repeat: 8, ease: "sine.inOut" }, 10.6);
+      tl.fromTo("#trailClipRect", { attr: { y: 3100, height: 0 } }, { attr: { y: 1860, height: 1240 }, duration: 1.8, ease: "power1.inOut" }, 11.0);
+
+      // end card
+      tl.fromTo("#end", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 12.45);
+      tl.fromTo("#end .t1", { scale: 0.4, rotation: -6 }, { scale: 1, rotation: -3, duration: 0.5, ease: "back.out(2.2)" }, 12.45);
+      tl.fromTo("#end .t2", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "power2.out" }, 12.85);
+      tl.to("#end .t1", { scale: 1.05, duration: 0.8, yoyo: true, repeat: 2, ease: "sine.inOut" }, 13.0);
+
+      // captions: pop each word in, hide when the next one comes
+      WORDS.forEach(([w, s, e], i) => {
+        tl.fromTo(`#w${i}`, { scale: 0.55, y: 14 }, { scale: 1, y: 0, duration: 0.13, ease: "back.out(3)" }, s);
+      });
+
+      tl.set({}, {}, 15);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
