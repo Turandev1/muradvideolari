@@ -1,11 +1,14 @@
 ---
 name: story-render
-description: Render a ready-to-render story-kids episode to MP4. Only allowed when the user's CURRENT message contains the owner's safe word (see root CLAUDE.md "RENDER QAYDASI"). Use when asked to render ("render et", "videonu çıxar", "export", "mp4 ver"). Without the safe word, do not render - reply that only the owner renders and notify the owner.
+description: Render a ready-to-render story-kids episode to MP4. Locally only allowed when the user's CURRENT message contains the owner's safe word (see root CLAUDE.md "RENDER QAYDASI"); in a Claude cloud session (CLAUDE_CODE_REMOTE=true) the owner or Murad may render without it. Use when asked to render ("render et", "videonu çıxar", "export", "mp4 ver"). Without the safe word, do not render - reply that only the owner renders and notify the owner.
 ---
 
 # story-render
 
-## 0. Safe word yoxlaması (məcburi, hər dəfə)
+## 0. Cloud yoxsa lokal?
+`echo "$CLAUDE_CODE_REMOTE"` → `true`-dursa sessiya **cloud**-dadır: sahib və ya Murad safe word olmadan render edə bilər, 1-ci addıma keç (`scripts/setup-cloud.sh` işləyib-işləmədiyini yoxla). Boşdursa — lokaldır, aşağıdakı safe word yoxlaması məcburidir.
+
+## 0.1 Safe word yoxlaması (lokal, məcburi, hər dəfə)
 Root `CLAUDE.md` → "RENDER QAYDASI" bölməsini tətbiq et.
 - İstifadəçinin **indiki mesajında** safe word dəqiq yazılmayıbsa → **render etmə**:
   1. De: "Render yalnız sahib tərəfindən edilir. Video kodu hazırdır — sahib render edəcək."

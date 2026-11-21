@@ -2,5 +2,19 @@
   "env": {
     "HYPERFRAMES_PYTHON": "/home/dev/Videos/muradworkspace/.tools/venv/bin/python",
     "HYPERFRAMES_CACHE_DIR": "/home/dev/Videos/muradworkspace/.tools/hf-cache"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/setup-cloud.sh\"",
+            "timeout": 900
+          }
+        ]
+      }
+    ]
   }
 }

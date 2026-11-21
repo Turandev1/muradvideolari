@@ -18,7 +18,7 @@ Sən telefondan Claude tətbiqi ilə (Remote Control) bu komputerə qoşulursan.
 | Referans videodan üslub | `Referansları analiz et` və ya `/story-style` |
 | Yeni qəhrəman / asset | `Yeni qəhrəman əlavə et: …` |
 | Yükləmə mətni | `EP001 üçün yükləmə mətnini ver` |
-| Hazır video (MP4) | Sahib render edir — video hazır olanda sahib sənə xəbər verəcək |
+| Hazır video (MP4) | Bu komputerdə: sahib render edir. **Claude cloud sessiyasında** (claude.ai/code, repo seçərək): `Render et EP001` yaz — özün render edə bilərsən |
 
 Bilinməli olanlar:
 - Preview linki (`localhost`) telefonda açılmır — Claude PNG kadrlar göstərir.
@@ -32,4 +32,4 @@ Bilinməli olanlar:
 - **Render:** Claude-a render istəyini safe word ilə birlikdə **eyni mesajda** yaz (safe word root `CLAUDE.md`-dədir). Safe word yoxdursa Claude render etmir və sənə desktop bildirişi göndərir.
 - Komputer açıq qalmalıdır: Claude desktop açıq, keep-awake aktiv.
 - Remote Control-u Murad üçün ayrı sessiyada aktiv et. Murad telefonda eyni hesabla girir.
-- Cloud render üçün layihəni private GitHub repo-ya push et.
+- Cloud render üçün layihəni private GitHub repo-ya push et. Cloud-da Murad da render edə bilər (safe word lazım deyil); alətlər `scripts/setup-cloud.sh` ilə avtomatik qurulur. Lokal render yalnız sənindir — konflikt olmasın deyə.

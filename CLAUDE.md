@@ -14,6 +14,7 @@ Bu workspace Muradın sosial media kanalları üçün video istehsalı üçünd�
 
 **Safe word:** `mentesdiqleyiremlocalrenderi`
 
+0. **Bu qayda lokal komputer üçündür.** Cloud sessiyasında (`CLAUDE_CODE_REMOTE=true`) aşağıdakı "Cloud render" bölməsinə bax.
 1. Claude **heç vaxt öz təşəbbüsü ilə render etmir.** Default iş: yalnız **ssenari və video kodunu yazmaq**, preview və PNG snapshot göstərmək.
 2. Render (`hyperframes render`, video faylı yaradan `ffmpeg`, istənilən MP4/MOV/WEBM export) **yalnız** istifadəçinin **həmin mesajında** safe word dəqiq yazılıbsa edilir.
    - Əvvəlki mesajdakı safe word sayılmır — hər render üçün yenidən yazılmalıdır.
@@ -28,6 +29,7 @@ Bu workspace Muradın sosial media kanalları üçün video istehsalı üçünd�
 
 - Video: **HyperFrames** (HTML → video, lokal render). Skill-lər: `hyperframes`, `hyperframes-cli`, `hyperframes-registry`, `media-use`.
 - Səs (TTS): `npx hyperframes tts` (**Kokoro**, lokal). Transkripsiya / söz vaxtları: `npx hyperframes transcribe -e parakeet` (lokal).
+- Cloud mühit: `scripts/setup-cloud.sh` (SessionStart hook avtomatik işlədir, lokalda heç nə etmir).
 - Lokal mühit (qurulub, git-ə düşmür): Python venv `.tools/venv` (kokoro-onnx), HyperFrames cache `.tools/hf-cache` (Parakeet modeli). `.claude/settings.json` → `HYPERFRAMES_PYTHON` və `HYPERFRAMES_CACHE_DIR` bunlara yönəlir. `~/.cache` qrup-yazılan olduğu üçün HyperFrames onu rədd edir — cache-i dəyişmə. Shell-də əl ilə işlədəndə bu iki env-i export et.
 - Musiqi/SFX: yalnız CC0 / açıq lisenziyalı mənbələr (Openverse, HyperFrames bundled, lokal MusicGen). Lisenziyanı `CREDITS.md`-yə yaz.
 - Obrazlar və səhnələr: **kodla** (SVG / HTML / CSS / GSAP), lazım olanda Three.js ilə 3D.
@@ -58,4 +60,11 @@ channels/<kanal>/  ← hər kanalın öz CLAUDE.md-si, asset-ləri, epizodları
 
 ## Cloud render (Claude cloud sessiyası)
 
-Eyni safe word qaydası keçərlidir. Cloud üçün layihə GitHub repo-da olmalıdır (sahib push edir). Render faylı repo-ya commit olunmur.
+**Cloud-da render-i həm sahib, həm də Murad edə bilər — safe word tələb olunmur.**
+
+- Cloud sessiyası olduğunu necə bilmək: `CLAUDE_CODE_REMOTE=true` mühit dəyişəni (`echo $CLAUDE_CODE_REMOTE`). Bu dəyişən yoxdursa — sessiya **lokaldır** və yuxarıdakı RENDER QAYDASI (safe word) tam qüvvədədir.
+- Remote Control ilə telefondan bu komputerə qoşulmaq **cloud deyil** — lokal sessiyadır, safe word lazımdır.
+- Səbəb: lokal komputerdə render-lər bir-biri ilə toqquşmasın (CPU/RAM, eyni fayllar) deyə lokal render-i yalnız komputerin sahibi idarə edir. Cloud-da hər sessiyanın öz mühiti var, konflikt yoxdur.
+- Cloud-da alətlər `scripts/setup-cloud.sh` ilə quraşdırılır (SessionStart hook avtomatik işlədir).
+- Render faylı repo-ya commit olunmur, push edilmir. Hazır faylı istifadəçiyə yolu ilə göstər.
+- HyperFrames-in pullu `cloud render/share/publish` xidmətləri cloud sessiyada da qadağandır — render həmişə `npx hyperframes render` ilə sessiyanın öz maşınında edilir.
