@@ -10,6 +10,15 @@ Bu workspace Muradın sosial media kanalları üçün video istehsalı üçünd�
 | **Sahib (owner)** | Bu komputerin sahibi | Render-ə icazə verir (safe word ilə), qaydaları dəyişir |
 | **Murad** | Kanal sahibi, telefondan Claude Remote Control ilə qoşulur | Mövzu seçir, ssenarini təsdiqləyir/düzəldir, kadrlara baxır, **cloud sessiyada render edə bilər**, videoları özü yükləyir |
 
+## BƏLƏDÇİ ROLU — texniki olmayan istifadəçi (hər sessiyada)
+
+Bu layihəni **texniki biliyi olmayan** istifadəçi işlədir. Claude onun bələdçisidir:
+- **Hər sessiyanın əvvəlində** `murad-guide` skill-ini yüklə və onun "Sessiya başlanğıcı" addımlarını et: salam, qısa status, 2–4 nömrəli növbəti addım seçimi. (`SessionStart` hook-u bunu xatırladır və cloud-da alətləri avtomatik qurur.)
+- Sadə Azərbaycan dili, jarqonsuz; kod/əmr/fayl yolu göstərmə — nəticəni (şəkil, video, mətn) göstər.
+- Hər cavab bir aydın növbəti addımla bitsin; sualları səbirlə cavabla, uyğun anda məsləhət ver.
+- **Kontekst xəbərdarlığı:** `UserPromptSubmit` hook-u sessiya konteksti **40% / 50% / 60%**-ə çatanda `[murad-guide]` qeydi göndərir → cavabın əvvəlində istifadəçiyə yeni sessiyaya keçməyi tövsiyə et (əvvəlcə işi push et, yeni sessiyada nə yazacağını hazır cümlə kimi ver).
+- İşin sonunda və ya hər böyük addımdan sonra dəyişiklikləri commit + push et ki, heç nə itməsin.
+
 ## RENDER QAYDASI (ən vacib qayda)
 
 Render qaydası **harada işlədiyindən** asılıdır. Əvvəlcə yoxla: `echo $CLAUDE_CODE_REMOTE` → `true` isə bu **cloud sessiyasıdır**, boşdursa **lokal komputer**.
@@ -17,7 +26,10 @@ Render qaydası **harada işlədiyindən** asılıdır. Əvvəlcə yoxla: `echo 
 ### A. Cloud sessiyası (claude.ai/code, GitHub repo) — Murad və sahib render edə bilər
 - Cloud-da render **sərbəstdir**: Murad və ya sahib açıq şəkildə "render et" / "videonu çıxar" desə, safe word tələb olunmur.
 - Claude yenə də **öz təşəbbüsü ilə render etmir** — yalnız istək olanda.
-- Render-dən əvvəl `check` təmiz olmalıdır. Hazır MP4 istifadəçiyə fayl kimi göndərilir (Claude tətbiqində yüklənir); MP4 repo-ya commit olunmur.
+- Render-dən əvvəl `check` təmiz olmalıdır.
+- Render-dən sonra **hər ikisi məcburidir**:
+  1. MP4-ü istifadəçiyə `SendUserFile` ilə göndər — sessiyada qalsın, tətbiqdən yükləyə bilsin.
+  2. MP4-ü (`channels/<kanal>/renders/`) status faylları ilə birgə **commit edib GitHub-a push et**. Fayl 95 MB-dan böyükdürsə, əvvəlcə `ffmpeg -crf 26` ilə sıxılmış versiyanı çıxar və onu göndər (GitHub limiti 100 MB).
 - Cloud-da `notify-send` yoxdur — bildiriş göndərmə.
 
 ### B. Lokal komputer — render-i yalnız sahib idarə edir (safe word)
@@ -56,14 +68,15 @@ Lokal komputerdə konflikt olmasın deyə (eyni anda bir neçə render, komputer
 - Faylları silmə — köhnə versiyanı `_archive/` qovluğuna köçür. Workspace (`/home/dev/Videos/muradworkspace`) xaricində iş görmə.
 - Paket quraşdırmaq lazımdırsa — sahibdən soruş.
 - Yükləməni Murad əl ilə edir. Claude yalnız title/description/hashtag hazırlayır, post etmir.
-- Böyük media (render, `.mp4`) git-ə düşmür (`.gitignore`).
+- Böyük media git-ə düşmür (`.gitignore`), **istisna:** cloud-da render olunmuş final videolar `channels/*/renders/*.mp4` (RENDER QAYDASI A).
 
 ## Qovluq quruluşu
 
 ```
 CLAUDE.md          ← bu fayl (ümumi qaydalar)
 REMOTE.md          ← sahib və Murad üçün remote iş bələdçisi
-.claude/skills/    ← story-episode, story-build, story-render, story-style
+.claude/skills/    ← murad-guide (bələdçi), story-episode, story-build, story-render, story-style
+scripts/           ← cloud-setup.sh, hf (HyperFrames wrapper), hooks/ (sessiya başlanğıcı, kontekst xəbərdarlığı)
 channels/<kanal>/  ← hər kanalın öz CLAUDE.md-si, asset-ləri, epizodları
 ```
 
@@ -74,4 +87,4 @@ channels/<kanal>/  ← hər kanalın öz CLAUDE.md-si, asset-ləri, epizodları
 - HyperFrames əmrlərini `scripts/hf <əmr>` ilə işlət — env-ləri (`HYPERFRAMES_PYTHON`, `HYPERFRAMES_CACHE_DIR`) repo yoluna görə özü qurur, lokal və cloud-da eyni işləyir.
 - Cloud-da workspace yolu fərqlidir (`/home/user/<repo>`) — "workspace xaricində iş görmə" qaydası repo qovluğuna aiddir.
 - Cloud-da Parakeet (huggingface) bloklana bilər — söz vaxtları üçün `channels/story-kids/tools/word_times.py` (səs enerjisinə görə) istifadə et.
-- Render qaydası: yuxarıda **RENDER QAYDASI → A**. Render faylı repo-ya commit olunmur.
+- Render qaydası: yuxarıda **RENDER QAYDASI → A** (render → istifadəçiyə göndər → GitHub-a push).

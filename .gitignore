@@ -2,6 +2,8 @@
 # Final renders
 channels/*/renders/*
 !channels/*/renders/.gitkeep
+# cloud-da render olunmuş final videolar GitHub-a push olunur (root CLAUDE.md → RENDER QAYDASI A)
+!channels/*/renders/*.mp4
 
 # Reference videos (only notes are tracked)
 channels/*/style/references/*

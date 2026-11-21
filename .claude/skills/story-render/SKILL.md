@@ -35,6 +35,12 @@ Render yükünü azaltmaq üçün: kompozisiya CSS `filter`/`blur` animasiyası 
 - 4–6 kadr çıxar (PNG) və bax: qara kadr, kəsilmiş mətn, səs-görüntü sinxronu.
 - Səs səviyyəsi təxminən -14 LUFS.
 
+## 3b. Cloud: göndər + saxla (məcburi)
+1. `SendUserFile` (display: render) ilə MP4-ü istifadəçiyə göndər.
+2. Ölçünü yoxla: > 95 MB isə `ffmpeg -i X.mp4 -c:v libx264 -crf 26 -preset slow -c:a aac -b:a 160k X-small.mp4` və onu istifadə et.
+3. `git add channels/story-kids/renders/<fayl>.mp4` + status faylları → commit → `git -c push.negotiate=true push -u origin <branch>`.
+4. İstifadəçiyə sadə dildə: "Video hazırdır ✅ Yuxarıdakı faylı yüklə. GitHub-da da saxlandı."
+
 ## 4. Bitir
 - `script.md` status → `rendered`, `episodes/README.md`-də Render sütunu → fayl adı.
 - Faylın yolunu və `upload.md`-ni göstər.

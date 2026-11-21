@@ -21,9 +21,12 @@
 | Referans videodan üslub | `Referansları analiz et` və ya `/story-style` |
 | Yeni qəhrəman / asset | `Yeni qəhrəman əlavə et: …` |
 | Yükləmə mətni | `EP001 üçün yükləmə mətnini ver` |
-| Hazır video (MP4) | **Cloud-da:** `Render et EP001`. **Komputerdə:** sahib render edir |
+| Hazır video (MP4) | **Cloud-da:** `Render et EP001` — video sənə fayl kimi gəlir və GitHub-da saxlanır. **Komputerdə:** sahib render edir |
+| Nə edəcəyimi bilmirəm | `Kömək` və ya `Nə edim?` — Claude addım-addım yol göstərir |
 
 Bilinməli olanlar:
+- Hər yeni söhbətin əvvəlində Claude səni salamlayır, vəziyyəti deyir və növbəti addımı təklif edir — sadəcə nömrəni seç.
+- Söhbət çox uzananda (~40–50%) Claude xəbərdarlıq edəcək: onda yeni söhbət aç və Claude-un verdiyi cümləni yaz.
 - Preview linki (`localhost`) telefonda açılmır — Claude PNG kadrlar göstərir.
 - Ssenarilər ingiliscədir, Claude sənə Azərbaycanca xülasə verir.
 - Komputer söndürülsə və ya yuxuya getsə bağlantı kəsilir.
