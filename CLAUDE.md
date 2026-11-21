@@ -31,7 +31,7 @@ Bu workspace Muradın sosial media kanalları üçün video istehsalı üçünd�
 - Səs (TTS): `npx hyperframes tts` (**Kokoro**, lokal). Transkripsiya / söz vaxtları: `npx hyperframes transcribe -e parakeet` (lokal).
 - Cloud mühit: `scripts/setup-cloud.sh` (SessionStart hook avtomatik işlədir, lokalda heç nə etmir).
 - Lokal mühit (qurulub, git-ə düşmür): Python venv `.tools/venv` (kokoro-onnx), HyperFrames cache `.tools/hf-cache` (Parakeet modeli). `.claude/settings.json` → `HYPERFRAMES_PYTHON` və `HYPERFRAMES_CACHE_DIR` bunlara yönəlir. `~/.cache` qrup-yazılan olduğu üçün HyperFrames onu rədd edir — cache-i dəyişmə. Shell-də əl ilə işlədəndə bu iki env-i export et.
-- Musiqi/SFX: yalnız CC0 / açıq lisenziyalı mənbələr (Openverse, HyperFrames bundled, lokal MusicGen). Lisenziyanı `CREDITS.md`-yə yaz.
+- Musiqi/SFX: yalnız CC0 / açıq lisenziyalı mənbələr (Openverse, HyperFrames bundled, lokal MusicGen). MusicGen: `.tools/musicgen-venv/bin/python -I scripts/musicgen.py "<prompt>" <san> <out.wav> [seed]` (`HF_HOME=.tools/hf-home`, CPU-da 16 s ≈ 3 dəq). Lisenziyanı `CREDITS.md`-yə yaz.
 - Obrazlar və səhnələr: **kodla** (SVG / HTML / CSS / GSAP), lazım olanda Three.js ilə 3D.
 - `media-use` çağıranda həmişə lokal/pulsuz yolu seç (`--local-only`). HeyGen sign-in, pullu kredit, pullu API-lər (HeyGen, ElevenLabs, OpenAI və s.), `hyperframes cloud/share/publish` — istifadə etmə.
 - `ffmpeg` audio işi və kadr çıxarmaq (`.png/.jpg`) üçün sərbəstdir. Video çıxışı = render (safe word tələb edir).
