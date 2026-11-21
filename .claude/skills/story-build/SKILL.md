@@ -19,7 +19,7 @@ Sonra `hyperframes` skill-ini yüklə (render müqaviləsi, iş dövrü), lazım
 ## Addımlar
 1. `script.md` status → `building`.
 2. HyperFrames layihəsi: `episodes/EP###-slug/video/` (`npx hyperframes init` və ya skill-in tövsiyə etdiyi yol). Asset-lərə nisbi yolla istinad et və ya `video/assets/`-ə kopyala (renderdə fetch olmamalıdır).
-3. **Səs:** hər narration sətri üçün Kokoro TTS → `video/assets/vo/`. Səs adını `STYLE.md` və frontmatter-dən götür (yoxdursa 2–3 nümunə səsi Muradə təklif et). Sətir müddətlərini ölç (`ffprobe`) və səhnə vaxtlarını səsə uyğunlaşdır.
+3. **Səs:** TTS-dən əvvəl hər sətrin fonemlərini yoxla: `.tools/venv/bin/python -I -c "from kokoro_onnx.tokenizer import Tokenizer; print(Tokenizer().phonemize('<mətn>','en-us'))"`. Nida və səs-sözlər (`Shh`, `Hmm`, `Psst`, `Brr`) espeak-də abreviatura kimi hərf-hərf oxunur (`Shh` → "es-eyç-eyç") — əvəzinə `Hush`, `Shush` kimi real söz yaz. Tək qısa sözü ayrıca səsləndirmə (Kokoro əvvəlinə sait əlavə edir) — cümlə içində yarat, fasiləni ffmpeg ilə əlavə et. Sonra hər narration sətri üçün Kokoro TTS → `video/assets/vo/`. Səs adını `STYLE.md` və frontmatter-dən götür (yoxdursa 2–3 nümunə səsi Muradə təklif et). Sətir müddətlərini ölç (`ffprobe`) və səhnə vaxtlarını səsə uyğunlaşdır.
 4. **Musiqi + SFX:** pulsuz mənbədən, `assets/music|sfx`-ə saxla, `CREDITS.md`-yə yaz. Musiqi narratordan -18…-22 dB aşağı.
 5. **Səhnələr:** hər ssenari sətri = səhnə. Hook ilk kadrda hərəkətlə başlasın. Hər 5–8 s vizual dəyişiklik. Platform UI zonalarını (yuxarı 12%, aşağı 20%) boş saxla.
 6. **Yoxla:** `npx hyperframes lint` / `check`, sonra `snapshot` ilə açar anlardan PNG kadrlar. Kadrlara özün bax (kompozisiya, oxunaqlılıq, obraz ardıcıllığı).
