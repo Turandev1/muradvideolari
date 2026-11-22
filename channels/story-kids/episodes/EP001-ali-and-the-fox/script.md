@@ -2,12 +2,12 @@
 episode: EP001
 slug: ali-and-the-fox
 title: Ali and the Sneaky Fox
-status: script-draft
+status: ready-to-render
 topic_from_murad: "Murad-ın göndərdiyi hekayə parçası (Ali və tülkü) — yalnız bu hissənin videosu"
 target_duration_s: 50
 characters: [Ali, Fox]
 narrator_voice: af_heart
-approved_by_murad: false
+approved_by_murad: true
 ---
 
 # Ali and the Sneaky Fox
