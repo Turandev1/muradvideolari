@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=1080, height=1920" />
     <title>EP001 — Ali and the Sneaky Fox</title>
     <script src="assets/vendor/gsap.min.js"></script>
-    <script src="assets/ali-fox-v2.js"></script>
+    <script src="assets/ali-fox-v3.js"></script>
     <style>
       @font-face { font-family: "Lilita One"; src: url("assets/fonts/lilita-one-latin-400-normal.woff2") format("woff2"); }
       @font-face { font-family: "Baloo 2"; font-weight: 800; src: url("assets/fonts/baloo-2-latin-800-normal.woff2") format("woff2"); }
@@ -16,7 +16,7 @@
       #sway { position: absolute; left: -20px; top: -20px; width: 1120px; height: 1960px; transform-origin: 50% 50%; }
       #cam { position: absolute; left: 20px; top: 20px; width: 2400px; height: 1920px; transform-origin: 0 0; }
       #fx svg { position: absolute; left: 0; top: 0; }
-      #grade { background: linear-gradient(180deg, rgba(255,214,150,.10) 0%, rgba(255,190,120,.0) 40%, rgba(40,60,40,.12) 100%); mix-blend-mode: soft-light; pointer-events: none; }
+      #grade { background: radial-gradient(ellipse 90% 60% at 80% 10%, rgba(255,200,120,.38), rgba(255,200,120,0) 70%), linear-gradient(180deg, rgba(255,214,150,.16) 0%, rgba(255,190,120,.0) 45%, rgba(60,40,20,.18) 100%); mix-blend-mode: soft-light; pointer-events: none; }
       #vignette { background: radial-gradient(ellipse 85% 65% at 52% 45%, rgba(0,0,0,0) 55%, rgba(20,18,10,.5) 100%); pointer-events: none; }
       #sunset { background: linear-gradient(180deg, rgba(255,110,70,.0) 0%, rgba(255,120,80,.6) 100%); opacity: 0; mix-blend-mode: multiply; pointer-events: none; }
       .cap {
@@ -40,7 +40,7 @@
           <svg id="world" width="2400" height="1920" viewBox="0 0 2400 1920">
             <defs>
               <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#6fb0df"/><stop offset=".45" stop-color="#b9dcee"/><stop offset="1" stop-color="#fbeac4"/>
+                <stop offset="0" stop-color="#78b4e0"/><stop offset=".42" stop-color="#cfe3e6"/><stop offset=".75" stop-color="#fbe3b4"/><stop offset="1" stop-color="#ffcf8a"/>
               </linearGradient>
               <radialGradient id="sun"><stop offset="0" stop-color="#fffef0"/><stop offset=".12" stop-color="#fff4c0" stop-opacity=".9"/><stop offset=".4" stop-color="#ffe9a8" stop-opacity=".35"/><stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/></radialGradient>
               <radialGradient id="cloudG" cx=".5" cy=".35" r=".7"><stop offset="0" stop-color="#fff"/><stop offset=".7" stop-color="#f4f0ee"/><stop offset="1" stop-color="#d4d6e2"/></radialGradient>
@@ -49,18 +49,22 @@
               <linearGradient id="bark" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8a6a48"/><stop offset=".45" stop-color="#6a4c30"/><stop offset="1" stop-color="#3a2818"/></linearGradient>
               <linearGradient id="fog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6dc" stop-opacity="0"/><stop offset=".6" stop-color="#fff2d0" stop-opacity=".42"/><stop offset="1" stop-color="#fff2d0" stop-opacity="0"/></linearGradient>
               <filter id="blurFar" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="3.2"/></filter>
+              <filter id="dof" x="-3%" y="-3%" width="106%" height="106%"><feGaussianBlur stdDeviation="6"/></filter>
+              <filter id="dof2" x="-3%" y="-3%" width="106%" height="106%"><feGaussianBlur stdDeviation="3.5"/></filter>
             </defs>
+            <g id="bgFar" filter="url(#dof)">
             <rect width="2400" height="1250" fill="url(#sky)"/>
-            <circle cx="1750" cy="420" r="520" fill="url(#sun)"/>
+            <circle cx="1750" cy="520" r="760" fill="url(#sun)"/>
             <g id="clouds"></g>
             <g id="farForest" filter="url(#blurFar)"></g>
             <rect y="860" width="2400" height="300" fill="url(#fog)"/>
             <g id="midForest"></g>
+            </g>
             <rect y="1080" width="2400" height="840" fill="url(#grass)"/>
             <path d="M-60 1140 C500 1112 1300 1160 2460 1124 L2460 1500 C1300 1566 500 1478 -60 1526Z" fill="url(#path)"/>
             <path d="M-60 1140 C500 1112 1300 1160 2460 1124" stroke="#7d5630" stroke-width="5" fill="none" opacity=".45"/>
             <g id="pathDetail"></g>
-            <g id="nearTrunks"></g>
+            <g id="nearTrunks" filter="url(#dof2)"></g>
             <g id="grassEdge"></g>
             <g id="dapples"></g>
             <g id="bushBack" style="opacity:0"></g>
@@ -69,7 +73,7 @@
             <g id="flyBread" opacity="0"></g>
             <g id="dust"></g>
             <g id="bush"></g>
-            <g id="topCanopy"></g>
+            <g id="topCanopy" filter="url(#dof2)"></g>
             <g id="fgGrass"></g>
           </svg>
         </div>
@@ -78,8 +82,9 @@
 
       <div id="fx" class="clip" data-start="0" data-duration="39.6" data-track-index="1">
         <svg width="1080" height="1920" viewBox="0 0 1080 1920">
-          <defs><linearGradient id="ray" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c8" stop-opacity=".34"/><stop offset=".7" stop-color="#fff6c8" stop-opacity=".08"/><stop offset="1" stop-color="#fff6c8" stop-opacity="0"/></linearGradient></defs>
+          <defs><radialGradient id="bkG"><stop offset="0" stop-color="#fff3c4" stop-opacity=".9"/><stop offset=".7" stop-color="#ffe2a0" stop-opacity=".35"/><stop offset="1" stop-color="#ffe2a0" stop-opacity="0"/></radialGradient><linearGradient id="ray" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c8" stop-opacity=".34"/><stop offset=".7" stop-color="#fff6c8" stop-opacity=".08"/><stop offset="1" stop-color="#fff6c8" stop-opacity="0"/></linearGradient></defs>
           <g id="rays" style="mix-blend-mode:screen"></g>
+          <g id="bokeh"></g>
           <g id="motes"></g>
         </svg>
       </div>
@@ -221,6 +226,8 @@
       $("#rays").innerHTML = RAYS.map(([x, w, x2, y2, o], i) => `<polygon class="ray" points="${x},-40 ${x + w},-40 ${x2 + w * 2.4},${y2} ${x2},${y2}" fill="url(#ray)" opacity="${o}"/>`).join("");
       let motes = ""; for (let i = 0; i < 26; i++) motes += `<circle class="mote" cx="${f1(R() * 1080)}" cy="${f1(500 + R() * 1200)}" r="${f1(2 + R() * 3.5)}" fill="#fff8d8" opacity=".55"/>`;
       $("#motes").innerHTML = motes;
+      let bk = ""; for (let i = 0; i < 14; i++) { const x = R() * 1080, y = R() < .5 ? 60 + R() * 380 : 1500 + R() * 380, r = 30 + R() * 70; bk += `<circle class="bk" cx="${f1(x)}" cy="${f1(y)}" r="${f1(r)}" fill="url(#bkG)" opacity="${(0.25 + R() * 0.35).toFixed(2)}"/>`; }
+      $("#bokeh").innerHTML = bk;
 
       // ---------- characters ----------
       $("#aliG").innerHTML = SK3.defs() + SK3.ali();
@@ -246,11 +253,12 @@
       const cam = (t, wx, wy, sx, sy, s, d = 0.7) => tl.to("#cam", { x: sx - s * wx, y: sy - s * wy, scale: s, duration: d, ease: "power2.inOut" }, t);
 
       // initial state
-      tl.set("#cam", { x: -100, y: 0, scale: 1 }, 0);
-      tl.set("#aliPos", { x: 270, y: GY }, 0);
+      tl.set("#cam", { x: 540 - 1.55 * 360, y: 980 - 1.55 * 960, scale: 1.55 }, 0);
+      tl.set("#aliPos", { x: 360, y: GY }, 0);
       tl.set("#aliFlip", { scaleX: 1, svgOrigin: "0 0" }, 0);
       tl.set("#aliG", { scaleX: AS * 0.94, scaleY: AY, svgOrigin: "0 0" }, 0);
-      tl.set(".ali-head", { scale: 1.22, svgOrigin: "0 -445" }, 0);
+      tl.set(".ali-head", { scale: 1.32, svgOrigin: "0 -445" }, 0);
+      tl.to(".bk", { x: 30, y: -20, duration: 39.6, ease: "none", stagger: 0 }, 0);
       tl.set("#foxPos", { x: 880, y: GY + 330 }, 0);
       tl.set("#foxG", { scale: FS, svgOrigin: "0 0" }, 0);
       tl.set("#foxFlip", { scaleX: 1, svgOrigin: "0 0" }, 0);
@@ -292,7 +300,8 @@
       // ===== S1 (0.4–4.5): Ali walks, fox appears from the bush =====
       tl.to("#aliPos", { x: 470, duration: 4.0, ease: "none" }, 0.3);
       walk(0.3, 4.3);
-      tl.to("#cam", { x: -250, duration: 4.4, ease: "sine.inOut" }, 0.2);
+      tl.to("#cam", { x: 540 - 1.55 * 430, duration: 2.6, ease: "none" }, 0.1);
+      cam(2.6, 690, 1010, 540, 1000, 1.3, 1.0);
       const cameT = wt("came");
       tl.set("#foxPos", { opacity: 1 }, cameT - 0.3);
       tl.to("#foxPos", { y: GY, duration: 0.6, ease: "back.out(1.6)" }, cameT - 0.3);
@@ -306,16 +315,18 @@
       tl.to(".fox-head", { rotation: -4, duration: 0.4, yoyo: true, repeat: 5, ease: "sine.inOut" }, 4.6);
 
       // ===== S3 (8.3–12.1): Ali says no, close-up =====
-      cam(8.2, 470, GY - AY * 400, 540, 860, 1.85, 0.7);
+      cam(8.2, 470, GY - AY * 518 + 40, 540, 860, 3.6, 0.6);
       talk(".ali-m-open", ".ali-m-flat", 8.5, 11.7, 0.22);
       tl.set(".ali-m-smile", { opacity: 0 }, 8.3);
       tl.set(".ali-m-flat", { opacity: 1 }, 8.3);
       tl.to(".ali-head", { rotation: 7, duration: 0.18, yoyo: true, repeat: 5, ease: "sine.inOut" }, wt("no,") - 0.1);
       tl.to(".ali-bread", { y: -6, duration: 0.3, yoyo: true, repeat: 3 }, 9.3);
+      tl.to("#aliG", { rotation: -3, svgOrigin: "0 0", duration: 0.35, ease: "power2.out", yoyo: true, repeat: 1, repeatDelay: 1.6 }, wt("no,") - 0.15);
       tl.to(".ali-brow-l", { y: 3, duration: 0.3 }, 8.5); tl.to(".ali-brow-r", { y: 3, duration: 0.3 }, 8.5);
 
       // ===== S4 (12.1–19.5): fox lies down & pretends to be sick =====
-      cam(12.0, 690, 1020, 540, 1000, 1.15, 0.8);
+      cam(12.0, 720, 1090, 540, 1000, 1.55, 0.7);
+      cam(16.9, 470, GY - AY * 518 + 30, 540, 860, 3.4, 0.6);
       tl.set(".ali-m-flat", { opacity: 0 }, 12.0); tl.set(".ali-m-smile", { opacity: 1 }, 12.0);
       const lay = wt("lay");
       tl.set(".fox-stand", { opacity: 0 }, lay + 0.1);
@@ -329,12 +340,15 @@
       tl.to(".fox-tail2", { rotation: 5, svgOrigin: "130 -30", duration: 0.5, yoyo: true, repeat: 14, ease: "sine.inOut" }, lay + 0.3);
       tl.to(".ali-head", { rotation: -5, duration: 0.5 }, 16.5);
       tl.set(".ali-m-smile", { opacity: 0 }, 17.6); tl.set(".ali-m-sad", { opacity: 1 }, 17.6);
+      tl.to(".ali-pupil", { y: 3, x: 3, duration: 0.4 }, 17.4);
+      tl.to(".ali-brow-l", { y: 2, duration: 0.4 }, 17.4); tl.to(".ali-brow-r", { y: 2, duration: 0.4 }, 17.4);
+      tl.to(".fox-lie .fox-head", { rotation: 3, duration: 0.25, yoyo: true, repeat: 22, ease: "sine.inOut" }, cried + 0.3);
 
       // ===== S5 (19.5–24.9): Ali gives the bread =====
-      cam(19.4, 650, 940, 540, 900, 1.25, 0.8);
+      cam(19.4, 620, 1010, 540, 960, 1.4, 0.7);
       tl.to(".ali-head", { rotation: 0, duration: 0.3 }, 19.5);
-      tl.to(".ali-brow-l", { rotation: -10, svgOrigin: "-21 -525", duration: 0.4 }, 19.9);
-      tl.to(".ali-brow-r", { rotation: 10, svgOrigin: "21 -525", duration: 0.4 }, 19.9);
+      tl.to(".ali-brow-l", { rotation: -10, svgOrigin: "-23 -532", duration: 0.4 }, 19.9);
+      tl.to(".ali-brow-r", { rotation: 10, svgOrigin: "23 -532", duration: 0.4 }, 19.9);
       const give = wt("give", 1);
       tl.set(".ali-bread", { opacity: 0 }, give);
       tl.set("#flyBread", { opacity: 1 }, give);
@@ -344,7 +358,7 @@
 
       // ===== S6 (24.9–29.4): the fox grabs it and runs =====
       const grab = wt("grabbed"), jump = wt("jumped"), ran = wt("ran");
-      cam(24.9, 700, 1000, 540, 1000, 1.1, 0.5);
+      cam(24.9, 720, 1060, 540, 1000, 1.6, 0.5);
       tl.set(".fox-lie", { opacity: 0 }, grab - 0.15);
       tl.set(".fox-stand", { opacity: 1 }, grab - 0.15);
       tl.to("#foxPos", { x: 790, duration: 0.2 }, grab - 0.15);
@@ -365,15 +379,20 @@
         tl.set(`#pf${i}`, { x: px, y: GY - 26 }, tt);
         tl.fromTo(`#pf${i}`, { opacity: 0.55, scale: 0.4 }, { opacity: 0, scale: 1.7, duration: 0.7, ease: "power1.out", immediateRender: false }, tt);
       }
-      cam(run0 - 0.2, 1400, 1000, 540, 1000, 1.0, 1.4);
-      cam(run0 + 1.5, 470, 1000, 540, 1000, 1.05, 1.0);
+      cam(run0 - 0.2, 1350, 1040, 540, 1000, 1.25, 1.3);
+      cam(wt("not") - 0.35, 470, GY - AY * 518 + 30, 540, 860, 3.4, 0.45);
       const nt = wt("not");
       tl.set(".ali-m-sad", { opacity: 0 }, nt);
       tl.set(".ali-m-open", { opacity: 1 }, nt);
       tl.to("#aliG", { y: -12, duration: 0.15, yoyo: true, repeat: 1 }, nt);
+      tl.to(".ali-brow-l,.ali-brow-r", { y: -6, duration: 0.15 }, nt - 0.05);
+      tl.to(".ali-pupil", { y: 0, x: 0, duration: 0.15 }, nt - 0.05);
+      tl.to(".ali-brow-l,.ali-brow-r", { y: 2, duration: 0.5 }, 29.4);
+      tl.to(".ali-pupil", { y: 4, duration: 0.5 }, 29.4);
+      tl.to(".ali-head", { rotation: 4, duration: 0.8, ease: "power2.inOut" }, 30.0);
 
       // ===== S7 (29.4–33.6): teary eyes & grumbling tummy =====
-      cam(29.3, 470, GY - AY * 490, 540, 830, 2.5, 0.8);
+      cam(29.3, 470, GY - AY * 518, 540, 820, 5.2, 1.0);
       tl.set(".ali-m-open", { opacity: 0 }, 29.5); tl.set(".ali-m-sad", { opacity: 1 }, 29.5);
       for (let t = 30.1; t < 33.4; t += 0.7) {
         tl.fromTo(".ali-tear-l", { opacity: 0, y: 0 }, { opacity: 1, y: 30, duration: 0.6, ease: "power1.in", immediateRender: false }, t);
@@ -382,12 +401,12 @@
       tl.to(".ali-body", { x: 2, duration: 0.06, yoyo: true, repeat: 17 }, wt("grumbling") - 0.15);
 
       // ===== S8 (33.6–36.6): Ali turns and walks home =====
-      cam(33.5, 420, 1000, 540, 960, 1.0, 1.0);
+      cam(33.5, 420, 1000, 540, 980, 1.3, 1.0);
       tl.set(".ali-tear", { opacity: 0 }, 33.8);
       tl.set("#aliFlip", { scaleX: -1, svgOrigin: "0 0" }, wt("turned"));
       tl.to("#aliPos", { x: -140, duration: 3.4, ease: "sine.inOut" }, wt("walked") - 0.3);
       walk(wt("walked") - 0.3, 37.0);
-      tl.to("#cam", { x: 0, duration: 2.8, ease: "sine.inOut" }, 34.0);
+      tl.to("#cam", { x: 540 - 1.3 * 430, duration: 2.0, ease: "sine.inOut" }, 34.5);
       tl.to("#sunset", { opacity: 1, duration: 2.8 }, 33.8);
 
       // ===== end card =====
