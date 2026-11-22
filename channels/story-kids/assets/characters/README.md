@@ -27,3 +27,5 @@ Hər qəhrəman üçün qovluq: `characters/<ad>/`
 Bütün obrazların kodu: `characters.js` (`SK.defs()`, `SK.pip()`, `SK.twinkle()`). Epizodun `video/assets/`-inə kopyala. SVG faylları: `node export-svg.cjs`.
 | Nori | qurbağa (lokal EP000-sample-falling-star) | v1 — kod `pond.html`-dədir, hələ `characters.js`-ə köçürülməyib |
 | Lumi | ulduz (lokal EP000-sample-falling-star) | v1 — kod `pond.html`-dədir |
+| Ali | kiçik oğlan (EP001) | v2 realist — `ali-fox-v2.js` (`SK3.ali()`); v1 cizgi: `ali-fox.js` |
+| Fox (tülkü) | hiyləgər tülkü (EP001) | v2 realist — `ali-fox-v2.js` (`SK3.fox()`: stand / lie / run pozaları) |

@@ -5,17 +5,20 @@
     <meta name="viewport" content="width=1080, height=1920" />
     <title>EP001 — Ali and the Sneaky Fox</title>
     <script src="assets/vendor/gsap.min.js"></script>
-    <script src="assets/ali-fox.js"></script>
+    <script src="assets/ali-fox-v2.js"></script>
     <style>
       @font-face { font-family: "Lilita One"; src: url("assets/fonts/lilita-one-latin-400-normal.woff2") format("woff2"); }
       @font-face { font-family: "Baloo 2"; font-weight: 800; src: url("assets/fonts/baloo-2-latin-800-normal.woff2") format("woff2"); }
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body { width: 1080px; height: 1920px; overflow: hidden; background: #2a2458; }
-      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #ffe3a6; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #cfe6ef; }
       .clip { position: absolute; inset: 0; }
-      #cam { position: absolute; left: 0; top: 0; width: 2400px; height: 1920px; transform-origin: 0 0; }
-      #vignette { background: radial-gradient(ellipse 80% 62% at 50% 45%, rgba(0,0,0,0) 58%, rgba(40,20,10,.38) 100%); pointer-events: none; }
-      #sunset { background: linear-gradient(180deg, rgba(255,110,70,.0) 0%, rgba(255,120,80,.55) 100%); opacity: 0; mix-blend-mode: multiply; pointer-events: none; }
+      #sway { position: absolute; left: -20px; top: -20px; width: 1120px; height: 1960px; transform-origin: 50% 50%; }
+      #cam { position: absolute; left: 20px; top: 20px; width: 2400px; height: 1920px; transform-origin: 0 0; }
+      #fx svg { position: absolute; left: 0; top: 0; }
+      #grade { background: linear-gradient(180deg, rgba(255,214,150,.10) 0%, rgba(255,190,120,.0) 40%, rgba(40,60,40,.12) 100%); mix-blend-mode: soft-light; pointer-events: none; }
+      #vignette { background: radial-gradient(ellipse 85% 65% at 52% 45%, rgba(0,0,0,0) 55%, rgba(20,18,10,.5) 100%); pointer-events: none; }
+      #sunset { background: linear-gradient(180deg, rgba(255,110,70,.0) 0%, rgba(255,120,80,.6) 100%); opacity: 0; mix-blend-mode: multiply; pointer-events: none; }
       .cap {
         position: absolute; left: 0; right: 0; top: 1225px; text-align: center;
         font-family: "Lilita One", "Baloo 2", sans-serif; font-size: 104px; line-height: 1;
@@ -32,53 +35,65 @@
   <body>
     <div id="root" data-composition-id="main" data-start="0" data-duration="39.6" data-width="1080" data-height="1920">
       <div id="worldclip" class="clip" data-start="0" data-duration="39.6" data-track-index="0">
+       <div id="sway">
         <div id="cam">
           <svg id="world" width="2400" height="1920" viewBox="0 0 2400 1920">
             <defs>
               <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#8fd3f4"/><stop offset=".5" stop-color="#d9f1e0"/><stop offset="1" stop-color="#ffe9b0"/>
+                <stop offset="0" stop-color="#6fb0df"/><stop offset=".45" stop-color="#b9dcee"/><stop offset="1" stop-color="#fbeac4"/>
               </linearGradient>
-              <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#8fd66b"/><stop offset="1" stop-color="#3b8f50"/>
-              </linearGradient>
-              <linearGradient id="path" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#e3b374"/><stop offset="1" stop-color="#b98245"/>
-              </linearGradient>
-              <radialGradient id="sun"><stop offset="0" stop-color="#fffbe0" stop-opacity="1"/><stop offset=".25" stop-color="#fff0a8" stop-opacity=".7"/><stop offset="1" stop-color="#fff0a8" stop-opacity="0"/></radialGradient>
-              <linearGradient id="hillA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a9dba0"/><stop offset="1" stop-color="#7fc28b"/></linearGradient>
-              <linearGradient id="hillB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fc27b"/><stop offset="1" stop-color="#4ea46a"/></linearGradient>
+              <radialGradient id="sun"><stop offset="0" stop-color="#fffef0"/><stop offset=".12" stop-color="#fff4c0" stop-opacity=".9"/><stop offset=".4" stop-color="#ffe9a8" stop-opacity=".35"/><stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/></radialGradient>
+              <radialGradient id="cloudG" cx=".5" cy=".35" r=".7"><stop offset="0" stop-color="#fff"/><stop offset=".7" stop-color="#f4f0ee"/><stop offset="1" stop-color="#d4d6e2"/></radialGradient>
+              <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ccb6a"/><stop offset=".4" stop-color="#6aa650"/><stop offset="1" stop-color="#2f6a3a"/></linearGradient>
+              <linearGradient id="path" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9b07a"/><stop offset=".5" stop-color="#c59560"/><stop offset="1" stop-color="#9a6e40"/></linearGradient>
+              <linearGradient id="bark" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8a6a48"/><stop offset=".45" stop-color="#6a4c30"/><stop offset="1" stop-color="#3a2818"/></linearGradient>
+              <linearGradient id="fog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6dc" stop-opacity="0"/><stop offset=".6" stop-color="#fff2d0" stop-opacity=".42"/><stop offset="1" stop-color="#fff2d0" stop-opacity="0"/></linearGradient>
+              <filter id="blurFar" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="3.2"/></filter>
             </defs>
-            <rect width="2400" height="1200" fill="url(#sky)"/>
-            <circle cx="1750" cy="520" r="420" fill="url(#sun)"/>
+            <rect width="2400" height="1250" fill="url(#sky)"/>
+            <circle cx="1750" cy="420" r="520" fill="url(#sun)"/>
             <g id="clouds"></g>
-            <path d="M0 1010 C300 900 520 940 800 1000 C1100 920 1400 900 1700 990 C1950 930 2200 950 2400 1000 L2400 1200 L0 1200Z" fill="url(#hillA)"/>
-            <path d="M0 1080 C260 1020 520 1030 760 1070 C1060 1010 1380 1020 1700 1075 C1960 1030 2200 1040 2400 1080 L2400 1220 L0 1220Z" fill="url(#hillB)"/>
-            <g id="trees"></g>
-            <rect y="1120" width="2400" height="800" fill="url(#grass)"/>
-            <path d="M-50 1135 C500 1110 1300 1160 2450 1125 L2450 1500 C1300 1560 500 1470 -50 1520Z" fill="url(#path)"/>
-            <path d="M-50 1135 C500 1110 1300 1160 2450 1125" stroke="#9a6a38" stroke-width="6" fill="none" opacity=".5"/>
-            <g id="flowers"></g>
-
+            <g id="farForest" filter="url(#blurFar)"></g>
+            <rect y="860" width="2400" height="300" fill="url(#fog)"/>
+            <g id="midForest"></g>
+            <rect y="1080" width="2400" height="840" fill="url(#grass)"/>
+            <path d="M-60 1140 C500 1112 1300 1160 2460 1124 L2460 1500 C1300 1566 500 1478 -60 1526Z" fill="url(#path)"/>
+            <path d="M-60 1140 C500 1112 1300 1160 2460 1124" stroke="#7d5630" stroke-width="5" fill="none" opacity=".45"/>
+            <g id="pathDetail"></g>
+            <g id="nearTrunks"></g>
+            <g id="grassEdge"></g>
+            <g id="dapples"></g>
             <g id="bushBack" style="opacity:0"></g>
-            <g id="foxPos" style="opacity:0"><g id="foxRot"><g id="foxG"></g></g></g>
+            <g id="foxPos" style="opacity:0"><g id="foxFlip"><g id="foxG"></g></g></g>
             <g id="aliPos"><g id="aliFlip"><g id="aliG"></g></g></g>
             <g id="flyBread" opacity="0"></g>
+            <g id="dust"></g>
             <g id="bush"></g>
+            <g id="topCanopy"></g>
             <g id="fgGrass"></g>
           </svg>
         </div>
+       </div>
       </div>
 
-      <div id="sunset" class="clip" data-start="0" data-duration="39.6" data-track-index="2"></div>
-      <div id="vignette" class="clip" data-start="0" data-duration="39.6" data-track-index="3"></div>
+      <div id="fx" class="clip" data-start="0" data-duration="39.6" data-track-index="1">
+        <svg width="1080" height="1920" viewBox="0 0 1080 1920">
+          <defs><linearGradient id="ray" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c8" stop-opacity=".34"/><stop offset=".7" stop-color="#fff6c8" stop-opacity=".08"/><stop offset="1" stop-color="#fff6c8" stop-opacity="0"/></linearGradient></defs>
+          <g id="rays" style="mix-blend-mode:screen"></g>
+          <g id="motes"></g>
+        </svg>
+      </div>
+      <div id="grade" class="clip" data-start="0" data-duration="39.6" data-track-index="2"></div>
+      <div id="sunset" class="clip" data-start="0" data-duration="39.6" data-track-index="3"></div>
+      <div id="vignette" class="clip" data-start="0" data-duration="39.6" data-track-index="4"></div>
 
-      <div id="end" class="clip" data-start="36.6" data-duration="3.0" data-track-index="4">
+      <div id="end" class="clip" data-start="36.6" data-duration="3.0" data-track-index="5">
         <div class="band"></div>
         <div class="t1">PART 2?</div>
         <div class="t2">Was the fox really sneaky?</div>
       </div>
 
-      <div id="caps" class="clip" data-start="0" data-duration="39.6" data-track-index="5"></div>
+      <div id="caps" class="clip" data-start="0" data-duration="39.6" data-track-index="6"></div>
 
       <!-- AUDIO -->
       <audio id="a-music" src="assets/music/lullaby-long.wav" data-start="0" data-duration="39.6" data-volume="0.14" data-fade-in="0.4" data-fade-out="1.5" data-track-index="10"></audio>
@@ -105,58 +120,117 @@
       const wt = (w, n = 0) => { const k = WORDS.filter((x) => clean(x.w) === clean(w)); return k[n].s; };
 
       function mulberry(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
-      const R = mulberry(5);
+      const R = mulberry(11);
+      const f1 = (n) => n.toFixed(1);
 
-      // ---------- world ----------
+      // irregular leafy blob (smooth closed path)
+      function blob(cx, cy, r, n = 11) {
+        const p = [];
+        for (let i = 0; i < n; i++) { const a = (i / n) * Math.PI * 2, rr = r * (0.8 + 0.36 * R()); p.push([cx + Math.cos(a) * rr * 1.12, cy + Math.sin(a) * rr * 0.88]); }
+        const mid = (a, b) => `${f1((a[0] + b[0]) / 2)} ${f1((a[1] + b[1]) / 2)}`;
+        let d = `M${mid(p[n - 1], p[0])}`;
+        for (let i = 0; i < n; i++) d += ` Q${f1(p[i][0])} ${f1(p[i][1])} ${mid(p[i], p[(i + 1) % n])}`;
+        return d + "Z";
+      }
+      function canopy(cx, cy, r, tones, hi) {
+        let s = "";
+        for (let i = 0; i < 4; i++) s += `<path d="${blob(cx + (R() - 0.5) * r * 1.1, cy + (R() - 0.2) * r * 0.5, r * (0.6 + R() * 0.3))}" fill="${tones[0]}"/>`;
+        for (let i = 0; i < 4; i++) s += `<path d="${blob(cx + (R() - 0.4) * r * 0.9, cy - r * 0.1 + (R() - 0.5) * r * 0.5, r * (0.5 + R() * 0.25))}" fill="${tones[1]}"/>`;
+        for (let i = 0; i < 3; i++) s += `<path d="${blob(cx + r * 0.2 + R() * r * 0.4, cy - r * 0.35 + (R() - 0.5) * r * 0.3, r * (0.28 + R() * 0.18))}" fill="${tones[2]}" opacity=".9"/>`;
+        if (hi) s += `<path d="${blob(cx + r * 0.35, cy - r * 0.5, r * 0.18)}" fill="${hi}" opacity=".75"/>`;
+        return s;
+      }
+
+      // ---------- sky / clouds ----------
       let clouds = "";
-      for (let i = 0; i < 7; i++) {
-        const x = 150 + i * 340 + R() * 80, y = 160 + R() * 360, s = 0.8 + R() * 0.8;
-        clouds += `<g transform="translate(${x.toFixed(0)} ${y.toFixed(0)}) scale(${s.toFixed(2)})" opacity=".92"><ellipse cx="0" cy="0" rx="120" ry="42" fill="#fff"/><ellipse cx="-60" cy="-22" rx="60" ry="42" fill="#fff"/><ellipse cx="40" cy="-34" rx="70" ry="50" fill="#fff"/></g>`;
+      for (let i = 0; i < 6; i++) {
+        const x = 120 + i * 400 + R() * 120, y = 140 + R() * 300, s = 0.9 + R() * 0.9;
+        clouds += `<g transform="translate(${f1(x)} ${f1(y)}) scale(${s.toFixed(2)})" opacity=".95">` +
+          `<ellipse cx="0" cy="14" rx="150" ry="34" fill="#c9cfe0" opacity=".55"/>` +
+          `<ellipse cx="-70" cy="-6" rx="70" ry="44" fill="url(#cloudG)"/><ellipse cx="0" cy="-26" rx="92" ry="56" fill="url(#cloudG)"/><ellipse cx="78" cy="-4" rx="72" ry="42" fill="url(#cloudG)"/>` +
+          `<ellipse cx="10" cy="2" rx="120" ry="30" fill="url(#cloudG)"/></g>`;
       }
       $("#clouds").innerHTML = clouds;
 
-      function tree(x, y, s, shade) {
-        const g1 = shade ? "#3f9a58" : "#58b866", g2 = shade ? "#2f8049" : "#46a257";
-        return `<g transform="translate(${x} ${y}) scale(${s})">
-          <rect x="-22" y="-210" width="44" height="210" rx="14" fill="#8a5a33" stroke="#4a2c14" stroke-width="5"/>
-          <circle cx="-70" cy="-250" r="95" fill="${g2}" stroke="#2a6a3c" stroke-width="5"/>
-          <circle cx="70" cy="-262" r="100" fill="${g2}" stroke="#2a6a3c" stroke-width="5"/>
-          <circle cx="0" cy="-320" r="112" fill="${g1}" stroke="#2a6a3c" stroke-width="5"/>
-          <circle cx="-30" cy="-345" r="42" fill="#7fd47c" opacity=".55"/>
-        </g>`;
-      }
-      let trees = "";
-      for (let i = 0; i < 13; i++) trees += tree(60 + i * 190 + R() * 60, 1085 + R() * 30, 0.55 + R() * 0.15, 0);
-      for (let i = 0; i < 7; i++) trees += tree(40 + i * 370 + R() * 120, 1135 + R() * 20, 0.95 + R() * 0.25, 1);
-      $("#trees").innerHTML = trees;
+      // ---------- forests (atmospheric perspective) ----------
+      let far = "";
+      for (let i = 0; i < 18; i++) far += canopy(i * 140 + R() * 60, 940 + R() * 50, 85 + R() * 50, ["#86aaa6", "#97bdb1", "#b0d2c2"], null);
+      far += `<rect x="-20" y="960" width="2460" height="160" fill="#9fc4b6"/>`;
+      $("#farForest").innerHTML = far;
 
-      let fl = "";
-      for (let i = 0; i < 46; i++) {
-        const x = R() * 2400, y = 1540 + R() * 360, c = ["#ff8fb8", "#fff", "#ffd24d", "#c79bff"][i % 4];
-        fl += `<g transform="translate(${x.toFixed(0)} ${y.toFixed(0)})"><path d="M0 0 L0 26" stroke="#2f7d3a" stroke-width="4"/><circle cx="0" cy="-2" r="9" fill="${c}"/><circle cx="0" cy="-2" r="3.5" fill="#ffb02e"/></g>`;
+      let mid = "";
+      for (let i = 0; i < 13; i++) {
+        const x = 60 + i * 190 + R() * 70, h = 150 + R() * 70;
+        mid += `<path d="M${x - 9} 1118 L${x - 6} ${1118 - h} L${x + 6} ${1118 - h} L${x + 10} 1118Z" fill="#6f5a40"/>`;
+        mid += canopy(x, 1118 - h - 40, 100 + R() * 40, ["#3f7a52", "#528f5e", "#79b373"], "#cbe98a");
       }
-      $("#flowers").innerHTML = fl;
-      let gr = "";
-      for (let i = 0; i < 60; i++) { const x = R() * 2400, h = 50 + R() * 60; gr += `<path d="M${x.toFixed(0)} 1920 Q${(x + 12).toFixed(0)} ${1920 - h * 0.6} ${(x + 4).toFixed(0)} ${1920 - h}" stroke="#2f7d3a" stroke-width="8" fill="none" stroke-linecap="round"/>`; }
-      $("#fgGrass").innerHTML = gr;
+      $("#midForest").innerHTML = mid;
 
-      // bush that hides the fox at first (x≈900)
-      const BUSH = `<g transform="translate(930 1215)">
-        <ellipse cx="0" cy="8" rx="190" ry="22" fill="rgba(30,60,30,.3)"/>
-        <circle cx="-100" cy="-60" r="82" fill="#2f8049" stroke="#1f5a34" stroke-width="6"/>
-        <circle cx="0" cy="-90" r="105" fill="#3f9a58" stroke="#1f5a34" stroke-width="6"/>
-        <circle cx="105" cy="-55" r="85" fill="#2f8049" stroke="#1f5a34" stroke-width="6"/>
-        <circle cx="-20" cy="-120" r="36" fill="#7fd47c" opacity=".5"/>
-        <circle cx="60" cy="-70" r="9" fill="#ff6a6a"/><circle cx="-60" cy="-40" r="9" fill="#ff6a6a"/><circle cx="20" cy="-30" r="9" fill="#ff6a6a"/>
-      </g>`;
+      // ---------- near trunks (framing, give depth) ----------
+      function trunk(x, w, baseY) {
+        let s = `<ellipse cx="${x - 20}" cy="${baseY + 6}" rx="${w * 1.5}" ry="16" fill="rgba(30,40,20,.35)"/>`;
+        s += `<path d="M${x - w / 2} ${baseY} C${x - w / 2 - 6} ${baseY - 500} ${x - w / 2 + 8} ${baseY - 900} ${x - w / 2 - 4} -60 L${x + w / 2 + 6} -60 C${x + w / 2 - 4} ${baseY - 900} ${x + w / 2 + 8} ${baseY - 500} ${x + w / 2 + 6} ${baseY} C${x + w / 2 + 30} ${baseY + 4} ${x - w / 2 - 30} ${baseY + 4} ${x - w / 2} ${baseY}Z" fill="url(#bark)"/>`;
+        for (let i = 0; i < 9; i++) { const xx = x - w / 2 + 8 + R() * (w - 16); s += `<path d="M${f1(xx)} ${baseY - 20} Q${f1(xx + (R() - .5) * 14)} ${baseY - 400} ${f1(xx + (R() - .5) * 10)} ${f1(baseY - 700 - R() * 200)}" stroke="#2a1c10" stroke-width="${2 + R() * 3}" fill="none" opacity=".4" stroke-linecap="round"/>`; }
+        s += `<path d="M${x - w / 2 + 4} ${baseY - 40} C${x - w / 2} ${baseY - 400} ${x - w / 2 + 4} ${baseY - 700} ${x - w / 2} -40" stroke="#c9a67a" stroke-width="6" fill="none" opacity=".35"/>`;
+        s += `<ellipse cx="${x - w / 4}" cy="${baseY - 160}" rx="${w * 0.28}" ry="46" fill="#5d8a3c" opacity=".55"/><ellipse cx="${x + w / 5}" cy="${baseY - 330}" rx="${w * 0.2}" ry="34" fill="#5d8a3c" opacity=".45"/>`;
+        return s;
+      }
+      $("#nearTrunks").innerHTML = trunk(40, 130, 1150) + trunk(1130, 78, 1140) + trunk(1920, 110, 1146) + trunk(2360, 150, 1150);
+
+      let topC = "";
+      for (let i = 0; i < 24; i++) {
+        const x = i * 104 + R() * 50, y = 10 + R() * 190, r = 90 + R() * 60;
+        if (Math.abs(x - 1700) < 240 && y < 160) continue;
+        topC += canopy(x, y, r, ["#1e5a38", "#2b7043", "#4a9457"], R() < 0.5 ? "#c8ec8a" : null);
+      }
+      $("#topCanopy").innerHTML = topC;
+
+      // ---------- ground detail ----------
+      let pd = "";
+      for (let i = 0; i < 34; i++) { const x = R() * 2400, y = 1190 + R() * 280, rx = 6 + R() * 12; pd += `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="${f1(rx)}" ry="${f1(rx * 0.55)}" fill="#8a6a46"/><ellipse cx="${f1(x - 2)}" cy="${f1(y - 2)}" rx="${f1(rx * 0.6)}" ry="${f1(rx * 0.3)}" fill="#c9a77a" opacity=".7"/>`; }
+      pd += `<path d="M-60 1330 C400 1300 900 1350 1500 1316 C1900 1292 2200 1330 2460 1306" stroke="#a37a4a" stroke-width="22" fill="none" opacity=".35" stroke-linecap="round"/>`;
+      pd += `<path d="M-60 1380 C400 1352 900 1398 1500 1366 C1900 1344 2200 1380 2460 1356" stroke="#a37a4a" stroke-width="16" fill="none" opacity=".3" stroke-linecap="round"/>`;
+      $("#pathDetail").innerHTML = pd;
+
+      let ge = "";
+      const tuft = (x, y, h, c) => { let s = ""; for (let k = -2; k <= 2; k++) s += `<path d="M${f1(x + k * 5)} ${y} Q${f1(x + k * 8)} ${f1(y - h * 0.6)} ${f1(x + k * 12 + 3)} ${f1(y - h)}" stroke="${c}" stroke-width="3.5" fill="none" stroke-linecap="round"/>`; return s; };
+      for (let i = 0; i < 110; i++) { const x = R() * 2400, y = 1128 + (x / 2400) * -4 + R() * 12; ge += tuft(x, y, 26 + R() * 26, R() < 0.5 ? "#4f8a3a" : "#79b04e"); }
+      for (let i = 0; i < 60; i++) { const x = R() * 2400, y = 1500 + R() * 400; ge += tuft(x, y, 30 + R() * 40, R() < 0.5 ? "#2f6a3a" : "#5a9a48"); }
+      for (let i = 0; i < 44; i++) {
+        const x = R() * 2400, y = 1540 + R() * 360, c = ["#ff9bbf", "#ffffff", "#ffd24d", "#c79bff"][i % 4];
+        ge += `<g transform="translate(${f1(x)} ${f1(y)})"><path d="M0 0 L0 28" stroke="#2f6a3a" stroke-width="3"/>${[0, 72, 144, 216, 288].map((a) => `<ellipse cx="0" cy="-8" rx="4" ry="8" fill="${c}" transform="rotate(${a})"/>`).join("")}<circle cx="0" cy="0" r="3.4" fill="#f2a516"/></g>`;
+      }
+      $("#grassEdge").innerHTML = ge;
+
+      let dp = "";
+      for (let i = 0; i < 16; i++) { const x = 100 + i * 150 + R() * 80, y = 1170 + R() * 300; dp += `<ellipse cx="${f1(x)}" cy="${f1(y)}" rx="${f1(50 + R() * 60)}" ry="${f1(10 + R() * 16)}" fill="#fff3b0" opacity="${(0.16 + R() * 0.14).toFixed(2)}" transform="rotate(-8 ${f1(x)} ${f1(y)})"/>`; }
+      for (let i = 0; i < 7; i++) { const x = 260 + i * 320 + R() * 100; dp += `<path d="M${f1(x)} 1150 L${f1(x + 220)} 1150 L${f1(x - 140)} 1470 L${f1(x - 330)} 1470Z" fill="#1f3a20" opacity=".10"/>`; }
+      $("#dapples").innerHTML = dp;
+
+      let fg = "";
+      for (let i = 0; i < 70; i++) { const x = R() * 2400, h = 60 + R() * 90; fg += `<path d="M${f1(x)} 1930 Q${f1(x + 14)} ${f1(1930 - h * 0.6)} ${f1(x + 6)} ${f1(1930 - h)}" stroke="${R() < .5 ? "#245a30" : "#3a7a3e"}" stroke-width="9" fill="none" stroke-linecap="round"/>`; }
+      $("#fgGrass").innerHTML = fg;
+
+      // bush that hides the fox at first (x≈930)
+      let berries = ""; for (let i = 0; i < 9; i++) { const bx = -110 + R() * 230, by = -130 + R() * 100; berries += `<circle cx="${f1(bx)}" cy="${f1(by)}" r="8" fill="#d63a3a" stroke="#8c1e1e" stroke-width="1.5"/><circle cx="${f1(bx - 2.5)}" cy="${f1(by - 3)}" r="2.4" fill="#fff" opacity=".8"/>`; }
+      const BUSH = `<g transform="translate(930 1222)"><ellipse cx="-30" cy="10" rx="210" ry="20" fill="rgba(30,50,20,.4)"/>${canopy(0, -80, 120, ["#2a6b3c", "#3c8650", "#62aa5e"], "#d5f08e")}${berries}</g>`;
       $("#bush").innerHTML = BUSH; $("#bushBack").innerHTML = BUSH;
 
+      // fx overlay: sun rays + floating motes (fixed to the screen)
+      const RAYS = [[640, 120, 40, 1560, 0.9], [760, 90, 220, 1620, 0.7], [860, 70, 470, 1700, 0.8], [980, 60, 700, 1760, 0.55], [540, 90, -170, 1500, 0.6]];
+      $("#rays").innerHTML = RAYS.map(([x, w, x2, y2, o], i) => `<polygon class="ray" points="${x},-40 ${x + w},-40 ${x2 + w * 2.4},${y2} ${x2},${y2}" fill="url(#ray)" opacity="${o}"/>`).join("");
+      let motes = ""; for (let i = 0; i < 26; i++) motes += `<circle class="mote" cx="${f1(R() * 1080)}" cy="${f1(500 + R() * 1200)}" r="${f1(2 + R() * 3.5)}" fill="#fff8d8" opacity=".55"/>`;
+      $("#motes").innerHTML = motes;
+
       // ---------- characters ----------
-      $("#aliG").innerHTML = SK2.ali();
-      $("#foxG").innerHTML = SK2.fox();
-      $(".ali-armL").insertAdjacentHTML("beforebegin", `<g class="ali-bread" transform="translate(0 -282)">${SK2.bread(1)}</g>`);
-      $("#flyBread").innerHTML = SK2.bread(0.75);
-      $("#end") && 0;
+      $("#aliG").innerHTML = SK3.defs() + SK3.ali();
+      $("#foxG").innerHTML = SK3.fox();
+      $(".ali-bread-slot").innerHTML = `<g transform="translate(0 -298)"><g class="ali-bread">${SK3.bread(1)}</g></g>`;
+      $("#flyBread").innerHTML = SK3.bread(0.8);
+
+      // dust puffs for the getaway
+      let dust = ""; for (let i = 0; i < 7; i++) dust += `<ellipse class="puff" id="pf${i}" cx="0" cy="0" rx="50" ry="30" fill="#e8d2a8" opacity="0"/>`;
+      $("#dust").innerHTML = dust;
 
       // captions — one word at a time
       WORDS.forEach((w, i) => {
@@ -167,31 +241,37 @@
 
       // ---------- timeline ----------
       const tl = gsap.timeline({ paused: true });
-      const AS = 0.75, FS = 0.9;               // character scales
-      const GY = 1190;                           // ground y of the feet
+      const AS = 0.78, FS = 1.05, AY = 0.64;   // Ali: AS wide, AY tall (child proportions)
+      const GY = 1190;
       const cam = (t, wx, wy, sx, sy, s, d = 0.7) => tl.to("#cam", { x: sx - s * wx, y: sy - s * wy, scale: s, duration: d, ease: "power2.inOut" }, t);
-      const show = (sel, v, t) => tl.set(sel, { opacity: v }, t);
 
       // initial state
       tl.set("#cam", { x: -100, y: 0, scale: 1 }, 0);
       tl.set("#aliPos", { x: 270, y: GY }, 0);
-      tl.set("#aliFlip", { scaleX: 1 }, 0);
-      tl.set("#aliG", { scale: AS, transformOrigin: "0px 0px" }, 0);
-      tl.set("#foxPos", { x: 880, y: GY + 330 }, 0);     // hidden below the bush
-      tl.set("#foxG", { scale: FS, transformOrigin: "0px 0px" }, 0);
-      tl.set("#foxRot", { scaleY: 1 }, 0);
+      tl.set("#aliFlip", { scaleX: 1, svgOrigin: "0 0" }, 0);
+      tl.set("#aliG", { scaleX: AS * 0.94, scaleY: AY, svgOrigin: "0 0" }, 0);
+      tl.set(".ali-head", { scale: 1.22, svgOrigin: "0 -445" }, 0);
+      tl.set("#foxPos", { x: 880, y: GY + 330 }, 0);
+      tl.set("#foxG", { scale: FS, svgOrigin: "0 0" }, 0);
+      tl.set("#foxFlip", { scaleX: 1, svgOrigin: "0 0" }, 0);
+
+      // ambient: camera sway, light rays breathing, floating motes
+      tl.to("#sway", { x: 5, y: 3, rotation: 0.22, duration: 3.3, ease: "sine.inOut", yoyo: true, repeat: 11 }, 0);
+      tl.to(".ray", { opacity: 0.35, duration: 2.6, ease: "sine.inOut", yoyo: true, repeat: 14, stagger: 0.35 }, 0);
+      document.querySelectorAll(".mote").forEach((m, i) => {
+        tl.to(m, { y: -260 - (i % 5) * 40, x: (i % 2 ? 40 : -40), duration: 39.6, ease: "none" }, 0);
+        tl.to(m, { opacity: 0.15, duration: 1.6 + (i % 4) * 0.5, ease: "sine.inOut", yoyo: true, repeat: 20 }, 0);
+      });
 
       // idle: breathing + blinks
-      tl.to(".ali-body", { scaleY: 1.014, duration: 1.1, ease: "sine.inOut", yoyo: true, repeat: 35 }, 0);
-      tl.to(".fox-body", { scaleY: 1.016, duration: 1.0, ease: "sine.inOut", yoyo: true, repeat: 38 }, 0);
+      tl.to(".ali-body", { scaleY: 1.012, duration: 1.2, ease: "sine.inOut", yoyo: true, repeat: 32 }, 0);
+      tl.to(".fox-body", { scaleY: 1.015, duration: 1.0, ease: "sine.inOut", yoyo: true, repeat: 38 }, 0);
       [1.9, 6.1, 10.4, 15.2, 21.0, 27.9, 31.2, 35.0].forEach((t) => {
         tl.to(".ali-lid", { scaleY: 1, duration: 0.07, yoyo: true, repeat: 1 }, t);
         tl.to(".fox-lid", { scaleY: 1, duration: 0.07, yoyo: true, repeat: 1 }, t + 0.3);
       });
-      // fox tail wag
-      tl.to(".fox-tail", { rotation: 8, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 70 }, 0);
+      tl.to(".fox-tail", { rotation: 6, duration: 0.6, ease: "sine.inOut", yoyo: true, repeat: 60 }, 0);
 
-      // helpers: mouth talk
       const talk = (open, closed, t0, t1, step = 0.2) => {
         for (let t = t0; t < t1; t += step) { tl.set(open, { opacity: 1 }, t); tl.set(closed, { opacity: 0 }, t); tl.set(open, { opacity: 0 }, t + step * 0.5); tl.set(closed, { opacity: 1 }, t + step * 0.5); }
         tl.set(open, { opacity: 0 }, t1); tl.set(closed, { opacity: 1 }, t1);
@@ -199,110 +279,114 @@
       const walk = (t0, t1, who = "ali") => {
         const n = Math.round((t1 - t0) / 0.3);
         if (who === "ali") {
-          tl.to(".ali-legL", { rotation: 11, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: n }, t0);
-          tl.to(".ali-legR", { rotation: -11, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: n }, t0);
+          tl.to(".ali-legL", { rotation: 8, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: n }, t0);
+          tl.to(".ali-legR", { rotation: -8, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: n }, t0);
           tl.to("#aliG", { y: -5, duration: 0.15, ease: "sine.inOut", yoyo: true, repeat: n * 2 }, t0);
           tl.to(".ali-legL,.ali-legR", { rotation: 0, duration: 0.2 }, t1 + 0.35);
         } else {
-          tl.to(".fox-leg", { rotation: 22, duration: 0.14, ease: "sine.inOut", yoyo: true, repeat: Math.round((t1 - t0) / 0.14) }, t0);
-          tl.to(".fox-leg", { rotation: 0, duration: 0.2 }, t1 + 0.15);
+          tl.to(".fox-stand .fox-leg", { rotation: 14, duration: 0.2, ease: "sine.inOut", yoyo: true, repeat: Math.round((t1 - t0) / 0.2) }, t0);
+          tl.to(".fox-stand .fox-leg", { rotation: 0, duration: 0.2 }, t1 + 0.2);
         }
       };
 
-      // ===== S1 (0.4–4.5): Ali walks, fox appears =====
+      // ===== S1 (0.4–4.5): Ali walks, fox appears from the bush =====
       tl.to("#aliPos", { x: 470, duration: 4.0, ease: "none" }, 0.3);
       walk(0.3, 4.3);
-      cam(0.4, 540, 900, 540, 900, 1, 0.01);
       tl.to("#cam", { x: -250, duration: 4.4, ease: "sine.inOut" }, 0.2);
       const cameT = wt("came");
       tl.set("#foxPos", { opacity: 1 }, cameT - 0.3);
       tl.to("#foxPos", { y: GY, duration: 0.6, ease: "back.out(1.6)" }, cameT - 0.3);
+      tl.to("#bush", { rotation: -1.5, svgOrigin: "930 1222", duration: 0.12, yoyo: true, repeat: 3 }, cameT - 0.35);
       tl.set("#bushBack", { opacity: 1 }, cameT + 0.9); tl.set("#bush", { opacity: 0 }, cameT + 0.9);
-      tl.to("#bush", { rotation: -2, svgOrigin: "930 1215", duration: 0.12, yoyo: true, repeat: 3 }, cameT - 0.35);
 
       // ===== S2 (4.5–8.3): fox asks for bread =====
       tl.to("#foxPos", { x: 800, duration: 1.6, ease: "sine.inOut" }, 4.3);
       walk(4.3, 5.7, "fox");
-      talk(".fox-m-open", ".fox-m-smirk", 4.55, 8.0);
-      tl.to(".fox-head", { rotation: -5, duration: 0.4, yoyo: true, repeat: 5, ease: "sine.inOut" }, 4.6);
-      tl.to(".ali-armR", { rotation: 14, duration: 0.5, yoyo: true, repeat: 1 }, 6.3);
+      talk(".fox-m-open", ".fox-m-closed", 4.55, 8.0);
+      tl.to(".fox-head", { rotation: -4, duration: 0.4, yoyo: true, repeat: 5, ease: "sine.inOut" }, 4.6);
 
       // ===== S3 (8.3–12.1): Ali says no, close-up =====
-      cam(8.2, 480, GY - AS * 450, 540, 780, 1.55, 0.7);
+      cam(8.2, 470, GY - AY * 400, 540, 860, 1.85, 0.7);
       talk(".ali-m-open", ".ali-m-flat", 8.5, 11.7, 0.22);
       tl.set(".ali-m-smile", { opacity: 0 }, 8.3);
       tl.set(".ali-m-flat", { opacity: 1 }, 8.3);
-      tl.to(".ali-head", { rotation: 9, duration: 0.18, yoyo: true, repeat: 5, ease: "sine.inOut" }, wt("no,") - 0.1);
-      tl.to(".ali-bread", { y: -8, duration: 0.3, yoyo: true, repeat: 3 }, 9.3);
-      tl.to(".ali-brow-l", { y: 5, duration: 0.3 }, 8.5); tl.to(".ali-brow-r", { y: 5, duration: 0.3 }, 8.5);
+      tl.to(".ali-head", { rotation: 7, duration: 0.18, yoyo: true, repeat: 5, ease: "sine.inOut" }, wt("no,") - 0.1);
+      tl.to(".ali-bread", { y: -6, duration: 0.3, yoyo: true, repeat: 3 }, 9.3);
+      tl.to(".ali-brow-l", { y: 3, duration: 0.3 }, 8.5); tl.to(".ali-brow-r", { y: 3, duration: 0.3 }, 8.5);
 
-      // ===== S4 (12.1–19.5): fox falls down & pretends to be sick =====
-      cam(12.0, 650, 1000, 540, 1000, 1.1, 0.8);
+      // ===== S4 (12.1–19.5): fox lies down & pretends to be sick =====
+      cam(12.0, 690, 1020, 540, 1000, 1.15, 0.8);
       tl.set(".ali-m-flat", { opacity: 0 }, 12.0); tl.set(".ali-m-smile", { opacity: 1 }, 12.0);
       const lay = wt("lay");
-      tl.to("#foxRot", { scaleY: 0.5, svgOrigin: "0 0", duration: 0.45, ease: "bounce.out" }, lay);
-      tl.to(".fox-head", { rotation: 16, duration: 0.5 }, lay + 0.2);
-      tl.to("#foxPos", { x: 830, duration: 0.55 }, lay);
-      tl.set(".fox-paw", { opacity: 1 }, lay + 0.6);
-      tl.set(".fox-brow", { opacity: 1 }, lay);
-      tl.to(".fox-brow", { rotation: 14, svgOrigin: "-132 -280", duration: 0.3 }, lay + 0.3);
+      tl.set(".fox-stand", { opacity: 0 }, lay + 0.1);
+      tl.set(".fox-lie", { opacity: 1 }, lay + 0.1);
+      tl.to("#foxPos", { y: GY - 26, duration: 0.14, ease: "power2.out", yoyo: true, repeat: 1 }, lay - 0.05);
+      tl.to("#foxPos", { x: 830, duration: 0.4 }, lay);
       const cried = wt("cried,");
-      talk(".fox-m-open", ".fox-m-smirk", cried + 0.35, 19.0, 0.26);
-      for (let t = cried + 0.2; t < 19.2; t += 0.5) tl.fromTo(".fox-tear", { opacity: 0, y: 0 }, { opacity: 1, y: 26, duration: 0.4, immediateRender: false }, t);
-      tl.to("#foxG", { x: 4, duration: 0.07, yoyo: true, repeat: 40 }, cried + 0.3);
-      tl.to(".ali-head", { rotation: -6, duration: 0.5 }, 16.5);
-      // Ali gets sad
+      talk(".fox-lie .fox-m-open", ".fox-lie .fox-m-closed", cried + 0.35, 19.0, 0.26);
+      for (let t = cried + 0.2; t < 19.2; t += 0.5) tl.fromTo(".fox-tear", { opacity: 0, y: 0 }, { opacity: 1, y: 22, duration: 0.4, immediateRender: false }, t);
+      tl.to(".fox-lie", { x: 3, duration: 0.07, yoyo: true, repeat: 40 }, cried + 0.3);
+      tl.to(".fox-tail2", { rotation: 5, svgOrigin: "130 -30", duration: 0.5, yoyo: true, repeat: 14, ease: "sine.inOut" }, lay + 0.3);
+      tl.to(".ali-head", { rotation: -5, duration: 0.5 }, 16.5);
       tl.set(".ali-m-smile", { opacity: 0 }, 17.6); tl.set(".ali-m-sad", { opacity: 1 }, 17.6);
 
       // ===== S5 (19.5–24.9): Ali gives the bread =====
       cam(19.4, 650, 940, 540, 900, 1.25, 0.8);
       tl.to(".ali-head", { rotation: 0, duration: 0.3 }, 19.5);
-      tl.to(".ali-brow-l", { rotation: -12, svgOrigin: "-42 -486", duration: 0.4 }, 19.9);
-      tl.to(".ali-brow-r", { rotation: 12, svgOrigin: "42 -486", duration: 0.4 }, 19.9);
+      tl.to(".ali-brow-l", { rotation: -10, svgOrigin: "-21 -525", duration: 0.4 }, 19.9);
+      tl.to(".ali-brow-r", { rotation: 10, svgOrigin: "21 -525", duration: 0.4 }, 19.9);
       const give = wt("give", 1);
       tl.set(".ali-bread", { opacity: 0 }, give);
-      tl.set("#flyBread", { opacity: 1, x: 480, y: GY - AS * 280 }, give);
-      tl.to("#flyBread", { x: 740, rotation: 360, duration: 0.9, ease: "power1.inOut" }, give);
-      tl.to("#flyBread", { y: GY - 340, duration: 0.4, ease: "power2.out" }, give);
-      tl.to("#flyBread", { y: GY - 70, duration: 0.5, ease: "power2.in" }, give + 0.4);
+      tl.set("#flyBread", { opacity: 1 }, give);
+      tl.fromTo("#flyBread", { x: 470, rotation: 0 }, { x: 735, rotation: 360, duration: 0.9, ease: "power1.inOut", immediateRender: false }, give);
+      tl.fromTo("#flyBread", { y: GY - AY * 298 }, { y: GY - 350, duration: 0.4, ease: "power2.out", immediateRender: false }, give);
+      tl.fromTo("#flyBread", { y: GY - 350 }, { y: GY - 60, duration: 0.5, ease: "power2.in", immediateRender: false }, give + 0.4);
 
       // ===== S6 (24.9–29.4): the fox grabs it and runs =====
       const grab = wt("grabbed"), jump = wt("jumped"), ran = wt("ran");
       cam(24.9, 700, 1000, 540, 1000, 1.1, 0.5);
-      tl.to("#foxRot", { scaleY: 1, svgOrigin: "0 0", duration: 0.25, ease: "back.out(2)" }, grab - 0.15);
-      tl.to(".fox-head", { rotation: 0, duration: 0.2 }, grab - 0.15);
-      tl.to("#foxPos", { y: GY, x: 790, duration: 0.25 }, grab - 0.15);
-      tl.set(".fox-paw", { opacity: 0 }, grab - 0.15);
+      tl.set(".fox-lie", { opacity: 0 }, grab - 0.15);
+      tl.set(".fox-stand", { opacity: 1 }, grab - 0.15);
+      tl.to("#foxPos", { x: 790, duration: 0.2 }, grab - 0.15);
+      tl.to("#foxPos", { y: GY - 30, duration: 0.15, ease: "power2.out", yoyo: true, repeat: 1 }, grab - 0.15);
       tl.set(".fox-tear", { opacity: 0 }, grab - 0.15);
       tl.set("#flyBread", { opacity: 0 }, grab + 0.05);
       tl.set(".fox-bread", { opacity: 1 }, grab + 0.05);
-      tl.to(".fox-brow", { rotation: 0, svgOrigin: "-132 -280", duration: 0.2 }, grab);
       tl.to("#foxPos", { y: GY - 90, duration: 0.25, ease: "power2.out", yoyo: true, repeat: 1 }, jump - 0.1);
-      tl.to(".fox-head", { rotation: -10, duration: 0.2 }, jump);
-      tl.to("#foxPos", { x: 2300, duration: 2.2, ease: "power1.in" }, jump + 0.3);
-      walk(ran - 0.1, ran + 2.0, "fox");
-      cam(ran - 0.1, 1400, 1000, 540, 1000, 1.0, 1.4);
-      cam(ran + 1.5, 480, 1000, 540, 1000, 1.05, 1.0);
-      // Ali shocked
-      tl.set(".ali-m-sad", { opacity: 0 }, wt("not"));
-      tl.set(".ali-m-open", { opacity: 1 }, wt("not"));
-      tl.to("#aliG", { y: -14, duration: 0.15, yoyo: true, repeat: 1 }, wt("not"));
+      const run0 = jump + 0.3;
+      tl.set(".fox-stand", { opacity: 0 }, run0);
+      tl.set(".fox-run", { opacity: 1 }, run0);
+      tl.set("#foxFlip", { scaleX: -1, svgOrigin: "0 0" }, run0);
+      tl.to("#foxPos", { x: 2300, duration: 2.2, ease: "power1.in" }, run0);
+      tl.to(".fox-run", { y: -14, duration: 0.13, ease: "sine.inOut", yoyo: true, repeat: 16 }, run0);
+      tl.to(".fox-tail3", { rotation: 7, svgOrigin: "150 -190", duration: 0.13, yoyo: true, repeat: 16 }, run0);
+      for (let i = 0; i < 7; i++) {
+        const u = 0.12 + i * 0.12, tt = run0 + u * 2.2, px = 790 + 1510 * u * u - 90;
+        tl.set(`#pf${i}`, { x: px, y: GY - 26 }, tt);
+        tl.fromTo(`#pf${i}`, { opacity: 0.55, scale: 0.4 }, { opacity: 0, scale: 1.7, duration: 0.7, ease: "power1.out", immediateRender: false }, tt);
+      }
+      cam(run0 - 0.2, 1400, 1000, 540, 1000, 1.0, 1.4);
+      cam(run0 + 1.5, 470, 1000, 540, 1000, 1.05, 1.0);
+      const nt = wt("not");
+      tl.set(".ali-m-sad", { opacity: 0 }, nt);
+      tl.set(".ali-m-open", { opacity: 1 }, nt);
+      tl.to("#aliG", { y: -12, duration: 0.15, yoyo: true, repeat: 1 }, nt);
 
-      // ===== S7 (29.4–33.6): Ali with teary eyes & grumbling tummy =====
-      cam(29.3, 480, GY - AS * 445, 540, 790, 1.85, 0.8);
+      // ===== S7 (29.4–33.6): teary eyes & grumbling tummy =====
+      cam(29.3, 470, GY - AY * 490, 540, 830, 2.5, 0.8);
       tl.set(".ali-m-open", { opacity: 0 }, 29.5); tl.set(".ali-m-sad", { opacity: 1 }, 29.5);
       for (let t = 30.1; t < 33.4; t += 0.7) {
-        tl.fromTo(".ali-tear-l", { opacity: 0, y: 0 }, { opacity: 1, y: 38, duration: 0.6, ease: "power1.in", immediateRender: false }, t);
-        tl.fromTo(".ali-tear-r", { opacity: 0, y: 0 }, { opacity: 1, y: 38, duration: 0.6, ease: "power1.in", immediateRender: false }, t + 0.25);
+        tl.fromTo(".ali-tear-l", { opacity: 0, y: 0 }, { opacity: 1, y: 30, duration: 0.6, ease: "power1.in", immediateRender: false }, t);
+        tl.fromTo(".ali-tear-r", { opacity: 0, y: 0 }, { opacity: 1, y: 30, duration: 0.6, ease: "power1.in", immediateRender: false }, t + 0.25);
       }
-      tl.to(".ali-body", { x: 3, duration: 0.06, yoyo: true, repeat: 17 }, wt("grumbling") - 0.15);
+      tl.to(".ali-body", { x: 2, duration: 0.06, yoyo: true, repeat: 17 }, wt("grumbling") - 0.15);
 
       // ===== S8 (33.6–36.6): Ali turns and walks home =====
       cam(33.5, 420, 1000, 540, 960, 1.0, 1.0);
       tl.set(".ali-tear", { opacity: 0 }, 33.8);
-      tl.set("#aliFlip", { scaleX: -1 }, wt("turned"));
-      tl.to("#aliPos", { x: 60, duration: 2.8, ease: "sine.inOut" }, wt("walked") - 0.3);
-      walk(wt("walked") - 0.3, 36.2);
+      tl.set("#aliFlip", { scaleX: -1, svgOrigin: "0 0" }, wt("turned"));
+      tl.to("#aliPos", { x: -140, duration: 3.4, ease: "sine.inOut" }, wt("walked") - 0.3);
+      walk(wt("walked") - 0.3, 37.0);
       tl.to("#cam", { x: 0, duration: 2.8, ease: "sine.inOut" }, 34.0);
       tl.to("#sunset", { opacity: 1, duration: 2.8 }, 33.8);
 
@@ -312,7 +396,6 @@
       tl.fromTo("#end .t2", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "power2.out" }, 37.1);
       tl.to("#end .t1", { scale: 1.05, duration: 0.7, yoyo: true, repeat: 2, ease: "sine.inOut" }, 37.3);
 
-      // captions pop
       WORDS.forEach((w, i) => tl.fromTo(`#w${i}`, { scale: 0.55, y: 14 }, { scale: 1, y: 0, duration: 0.13, ease: "back.out(3)" }, w.s));
 
       tl.set({}, {}, 39.6);
